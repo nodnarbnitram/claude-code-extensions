@@ -169,6 +169,23 @@ Project coordination and team management:
 | [`django-api-developer`](.claude/agents/specialized/django/django-api-developer.md) | Django REST Framework and GraphQL API development with DRF serializers and viewsets. |
 | [`django-orm-expert`](.claude/agents/specialized/django/django-orm-expert.md) | Django ORM optimization, complex queries, database performance, and migrations. |
 
+#### Python
+
+| Agent | Description |
+|-------|-------------|
+| [`typer-expert`](.claude/agents/specialized/python/typer-expert.md) | Typer CLI development specialist for type-hint driven CLIs, command structure, validation, testing, and distribution. |
+
+#### Temporal.io
+
+| Agent | Description |
+|-------|-------------|
+| [`temporal-core`](.claude/agents/specialized/temporal/temporal-core.md) | Universal Temporal.io expert for core concepts, architecture patterns, and determinism across all SDKs. |
+| [`temporal-python`](.claude/agents/specialized/temporal/temporal-python.md) | Python SDK specialist for Temporal.io (v1.18.0+) covering async/await patterns, pytest testing, and AsyncIO. |
+| [`temporal-go`](.claude/agents/specialized/temporal/temporal-go.md) | Go SDK specialist for Temporal.io (v1.36.0+) covering workflow-safe primitives, context patterns, and determinism. |
+| [`temporal-typescript`](.claude/agents/specialized/temporal/temporal-typescript.md) | TypeScript SDK specialist for Temporal.io (v1.13.0+) covering proxyActivities patterns, type safety, and Jest testing. |
+| [`temporal-testing`](.claude/agents/specialized/temporal/temporal-testing.md) | Testing specialist for Temporal.io covering testing strategies, time-skipping, activity mocking, and CI/CD integration. |
+| [`temporal-troubleshooting`](.claude/agents/specialized/temporal/temporal-troubleshooting.md) | Troubleshooting specialist for diagnosing errors, non-determinism issues, performance problems, and production incidents. |
+
 #### Other Frameworks
 
 | Agent | Description |
