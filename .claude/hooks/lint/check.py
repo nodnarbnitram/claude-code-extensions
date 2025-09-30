@@ -51,17 +51,26 @@ def lint_go(file_path):
     return run_linter(['golangci-lint', 'run', file_path], file_path, 'golangci-lint')
 
 def lint_js_ts(file_path):
-    """Lint JS/TS files with biome or prettier."""
-    # Check for biome first
-    if check_command_exists('biome'):
-        # Check if biome.json exists in project root
-        current_dir = Path(file_path).parent
-        while current_dir != current_dir.parent:
-            if (current_dir / 'biome.json').exists():
-                return run_linter(['biome', 'check', file_path], file_path, 'Biome')
-            current_dir = current_dir.parent
+    """Lint JS/TS files with ultracite (via npx)."""
+    # Check for npx (comes with Node.js/npm)
+    if check_command_exists('npx'):
+        # Use ultracite for comprehensive linting and security checks
+        result = subprocess.run(
+            ['npx', 'ultracite', 'check', file_path],
+            capture_output=True,
+            text=True
+        )
 
-    # Fall back to prettier
+        if result.returncode != 0:
+            print(f"🔍 Ultracite found issues in {file_path}:")
+            if result.stdout:
+                print(result.stdout)
+            if result.stderr:
+                print(result.stderr, file=sys.stderr)
+
+        return result.returncode
+
+    # Fall back to prettier if npx is not available
     if check_command_exists('prettier'):
         result = subprocess.run(
             ['prettier', '--check', file_path],

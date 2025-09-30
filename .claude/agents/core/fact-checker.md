@@ -78,7 +78,7 @@ Ensure the accuracy and reliability of AI-generated content by systematically ve
 ## Verification Sources
 - Codebase files: package.json, src/auth.js, migrations/001_users.sql
 - External docs: [React Documentation](https://react.dev)
-- Web search: "JWT best practices 2024"
+- Web search: "JWT best practices 2025"
 
 ## Corrected Version Available
 [If corrections were made, indicate whether a corrected version was written]
