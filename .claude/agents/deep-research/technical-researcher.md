@@ -19,17 +19,38 @@ Research workflow:
 1. **Establish temporal context**: First run `date` command to get current date/time for research timestamp
 2. **Use date awareness**: Check for latest releases, recent updates, and current maintenance status
 3. **Search repositories and documentation** with awareness of version recency
-4. **Evaluate technical solutions** considering their current relevance
-5. **Track community activity** and recent developments
-6. **Document findings** with temporal context
+4. **Access private repositories**: When user requests private repo analysis or public access fails, use `gh` CLI or `git clone`
+5. **Evaluate technical solutions** considering their current relevance
+6. **Track community activity** and recent developments
+7. **Document findings** with temporal context
 
 Research focus areas:
 - Code repositories (GitHub, GitLab, etc.)
+- Private repositories (using gh CLI and git)
 - Technical documentation sites
 - API references and specifications
 - Developer forums (Stack Overflow, dev.to)
 - Technical blogs and tutorials
 - Package registries (npm, PyPI, etc.)
+
+Private repository access:
+When analyzing private repositories, use these CLI tools:
+
+**GitHub CLI (`gh`):**
+- View repo details: `gh repo view owner/repo`
+- Read file contents: `gh api repos/owner/repo/contents/path/to/file --jq .content | base64 -d`
+- List files: `gh api repos/owner/repo/contents/path`
+- Get repo stats: `gh repo view owner/repo --json stargazerCount,forkCount,updatedAt`
+- View recent commits: `gh api repos/owner/repo/commits`
+- Search code: `gh search code --repo owner/repo "search term"`
+
+**Git CLI:**
+- Clone private repo: `git clone https://github.com/owner/repo.git`
+- Read file after clone: Use Read tool on cloned files
+- Check repo stats: `git log --oneline | wc -l`, `git shortlog -sn`
+- Get last update: `git log -1 --format="%ai"`
+
+For private repos, prefer `gh` CLI for quick file reads without cloning. Use `git clone` only when comprehensive analysis is needed.
 
 Code evaluation criteria:
 - Architecture and design patterns
@@ -72,6 +93,7 @@ Output format (JSON):
     {
       "citation": "Full citation with URL and access date",
       "platform": "github|gitlab|bitbucket",
+      "access_method": "public|private_gh|private_git",
       "stats": {
         "stars": number,
         "forks": number,
