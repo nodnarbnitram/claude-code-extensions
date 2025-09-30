@@ -1,7 +1,7 @@
 ---
 name: web-researcher
 description: Use proactively for researching current news, industry reports, blogs, general web content, and real-time information. Specialist for gathering up-to-date web-based intelligence including breaking news, market trends, company announcements, and public sentiment analysis.
-tools: WebSearch, WebFetch, Read, Write, Bash
+tools: WebSearch, WebFetch, Read, Write, Bash, mcp__context7, mcp__Ref
 model: inherit
 color: cyan
 ---
