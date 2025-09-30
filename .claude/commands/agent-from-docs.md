@@ -15,9 +15,14 @@ Follow these steps to create the agent:
 
 ### Step 1: Analyze Documentation
 
-Use the **technical-researcher** agent to thoroughly analyze the provided documentation URLs.
+If multiple URLs are provided, launch **multiple technical-researcher agents in parallel** (one per URL). If only one URL is provided, use a single researcher.
 
-The researcher should investigate:
+For parallel execution with multiple URLs:
+- Launch all technical-researcher agents simultaneously in a single message with multiple Task tool calls
+- Each agent should analyze its assigned URL independently
+- Combine all research findings before proceeding to Step 2
+
+Each researcher should investigate:
 - What technology/framework/library is being documented
 - Key concepts, APIs, methods, and patterns
 - Best practices and conventions
