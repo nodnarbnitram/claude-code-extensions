@@ -15,6 +15,52 @@ This repository provides production-ready extensions for Claude Code:
 
 ### Using These Extensions
 
+#### Option 1: Interactive CLI Installer (Recommended)
+
+The easiest way to install extensions is using the included CLI tool:
+
+```bash
+# Clone this repository
+git clone <repo-url>
+cd claude-code-extensions
+
+# Run the interactive installer
+./install_extensions.py install ~/my-project
+```
+
+The installer provides:
+- **Interactive selection**: Choose which extensions to install by type or category
+- **Smart settings.json merging**: Automatically configures hooks without breaking existing settings
+- **Dependency handling**: Copies hook utilities automatically
+- **Dry-run mode**: Preview changes before applying
+
+**Usage examples:**
+
+```bash
+# Interactive mode (default) - choose what to install
+./install_extensions.py install ~/my-project
+
+# Install all core agents non-interactively
+./install_extensions.py install --type agent --category core --no-interactive ~/my-project
+
+# Install all hooks
+./install_extensions.py install --type hook ~/my-project
+
+# Dry run to see what would be installed
+./install_extensions.py install --dry-run ~/my-project
+
+# List available extensions
+./install_extensions.py list
+
+# Get info about a specific extension
+./install_extensions.py info code-reviewer
+
+# See all options
+./install_extensions.py install --help
+```
+
+#### Option 2: Manual Installation
+
 1. **Clone this repository**:
    ```bash
    git clone <repo-url>
