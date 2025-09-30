@@ -233,6 +233,12 @@ Project coordination and team management:
 | [`temporal-testing`](.claude/agents/specialized/temporal/temporal-testing.md) | Testing specialist for Temporal.io covering testing strategies, time-skipping, activity mocking, and CI/CD integration. |
 | [`temporal-troubleshooting`](.claude/agents/specialized/temporal/temporal-troubleshooting.md) | Troubleshooting specialist for diagnosing errors, non-determinism issues, performance problems, and production incidents. |
 
+#### Go
+
+| Agent | Description |
+|-------|-------------|
+| [`go-google-style-expert`](.claude/agents/specialized/go/go-google-style-expert.md) | Google Go style guide expert covering naming, error handling, concurrency, testing, interfaces, and Go 1.25 features. Enforces strict Google conventions. |
+
 #### Other Frameworks
 
 | Agent | Description |
