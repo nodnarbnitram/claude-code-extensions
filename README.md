@@ -18,7 +18,7 @@ This repository provides production-ready extensions for Claude Code:
 1. **Clone this repository**:
    ```bash
    git clone <repo-url>
-   cd platform-claude-code
+   cd claude-code-extensions
    ```
 
 2. **Copy extensions to your project**:
