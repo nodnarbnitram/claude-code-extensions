@@ -86,6 +86,7 @@ Your custom system prompt
 
 | Command | Description | Arguments |
 |---------|-------------|-----------|
+| [`/agent-from-docs`](.claude/commands/agent-from-docs.md) | Create a specialized agent by analyzing documentation URLs | `<doc-url>` `[additional-urls...]` |
 | [`/prime`](.claude/commands/prime.md) | Load context for a new agent session by analyzing codebase structure, documentation and README | - |
 | [`/git-status`](.claude/commands/git-status.md) | Understand the current state of the git repository | - |
 | [`/git-commit`](.claude/commands/git-commit.md) | Create well-formatted commits with conventional commit format and emoji | `[message]` \| `--no-verify` \| `--amend` |
