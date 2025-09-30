@@ -82,35 +82,140 @@ description: What this style does
 Your custom system prompt
 ```
 
-## Featured Extensions
+## Commands
 
-### Agents
+| Command | Description | Arguments |
+|---------|-------------|-----------|
+| [`/prime`](.claude/commands/prime.md) | Load context for a new agent session by analyzing codebase structure, documentation and README | - |
+| [`/git-status`](.claude/commands/git-status.md) | Understand the current state of the git repository | - |
+| [`/git-commit`](.claude/commands/git-commit.md) | Create well-formatted commits with conventional commit format and emoji | `[message]` \| `--no-verify` \| `--amend` |
+| [`/frontend-mode`](.claude/commands/frontend-mode.md) | Load Ultracite rules for JS/TS development | - |
+| [`/security-scan`](.claude/commands/security-scan.md) | Run security scans on project files (Python/Go/JS/TS) | `[path]` |
 
-- **meta-agent**: Generates new agents from descriptions (uses Opus model)
-- **code-reviewer**: Security-aware code review with severity ratings
-- **code-archaeologist**: Legacy codebase exploration
-- **performance-optimizer**: Performance analysis and optimization
-- **tech-lead-orchestrator**: Coordinates complex multi-agent workflows
+## Agents
 
-Plus specialized agents for React, Django, Vue, AI/ML, and more in `.claude/agents/specialized/`.
+### Meta Agent
 
-### Hooks
+| Agent | Description |
+|-------|-------------|
+| [`meta-agent`](.claude/agents/meta-agent.md) | Generates new, complete Claude Code sub-agent configuration files from descriptions. Uses Opus model for high-quality agent generation. |
 
-All hooks use Python with `uv run --script` for dependency management:
+### Core Agents
 
-- **PreToolUse**: Blocks dangerous commands (rm -rf), prevents .env access
-- **PostToolUse**: Logs all tool executions; includes lint checking on Edit/Write operations
-- **SessionStart**: Injects git status and project context
-- **UserPromptSubmit**: Logs prompts and can validate/block them
+Quality assurance and analysis specialists:
 
-The **lint hook** (PostToolUse) automatically runs language-specific linters after file edits:
-- **Python**: `ruff check` (if installed)
-- **Go**: `golangci-lint run` (if installed)
-- **JS/TS**: `biome check` or `prettier --check` (if installed)
+| Agent | Description |
+|-------|-------------|
+| [`code-reviewer`](.claude/agents/core/code-reviewer.md) | Rigorous, security-aware code review after features, bug-fixes, or pull-requests. Delivers severity-tagged reports and routes issues to specialists. |
+| [`code-archaeologist`](.claude/agents/core/code-archaeologist.md) | Explores and documents unfamiliar, legacy, or complex codebases. Produces comprehensive reports with architecture, metrics, risks, and action plans. |
+| [`fact-checker`](.claude/agents/core/fact-checker.md) | Validates outputs from other agents to prevent hallucinations and ensure accuracy. Cross-references claims against codebase, web sources, and documentation. |
+| [`documentation-specialist`](.claude/agents/core/documentation-specialist.md) | Crafts and updates project documentation including READMEs, API specs, architecture guides, and user manuals. |
+| [`performance-optimizer`](.claude/agents/core/performance-optimizer.md) | Identifies bottlenecks, profiles workloads, and applies optimizations for high-performance systems. |
 
-Utilities in `.claude/hooks/utils/`:
-- LLM integrations (OpenAI, Anthropic, Ollama)
-- TTS implementations (pyttsx3, OpenAI, ElevenLabs)
+### Deep Research Agents
+
+Specialized researchers for comprehensive analysis:
+
+| Agent | Description |
+|-------|-------------|
+| [`research-coordinator`](.claude/agents/deep-research/research-coordinator.md) | Strategically plans and coordinates complex research tasks across multiple specialist researchers. |
+| [`academic-researcher`](.claude/agents/deep-research/academic-researcher.md) | Searches scholarly sources, peer-reviewed papers, and academic literature with citation tracking. |
+| [`data-analyst`](.claude/agents/deep-research/data-analyst.md) | Provides quantitative analysis, statistical insights, trend identification, and data visualization recommendations. |
+| [`technical-researcher`](.claude/agents/deep-research/technical-researcher.md) | Analyzes code repositories, technical documentation, implementation details, and evaluates technical solutions. |
+| [`web-researcher`](.claude/agents/deep-research/web-researcher.md) | Researches current news, industry reports, blogs, market trends, and real-time web intelligence. |
+
+### Orchestrator Agents
+
+Project coordination and team management:
+
+| Agent | Description |
+|-------|-------------|
+| [`tech-lead-orchestrator`](.claude/agents/orchestrators/tech-lead-orchestrator.md) | Analyzes complex software projects and provides strategic recommendations. Coordinates multi-step tasks and assigns work to sub-agents. |
+| [`project-analyst`](.claude/agents/orchestrators/project-analyst.md) | Analyzes new or unfamiliar codebases to detect frameworks, tech stacks, and architecture for proper specialist routing. |
+| [`team-configurator`](.claude/agents/orchestrators/team-configurator.md) | Sets up AI development teams for projects. Detects stack, selects specialist sub-agents, and updates CLAUDE.md configuration. |
+
+### Specialized Agents
+
+#### Data & AI
+
+| Agent | Description |
+|-------|-------------|
+| [`ai-engineer`](.claude/agents/specialized/data-ai/ai-engineer.md) | AI system design, model implementation, and production deployment across multiple frameworks. |
+| [`llm-architect`](.claude/agents/specialized/data-ai/llm-architect.md) | LLM architecture, deployment, optimization, fine-tuning, and production serving. |
+| [`machine-learning-engineer`](.claude/agents/specialized/data-ai/machine-learning-engineer.md) | Production model deployment, serving infrastructure, optimization, and edge deployment. |
+| [`nlp-engineer`](.claude/agents/specialized/data-ai/nlp-engineer.md) | Natural language processing, transformer models, text pipelines, and multilingual support. |
+| [`prompt-engineer`](.claude/agents/specialized/data-ai/prompt-engineer.md) | Prompt design, optimization, evaluation frameworks, and production prompt systems. |
+
+#### React
+
+| Agent | Description |
+|-------|-------------|
+| [`react-component-architect`](.claude/agents/specialized/react/react-component-architect.md) | Modern React patterns, component design, hooks implementation, and React 19+ architecture. |
+| [`react-nextjs-expert`](.claude/agents/specialized/react/react-nextjs-expert.md) | Next.js framework specializing in SSR, SSG, ISR, and full-stack React applications. |
+| [`tanstack-start-expert`](.claude/agents/specialized/react/tanstack-start-expert.md) | TanStack Start framework, TanStack Router integration, server functions, and type-safe development. |
+
+#### Vue
+
+| Agent | Description |
+|-------|-------------|
+| [`vue-component-architect`](.claude/agents/specialized/vue/vue-component-architect.md) | Vue 3 Composition API, component patterns, composables, and Vue architecture decisions. |
+| [`vue-nuxt-expert`](.claude/agents/specialized/vue/vue-nuxt-expert.md) | Nuxt.js framework specializing in SSR, SSG, and full-stack Vue applications. |
+
+#### Django
+
+| Agent | Description |
+|-------|-------------|
+| [`django-backend-expert`](.claude/agents/specialized/django/django-backend-expert.md) | Django backend development: models, views, services, and Django-specific implementations. |
+| [`django-api-developer`](.claude/agents/specialized/django/django-api-developer.md) | Django REST Framework and GraphQL API development with DRF serializers and viewsets. |
+| [`django-orm-expert`](.claude/agents/specialized/django/django-orm-expert.md) | Django ORM optimization, complex queries, database performance, and migrations. |
+
+#### Other Frameworks
+
+| Agent | Description |
+|-------|-------------|
+| [`cloudflare-workers-expert`](.claude/agents/specialized/cloudflare/cloudflare-workers-expert.md) | Cloudflare Workers development, serverless edge computing, and platform integrations. |
+| [`crossplane-upgrade-agent`](.claude/agents/specialized/crossplane/crossplane-upgrade-agent.md) | Crossplane upgrade specialist for YAML and code migrations from v1 to v2. |
+
+### Universal Agents
+
+Framework-agnostic developers:
+
+| Agent | Description |
+|-------|-------------|
+| [`api-architect`](.claude/agents/universal/api-architect.md) | Universal API designer for RESTful design, GraphQL schemas, OpenAPI specs, and modern contract standards. |
+| [`backend-developer`](.claude/agents/universal/backend-developer.md) | Production-ready server-side code across any language or stack when no framework-specific agent exists. |
+| [`frontend-developer`](.claude/agents/universal/frontend-developer.md) | Responsive, accessible, high-performance UIs with vanilla JS/TS, React, Vue, Angular, Svelte, or Web Components. |
+| [`tailwind-css-expert`](.claude/agents/universal/tailwind-css-expert.md) | Tailwind CSS styling, utility-first refactors, and responsive component work. |
+
+## Hooks
+
+All hooks use Python with `uv run --script` for dependency management.
+
+| Hook | Event | Purpose |
+|------|-------|---------|
+| [`pre_tool_use.py`](.claude/hooks/pre_tool_use.py) | PreToolUse | Blocks dangerous commands (`rm -rf`), prevents `.env` access, and logs all tool calls for audit. |
+| [`post_tool_use.py`](.claude/hooks/post_tool_use.py) | PostToolUse | Logs all tool executions to `logs/post_tool_use.json`. Triggers lint checking on Edit/Write operations. |
+| [`session_start.py`](.claude/hooks/session_start.py) | SessionStart | Injects git status and project context at session start. Logs session information. |
+| [`user_prompt_submit.py`](.claude/hooks/user_prompt_submit.py) | UserPromptSubmit | Logs user prompts and can validate/block them before processing. |
+| [`pre_compact.py`](.claude/hooks/pre_compact.py) | PreCompact | Executes before context compaction to preserve important information. |
+| [`stop.py`](.claude/hooks/stop.py) | Stop | Runs when the main agent finishes responding. |
+| [`subagent_stop.py`](.claude/hooks/subagent_stop.py) | SubagentStop | Executes when a subagent completes its task. |
+| [`notification.py`](.claude/hooks/notification.py) | Notification | Handles notification events from Claude Code. |
+| [`lint/check.py`](.claude/hooks/lint/check.py) | (Invoked by PostToolUse) | Automatically runs language-specific linters: `ruff` (Python), `golangci-lint` (Go), `biome`/`prettier` (JS/TS). |
+
+### Hook Utilities
+
+Shared utilities in `.claude/hooks/utils/`:
+
+**LLM Integrations:**
+- [`llm/anth.py`](.claude/hooks/utils/llm/anth.py) - Anthropic API integration
+- [`llm/oai.py`](.claude/hooks/utils/llm/oai.py) - OpenAI API integration
+- [`llm/ollama.py`](.claude/hooks/utils/llm/ollama.py) - Ollama local LLM integration
+
+**Text-to-Speech:**
+- [`tts/pyttsx3_tts.py`](.claude/hooks/utils/tts/pyttsx3_tts.py) - Local TTS using pyttsx3
+- [`tts/openai_tts.py`](.claude/hooks/utils/tts/openai_tts.py) - OpenAI TTS API
+- [`tts/elevenlabs_tts.py`](.claude/hooks/utils/tts/elevenlabs_tts.py) - ElevenLabs TTS API
 
 ### Safety Features
 
