@@ -104,14 +104,19 @@ def main():
         file_extension = Path(file_path).suffix.lower()
 
         # Route to appropriate linter based on file extension
+        exit_code = 0
         if file_extension == '.py':
-            lint_python(file_path)
+            exit_code = lint_python(file_path)
         elif file_extension == '.go':
-            lint_go(file_path)
+            exit_code = lint_go(file_path)
         elif file_extension in ['.js', '.jsx', '.ts', '.tsx', '.mjs', '.cjs']:
-            lint_js_ts(file_path)
+            exit_code = lint_js_ts(file_path)
 
-        # Always exit 0 to not block the operation
+        # Exit with 2 to block the operation if linting failed
+        if exit_code != 0:
+            print(f"\nLinting failed for {file_path}. Please fix the issues above.", file=sys.stderr)
+            sys.exit(2)
+
         sys.exit(0)
 
     except Exception as e:
