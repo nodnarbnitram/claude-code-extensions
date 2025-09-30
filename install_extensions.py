@@ -17,7 +17,6 @@ repository to target projects.
 
 import json
 import shutil
-import sys
 from dataclasses import dataclass, field
 from enum import Enum
 from pathlib import Path
@@ -466,7 +465,7 @@ def install_extensions(
         )
 
         save_settings(settings_path, merged_settings)
-        console.print(f"[green]Updated settings.json with hook configurations[/green]")
+        console.print("[green]Updated settings.json with hook configurations[/green]")
 
     return results
 
@@ -672,7 +671,7 @@ def install(
     repo_path = get_repo_root()
     target_dir = target or Path.cwd()
 
-    console.print(f"\n[bold]Claude Code Extensions Installer[/bold]")
+    console.print("\n[bold]Claude Code Extensions Installer[/bold]")
     console.print(f"Source: {repo_path}")
     console.print(f"Target: {target_dir}\n")
 
