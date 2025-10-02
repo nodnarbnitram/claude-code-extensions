@@ -276,7 +276,8 @@ Each agent operates in isolated context:
 - Allows specialized instructions per domain
 
 ## Important
-- Update the `README.md` whenever adding new agents, hooks, commands, or output-styles.
+- Update the `README.md` whenever adding new agents, hooks, commands, or output-styles
+- See `CONTRIBUTING.md` for detailed contribution guidelines and development workflow
 
 ## References
 
