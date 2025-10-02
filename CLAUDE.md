@@ -275,6 +275,9 @@ Each agent operates in isolated context:
 - Enables longer overall sessions
 - Allows specialized instructions per domain
 
+## Important
+- Update the `README.md` whenever adding new agents, hooks, commands, or output-styles.
+
 ## References
 
 All documentation in `docs/claude-code/` is official Claude Code reference material. Refer to these when creating extensions.

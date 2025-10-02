@@ -239,12 +239,29 @@ Project coordination and team management:
 |-------|-------------|
 | [`go-google-style-expert`](.claude/agents/specialized/go/go-google-style-expert.md) | Google Go style guide expert covering naming, error handling, concurrency, testing, interfaces, and Go 1.25 features. Enforces strict Google conventions. |
 
-#### Other Frameworks
+#### Anthropic
 
 | Agent | Description |
 |-------|-------------|
-| [`cloudflare-workers-expert`](.claude/agents/specialized/cloudflare/cloudflare-workers-expert.md) | Cloudflare Workers development, serverless edge computing, and platform integrations. |
-| [`crossplane-upgrade-agent`](.claude/agents/specialized/crossplane/crossplane-upgrade-agent.md) | Crossplane upgrade specialist for YAML and code migrations from v1 to v2. |
+| [`claude-agent-sdk-typescript-expert`](.claude/agents/claude-agent-sdk-typescript-expert.md) | Expert in building autonomous AI agents using the Claude Agent SDK for TypeScript/Node.js. Covers query patterns, Zod tool creation, permissions, hooks, and MCP integration. |
+| [`claude-agent-sdk-python-expert`](.claude/agents/specialized/anthropic/claude-agent-sdk-python-expert.md) | Expert in building autonomous AI agents using the Claude Agent SDK for Python. Covers async patterns, custom tools, hooks, FastAPI/Django integration, and SDK configuration. |
+
+#### Cloudflare
+
+| Agent | Description |
+|-------|-------------|
+| [`cloudflare-workers-expert`](.claude/agents/specialized/cloudflare/cloudflare-workers-expert.md) | Cloudflare Workers development, serverless edge computing, V8 isolates, storage (KV, D1, R2, Durable Objects), and platform integrations. |
+| [`cloudflare-workers-ai-expert`](.claude/agents/specialized/cloudflare/cloudflare-workers-ai-expert.md) | Cloudflare Workers AI development with model selection, API integration, RAG, streaming, function calling, and AI Gateway/Vectorize integration. |
+| [`cloudflare-workers-for-platforms-expert`](.claude/agents/specialized/cloudflare/cloudflare-workers-for-platforms-expert.md) | Multi-tenant architectures, dispatch namespaces, dynamic routing, user Worker deployment, and serverless platform infrastructure on Cloudflare. |
+| [`cloudflare-workflows-expert`](.claude/agents/specialized/cloudflare/cloudflare-workflows-expert.md) | Durable execution, step APIs, retry logic, idempotency patterns, Python DAG workflows, and Cloudflare service integration. |
+| [`cloudflare-ai-agents-sdk-expert`](.claude/agents/specialized/cloudflare/cloudflare-ai-agents-sdk-expert.md) | Cloudflare AI Agents SDK development for Agent classes, state management, WebSockets, AI integration, React hooks, MCP servers, and edge-deployed autonomous agents. |
+
+#### Crossplane
+
+| Agent | Description |
+|-------|-------------|
+| [`crossplane-upgrade-agent`](.claude/agents/specialized/crossplane/crossplane-upgrade-agent.md) | Crossplane upgrade specialist for YAML and code migrations from v1 to v2, composition functions, package naming, and resource transformations. |
+| [`crossplane-aws-rds-expert`](.claude/agents/specialized/crossplane/crossplane-aws-rds-expert.md) | Crossplane AWS RDS provider expert for declarative RDS management, Aurora clusters, pipeline-mode compositions, IRSA authentication, and production database infrastructure. |
 
 ### Universal Agents
 
