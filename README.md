@@ -96,7 +96,7 @@ cp .claude/settings.json ~/my-project/.claude/
 | [`/agent-from-docs`](.claude/commands/agent-from-docs.md) | Create a specialized agent by analyzing documentation URLs | `<doc-url>` `[additional-urls...]` |
 | [`/prime`](.claude/commands/prime.md) | Load context for a new agent session by analyzing codebase structure, documentation and README | - |
 | [`/git-status`](.claude/commands/git-status.md) | Understand the current state of the git repository | - |
-| [`/git-commit`](.claude/commands/git-commit.md) | Create well-formatted commits with conventional commit format and emoji | `[message]` \| `--no-verify` \| `--amend` |
+| [`/git-commit`](.claude/commands/git-commit.md) | Analyze changes and create well-formatted commits with emoji conventional format | `[message]` `[--amend]` (Optional)|
 | [`/frontend-mode`](.claude/commands/frontend-mode.md) | Load Ultracite rules for JS/TS development | - |
 | [`/security-scan`](.claude/commands/security-scan.md) | Run security scans on project files (Python/Go/JS/TS) | `[path]` |
 
