@@ -52,6 +52,63 @@ except ImportError:
     sys.exit(0)
 
 
+def get_last_assistant_message(transcript_path: str, max_length: int = 3000) -> str:
+    """
+    Extract the last assistant message from the transcript.
+
+    Args:
+        transcript_path: Path to the JSONL transcript file
+        max_length: Maximum length of the message to return
+
+    Returns:
+        The last assistant message text, or empty string if not found
+    """
+    try:
+        if not os.path.exists(transcript_path):
+            return ""
+
+        last_message = ""
+
+        with open(transcript_path, 'r') as f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+
+                try:
+                    entry = json.loads(line)
+
+                    # Look for assistant messages (nested under 'message' key)
+                    message = entry.get('message', entry)
+                    if message.get('role') == 'assistant':
+                        # Extract text content from the content array
+                        content = message.get('content', [])
+                        if isinstance(content, list):
+                            # Concatenate all text blocks (skip thinking blocks)
+                            text_parts = []
+                            for block in content:
+                                if isinstance(block, dict) and block.get('type') == 'text':
+                                    text_parts.append(block.get('text', ''))
+
+                            if text_parts:
+                                last_message = '\n'.join(text_parts)
+                        elif isinstance(content, str):
+                            last_message = content
+
+                except json.JSONDecodeError:
+                    continue
+
+        # Truncate if too long
+        if len(last_message) > max_length:
+            last_message = last_message[:max_length] + "\n\n... (message truncated)"
+
+        return last_message
+
+    except Exception as e:
+        print(f"Error reading transcript: {e}", file=sys.stderr)
+        return ""
+
+
 def format_message(input_data: dict, event_emoji: str = None) -> str:
     """
     Format a Slack message based on hook event type.
@@ -84,11 +141,26 @@ def format_message(input_data: dict, event_emoji: str = None) -> str:
         return f"{emoji} *Claude Code*\n{message}"
 
     elif hook_event == 'Stop':
-        return f"{emoji} *Task Completed*\nClaude Code has finished responding"
+        # Include the last assistant response
+        transcript_path = input_data.get('transcript_path', '')
+        last_response = get_last_assistant_message(transcript_path)
+
+        if last_response:
+            return f"{emoji} *Task Completed*\n\n{last_response}"
+        else:
+            return f"{emoji} *Task Completed*\nClaude Code has finished responding"
 
     elif hook_event == 'SubagentStop':
+        # Include the last assistant response
+        transcript_path = input_data.get('transcript_path', '')
+        last_response = get_last_assistant_message(transcript_path)
+
         description = input_data.get('description', 'Subagent task')
-        return f"{emoji} *Subagent Completed*\n{description}"
+
+        if last_response:
+            return f"{emoji} *Subagent Completed: {description}*\n\n{last_response}"
+        else:
+            return f"{emoji} *Subagent Completed*\n{description}"
 
     elif hook_event == 'SessionStart':
         source = input_data.get('source', 'startup')

@@ -9,6 +9,7 @@ The Slack notification hook enables you to receive instant Slack DMs for any Cla
 - ✅ **Universal event support** - Works with all Claude Code hook events
 - 💬 **Direct messages** - Sends DMs directly to your Slack account
 - 🎨 **Smart formatting** - Intelligently formats messages based on event type
+- 📋 **Full context** - Stop and SubagentStop events include Claude's complete response
 - 📝 **Comprehensive logging** - Tracks all notifications in `logs/slack_notification.json`
 - 🛡️ **Graceful error handling** - Never blocks Claude Code, even if Slack is unavailable
 - 🔧 **Highly configurable** - Customize which events trigger notifications
@@ -205,13 +206,15 @@ The hook intelligently formats messages for all Claude Code events:
 | Event | Default Emoji | Example Message |
 |-------|---------------|-----------------|
 | `Notification` | 🔔 | "🔔 **Claude Code**<br>Claude needs your permission to use Bash" |
-| `Stop` | ✅ | "✅ **Task Completed**<br>Claude Code has finished responding" |
-| `SubagentStop` | 🤖 | "🤖 **Subagent Completed**<br>Code review analysis complete" |
+| `Stop` | ✅ | "✅ **Task Completed**<br><br>[Includes last assistant response - up to 3000 chars]" |
+| `SubagentStop` | 🤖 | "🤖 **Subagent Completed: [description]**<br><br>[Includes last assistant response - up to 3000 chars]" |
 | `SessionStart` | 🚀 | "🚀 **Session Started**<br>Claude Code session startup" |
 | `SessionEnd` | 🏁 | "🏁 **Session Ended**<br>Reason: user exit" |
 | `PreCompact` | 💾 | "💾 **Compacting Context**<br>Type: auto" |
 | `PreToolUse` | ⚙️ | "⚙️ **Tool Starting**<br>`Bash` is about to execute" |
 | `PostToolUse` | ✔️ | "✔️ **Tool Completed**<br>`Write` completed" |
+
+**Note:** `Stop` and `SubagentStop` events automatically include the full text of Claude's last response, giving you complete context of what was accomplished. Messages are truncated at 3000 characters to stay within Slack's limits.
 
 ## Logging
 
