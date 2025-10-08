@@ -234,6 +234,7 @@ cp .claude/settings.json ~/my-project/.claude/
 | [`stop.py`](.claude/hooks/stop.py) | Stop | 🏁 Runs when main agent finishes |
 | [`subagent_stop.py`](.claude/hooks/subagent_stop.py) | SubagentStop | 🔄 Executes when subagent completes |
 | [`notification.py`](.claude/hooks/notification.py) | Notification | 🔔 Handles Claude Code notifications |
+| [`slack_notification.py`](.claude/hooks/slack_notification.py) | All events | 💬 Sends Slack DMs for Claude Code events (requires `SLACK_BOT_TOKEN`, `SLACK_USER_ID`) |
 | [`lint/check.py`](.claude/hooks/lint/check.py) | (Auto-triggered) | ⚡ Auto-lints: `ruff`, `golangci-lint`, `biome` |
 
 **Utilities**: LLM integrations (Anthropic, OpenAI, Ollama), TTS engines (pyttsx3, OpenAI, ElevenLabs)

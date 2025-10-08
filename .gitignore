@@ -1,3 +1,4 @@
 logs/
 .mypy_cache/
 .ruff_cache/
+.env
