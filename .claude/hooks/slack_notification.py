@@ -336,12 +336,17 @@ def main():
             action='store_true',
             help='Log only, do not send Slack message'
         )
+        parser.add_argument(
+            '--cache-only',
+            action='store_true',
+            help='For SessionStart: only cache transcript path, do not send notification'
+        )
         args = parser.parse_args()
 
         # Read JSON input from stdin
         input_data = json.load(sys.stdin)
 
-        # Handle SessionStart: only cache the transcript path for later use
+        # Handle SessionStart: cache the transcript path for later use
         hook_event = input_data.get('hook_event_name', '')
         if hook_event == 'SessionStart':
             transcript_path = input_data.get('transcript_path', '')
@@ -350,8 +355,11 @@ def main():
                 cache_dir.mkdir(exist_ok=True)
                 cache_file = cache_dir / ".current-transcript"
                 cache_file.write_text(transcript_path)
-            # Exit early - don't send notifications for SessionStart
-            sys.exit(0)
+
+            # If --cache-only flag is set, exit without sending notification
+            if args.cache_only:
+                sys.exit(0)
+            # Otherwise, continue to send SessionStart notification
 
         # Check required environment variables
         slack_token = os.getenv('SLACK_BOT_TOKEN')

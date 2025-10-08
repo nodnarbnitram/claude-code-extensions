@@ -58,7 +58,7 @@
           },
           {
             "type": "command",
-            "command": "uv run ./.claude/hooks/slack_notification.py --event-emoji ✅"
+            "command": "uv run ./.claude/hooks/slack_notification.py"
           }
         ]
       }
@@ -109,7 +109,7 @@
           },
           {
             "type": "command",
-            "command": "uv run ./.claude/hooks/slack_notification.py"
+            "command": "uv run ./.claude/hooks/slack_notification.py --cache-only"
           }
         ]
       }

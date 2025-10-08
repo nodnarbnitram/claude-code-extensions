@@ -148,7 +148,7 @@ Monitor multiple events simultaneously:
         "hooks": [
           {
             "type": "command",
-            "command": "uv run \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/slack_notification.py --event-emoji ✅"
+            "command": "uv run \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/slack_notification.py"
           }
         ]
       }
@@ -158,7 +158,17 @@ Monitor multiple events simultaneously:
         "hooks": [
           {
             "type": "command",
-            "command": "uv run \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/slack_notification.py --event-emoji 🤖"
+            "command": "uv run \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/slack_notification.py"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uv run \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/slack_notification.py --cache-only"
           }
         ]
       }
@@ -166,6 +176,8 @@ Monitor multiple events simultaneously:
   }
 }
 ```
+
+**Note:** The `SessionStart` hook uses `--cache-only` to cache the transcript path without sending a notification. Remove `--cache-only` if you want to receive SessionStart notifications.
 
 ### Advanced Configuration
 
@@ -331,6 +343,7 @@ Share a Slack channel webhook to notify entire teams of important Claude Code ev
 |--------|-------------|---------|
 | `--event-emoji EMOJI` | Override default emoji for the event | `--event-emoji 🎉` |
 | `--dry-run` | Print message without sending to Slack | `--dry-run` |
+| `--cache-only` | For SessionStart: only cache transcript path, don't send notification | `--cache-only` |
 
 ## Related Hooks
 
