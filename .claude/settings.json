@@ -106,6 +106,10 @@
           {
             "type": "command",
             "command": "uv run ./.claude/hooks/session_start.py"
+          },
+          {
+            "type": "command",
+            "command": "uv run ./.claude/hooks/slack_notification.py"
           }
         ]
       }

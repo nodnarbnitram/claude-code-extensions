@@ -34,7 +34,9 @@ Usage:
 import argparse
 import json
 import os
+import re
 import sys
+import time
 from pathlib import Path
 
 try:
@@ -52,51 +54,78 @@ except ImportError:
     sys.exit(0)
 
 
-def get_last_assistant_message(transcript_path: str, max_length: int = 3000) -> str:
+def get_last_assistant_message(transcript_path: str, max_length: int = 3000, max_retries: int = 3) -> str:
     """
     Extract the last assistant message from the transcript.
 
     Args:
         transcript_path: Path to the JSONL transcript file
         max_length: Maximum length of the message to return
+        max_retries: Number of times to retry reading (for timing issues)
 
     Returns:
         The last assistant message text, or empty string if not found
     """
     try:
+        # Workaround: Claude Code sometimes passes stale transcript_path in resumed sessions
+        # Try to read the cached transcript path from SessionStart hook
+        cache_file = Path("logs") / ".current-transcript"
+        if cache_file.exists():
+            try:
+                cached_path = cache_file.read_text().strip()
+                if cached_path and os.path.exists(cached_path):
+                    transcript_path = cached_path
+            except Exception:
+                pass  # Fall back to provided path
+
         if not os.path.exists(transcript_path):
             return ""
 
         last_message = ""
+        initial_message = ""
 
-        with open(transcript_path, 'r') as f:
-            for line in f:
-                line = line.strip()
-                if not line:
-                    continue
+        # Try multiple times with delays to handle transcript write timing
+        for attempt in range(max_retries):
+            with open(transcript_path, 'r') as f:
+                for line in f:
+                    line = line.strip()
+                    if not line:
+                        continue
 
-                try:
-                    entry = json.loads(line)
+                    try:
+                        entry = json.loads(line)
 
-                    # Look for assistant messages (nested under 'message' key)
-                    message = entry.get('message', entry)
-                    if message.get('role') == 'assistant':
-                        # Extract text content from the content array
-                        content = message.get('content', [])
-                        if isinstance(content, list):
-                            # Concatenate all text blocks (skip thinking blocks)
-                            text_parts = []
-                            for block in content:
-                                if isinstance(block, dict) and block.get('type') == 'text':
-                                    text_parts.append(block.get('text', ''))
+                        # Look for assistant messages (nested under 'message' key)
+                        message = entry.get('message', entry)
+                        if message.get('role') == 'assistant':
+                            # Extract text content from the content array
+                            content = message.get('content', [])
+                            if isinstance(content, list):
+                                # Concatenate all text blocks (skip thinking blocks)
+                                text_parts = []
+                                for block in content:
+                                    if isinstance(block, dict) and block.get('type') == 'text':
+                                        text_parts.append(block.get('text', ''))
 
-                            if text_parts:
-                                last_message = '\n'.join(text_parts)
-                        elif isinstance(content, str):
-                            last_message = content
+                                if text_parts:
+                                    last_message = '\n'.join(text_parts)
+                            elif isinstance(content, str):
+                                last_message = content
 
-                except json.JSONDecodeError:
-                    continue
+                    except json.JSONDecodeError:
+                        continue
+
+            # Store the first attempt's result
+            if attempt == 0:
+                initial_message = last_message
+
+            # If message changed from previous attempt, we got a new one - use it
+            if last_message and last_message != initial_message:
+                break
+
+            # Wait a bit before retrying (except on last attempt)
+            if attempt < max_retries - 1:
+                time.sleep(0.3)
 
         # Truncate if too long
         if len(last_message) > max_length:
@@ -107,6 +136,28 @@ def get_last_assistant_message(transcript_path: str, max_length: int = 3000) -> 
     except Exception as e:
         print(f"Error reading transcript: {e}", file=sys.stderr)
         return ""
+
+
+def convert_markdown_to_slack(text: str) -> str:
+    """
+    Convert standard markdown to Slack's markdown format.
+
+    Slack uses different markdown syntax:
+    - *text* for bold (not **text**)
+    - _text_ for italic (not *text*)
+    - Code blocks and inline code are the same
+
+    Args:
+        text: Text with standard markdown
+
+    Returns:
+        Text with Slack-compatible markdown
+    """
+    # Convert **text** to *text* (bold)
+    # Use a negative lookbehind/lookahead to avoid matching already single asterisks
+    text = re.sub(r'(?<!\*)\*\*(?!\*)(.+?)(?<!\*)\*\*(?!\*)', r'*\1*', text)
+
+    return text
 
 
 def format_message(input_data: dict, event_emoji: str = None) -> str:
@@ -146,6 +197,8 @@ def format_message(input_data: dict, event_emoji: str = None) -> str:
         last_response = get_last_assistant_message(transcript_path)
 
         if last_response:
+            # Convert markdown to Slack format
+            last_response = convert_markdown_to_slack(last_response)
             return f"{emoji} *Task Completed*\n\n{last_response}"
         else:
             return f"{emoji} *Task Completed*\nClaude Code has finished responding"
@@ -158,6 +211,8 @@ def format_message(input_data: dict, event_emoji: str = None) -> str:
         description = input_data.get('description', 'Subagent task')
 
         if last_response:
+            # Convert markdown to Slack format
+            last_response = convert_markdown_to_slack(last_response)
             return f"{emoji} *Subagent Completed: {description}*\n\n{last_response}"
         else:
             return f"{emoji} *Subagent Completed*\n{description}"
@@ -285,6 +340,18 @@ def main():
 
         # Read JSON input from stdin
         input_data = json.load(sys.stdin)
+
+        # Handle SessionStart: only cache the transcript path for later use
+        hook_event = input_data.get('hook_event_name', '')
+        if hook_event == 'SessionStart':
+            transcript_path = input_data.get('transcript_path', '')
+            if transcript_path:
+                cache_dir = Path("logs")
+                cache_dir.mkdir(exist_ok=True)
+                cache_file = cache_dir / ".current-transcript"
+                cache_file.write_text(transcript_path)
+            # Exit early - don't send notifications for SessionStart
+            sys.exit(0)
 
         # Check required environment variables
         slack_token = os.getenv('SLACK_BOT_TOKEN')

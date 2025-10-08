@@ -338,6 +338,20 @@ Share a Slack channel webhook to notify entire teams of important Claude Code ev
 - **`stop.py`** - Task completion logging
 - **`session_start.py`** - Session initialization
 
+## Known Issues
+
+### Resumed Session Workaround
+
+Due to a [Claude Code bug](https://github.com/anthropics/claude-code/issues/8069), the `transcript_path` passed to Stop and SubagentStop hooks is sometimes stale when resuming a session.
+
+**Workaround implemented:**
+- The hook registers for `SessionStart` events
+- On SessionStart, it caches the current `transcript_path` to `logs/.current-transcript`
+- On Stop/SubagentStop, it reads from the cache first before using the provided path
+- This ensures the correct transcript is read even in resumed sessions
+
+**No action required** - the workaround is automatic. If you see the generic "Task Completed" message without the full response, try starting a fresh session instead of resuming.
+
 ## Contributing
 
 Found a bug or have a feature request? Please open an issue or submit a pull request!
