@@ -40,10 +40,6 @@
           {
             "type": "command",
             "command": "uv run ./.claude/hooks/notification.py --notify"
-          },
-          {
-            "type": "command",
-            "command": "uv run ./.claude/hooks/slack_notification.py"
           }
         ]
       }
@@ -55,10 +51,6 @@
           {
             "type": "command",
             "command": "uv run ./.claude/hooks/stop.py --chat"
-          },
-          {
-            "type": "command",
-            "command": "uv run ./.claude/hooks/slack_notification.py"
           }
         ]
       }
@@ -70,10 +62,6 @@
           {
             "type": "command",
             "command": "uv run ./.claude/hooks/subagent_stop.py"
-          },
-          {
-            "type": "command",
-            "command": "uv run ./.claude/hooks/slack_notification.py"
           }
         ]
       }
@@ -81,6 +69,10 @@
     "UserPromptSubmit": [
       {
         "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/skill_forced_eval.sh"
+          },
           {
             "type": "command",
             "command": "uv run ./.claude/hooks/user_prompt_submit.py --log-only"
@@ -106,10 +98,6 @@
           {
             "type": "command",
             "command": "uv run ./.claude/hooks/session_start.py"
-          },
-          {
-            "type": "command",
-            "command": "uv run ./.claude/hooks/slack_notification.py --cache-only"
           }
         ]
       }

@@ -100,6 +100,7 @@ cp .claude/settings.json ~/my-project/.claude/
 | [`/git-commit`](.claude/commands/git-commit.md) | Analyze changes and create well-formatted commits with emoji conventional format | `[message]` `[--amend]` (Optional)|
 | [`/frontend-mode`](.claude/commands/frontend-mode.md) | Load Ultracite rules for JS/TS development | - |
 | [`/security-scan`](.claude/commands/security-scan.md) | Run security scans on project files (Python/Go/JS/TS) | `[path]` |
+| [`/wrapup-skillup`](.claude/commands/wrapup-skillup.md) | Generate session report capturing learnings, tools, pitfalls, and extension recommendations | `[topic-slug]` |
 
 ### Skills
 
