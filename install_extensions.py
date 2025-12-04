@@ -39,6 +39,7 @@ class ExtensionType(str, Enum):
     HOOK = "hook"
     COMMAND = "command"
     OUTPUT_STYLE = "output-style"
+    SKILL = "skill"
 
 
 @dataclass
@@ -248,6 +249,42 @@ def discover_output_styles(repo_path: Path) -> List[Extension]:
     return styles
 
 
+def discover_skills(repo_path: Path) -> List[Extension]:
+    """Discover all skill directories in .claude/skills/."""
+    skills = []
+    skills_dir = repo_path / ".claude" / "skills"
+
+    if not skills_dir.exists():
+        return skills
+
+    # Each skill is a directory containing SKILL.md
+    for skill_dir in skills_dir.iterdir():
+        if not skill_dir.is_dir():
+            continue
+
+        skill_file = skill_dir / "SKILL.md"
+        if not skill_file.exists():
+            continue
+
+        try:
+            frontmatter = parse_frontmatter(skill_file)
+            name = frontmatter.get("name", skill_dir.name)
+            description = frontmatter.get("description", "No description")
+
+            skills.append(Extension(
+                type=ExtensionType.SKILL,
+                name=name,
+                path=skill_dir,  # Path to directory, not file
+                relative_path=skill_dir.relative_to(repo_path / ".claude"),
+                description=description,
+                metadata=frontmatter
+            ))
+        except Exception as e:
+            console.print(f"[yellow]Warning: Could not process {skill_dir}: {e}[/yellow]")
+
+    return skills
+
+
 def discover_all_extensions(repo_path: Path) -> List[Extension]:
     """Discover all extensions in the repository."""
     extensions = []
@@ -255,6 +292,7 @@ def discover_all_extensions(repo_path: Path) -> List[Extension]:
     extensions.extend(discover_hooks(repo_path))
     extensions.extend(discover_commands(repo_path))
     extensions.extend(discover_output_styles(repo_path))
+    extensions.extend(discover_skills(repo_path))
     return extensions
 
 
@@ -394,8 +432,15 @@ def install_extension(
         # Create parent directory
         target_path.parent.mkdir(parents=True, exist_ok=True)
 
-        # Copy the main file
-        shutil.copy2(extension.path, target_path)
+        # Skills are directories, others are files
+        if extension.type == ExtensionType.SKILL:
+            # Copy entire skill directory
+            if target_path.exists():
+                shutil.rmtree(target_path)
+            shutil.copytree(extension.path, target_path)
+        else:
+            # Copy the main file
+            shutil.copy2(extension.path, target_path)
 
         action = "overwritten" if target_path.exists() else "installed"
         result = InstallResult(
@@ -642,7 +687,7 @@ def install(
     extension_type: Optional[str] = typer.Option(
         None,
         "--type", "-t",
-        help="Extension type to install (agent, hook, command, output-style, all)"
+        help="Extension type to install (agent, hook, command, output-style, skill, all)"
     ),
     category: Optional[str] = typer.Option(
         None,
