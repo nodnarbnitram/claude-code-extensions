@@ -82,11 +82,50 @@ Subagents are stored as Markdown files with YAML frontmatter in two possible loc
 
 When subagent names conflict, project-level subagents take precedence over user-level subagents.
 
+### Plugin agents
+
+[Plugins](./docs/claude-code/plugins.md) can provide custom subagents that integrate seamlessly with Claude Code. Plugin agents work identically to user-defined agents and appear in the `/agents` interface.
+
+**Plugin agent locations**: Plugins include agents in their `agents/` directory (or custom paths specified in the plugin manifest).
+
+**Using plugin agents**:
+
+* Plugin agents appear in `/agents` alongside your custom agents
+* Can be invoked explicitly: "Use the code-reviewer agent from the security-plugin"
+* Can be invoked automatically by Claude when appropriate
+* Can be managed (viewed, inspected) through `/agents` interface
+
+See the [plugin components reference](./docs/claude-code/plugins-reference.md#agents) for details on creating plugin agents.
+
+### CLI-based configuration
+
+You can also define subagents dynamically using the `--agents` CLI flag, which accepts a JSON object:
+
+```bash  theme={null}
+claude --agents '{
+  "code-reviewer": {
+    "description": "Expert code reviewer. Use proactively after code changes.",
+    "prompt": "You are a senior code reviewer. Focus on code quality, security, and best practices.",
+    "tools": ["Read", "Grep", "Glob", "Bash"],
+    "model": "sonnet"
+  }
+}'
+```
+
+**Priority**: CLI-defined subagents have lower priority than project-level subagents but higher priority than user-level subagents.
+
+**Use case**: This approach is useful for:
+
+* Quick testing of subagent configurations
+* Session-specific subagents that don't need to be saved
+* Automation scripts that need custom subagents
+* Sharing subagent definitions in documentation or scripts
+
 ### File format
 
 Each subagent is defined in a Markdown file with this structure:
 
-```markdown
+```markdown  theme={null}
 ---
 name: your-sub-agent-name
 description: Description of when this subagent should be invoked
@@ -161,7 +200,7 @@ This opens an interactive menu where you can:
 
 You can also manage subagents by working directly with their files:
 
-```bash
+```bash  theme={null}
 # Create a project subagent
 mkdir -p .claude/agents
 echo '---
@@ -200,11 +239,44 @@ Request a specific subagent by mentioning it in your command:
 > Ask the debugger subagent to investigate this error
 ```
 
+## Built-in subagents
+
+Claude Code includes built-in subagents that are available out of the box:
+
+### Plan subagent
+
+The Plan subagent is a specialized built-in agent designed for use during plan mode. When Claude is operating in plan mode (non-execution mode), it uses the Plan subagent to conduct research and gather information about your codebase before presenting a plan.
+
+**Key characteristics:**
+
+* **Model**: Uses Sonnet for more capable analysis
+* **Tools**: Has access to Read, Glob, Grep, and Bash tools for codebase exploration
+* **Purpose**: Searches files, analyzes code structure, and gathers context
+* **Automatic invocation**: Claude automatically uses this agent when in plan mode and needs to research the codebase
+
+**How it works:**
+When you're in plan mode and Claude needs to understand your codebase to create a plan, it delegates research tasks to the Plan subagent. This prevents infinite nesting of agents (subagents cannot spawn other subagents) while still allowing Claude to gather the necessary context.
+
+**Example scenario:**
+
+```
+User: [In plan mode] Help me refactor the authentication module
+
+Claude: Let me research your authentication implementation first...
+[Internally invokes Plan subagent to explore auth-related files]
+[Plan subagent searches codebase and returns findings]
+Claude: Based on my research, here's my proposed plan...
+```
+
+<Tip>
+  The Plan subagent is only used in plan mode. In normal execution mode, Claude uses the general-purpose agent or other custom subagents you've created.
+</Tip>
+
 ## Example subagents
 
 ### Code reviewer
 
-```markdown
+```markdown  theme={null}
 ---
 name: code-reviewer
 description: Expert code review specialist. Proactively reviews code for quality, security, and maintainability. Use immediately after writing or modifying code.
@@ -239,7 +311,7 @@ Include specific examples of how to fix issues.
 
 ### Debugger
 
-```markdown
+```markdown  theme={null}
 ---
 name: debugger
 description: Debugging specialist for errors, test failures, and unexpected behavior. Use proactively when encountering any issues.
@@ -274,7 +346,7 @@ Focus on fixing the underlying issue, not just symptoms.
 
 ### Data scientist
 
-```markdown
+```markdown  theme={null}
 ---
 name: data-scientist
 description: Data analysis expert for SQL queries, BigQuery operations, and data insights. Use proactively for data analysis tasks and queries.
@@ -333,8 +405,66 @@ For complex workflows, you can chain multiple subagents:
 
 Claude Code intelligently selects subagents based on context. Make your `description` fields specific and action-oriented for best results.
 
+### Resumable subagents
+
+Subagents can be resumed to continue previous conversations, which is particularly useful for long-running research or analysis tasks that need to be continued across multiple invocations.
+
+**How it works:**
+
+* Each subagent execution is assigned a unique `agentId`
+* The agent's conversation is stored in a separate transcript file: `agent-{agentId}.jsonl`
+* You can resume a previous agent by providing its `agentId` via the `resume` parameter
+* When resumed, the agent continues with full context from its previous conversation
+
+**Example workflow:**
+
+Initial invocation:
+
+```
+> Use the code-analyzer agent to start reviewing the authentication module
+
+[Agent completes initial analysis and returns agentId: "abc123"]
+```
+
+Resume the agent:
+
+```
+> Resume agent abc123 and now analyze the authorization logic as well
+
+[Agent continues with full context from previous conversation]
+```
+
+**Use cases:**
+
+* **Long-running research**: Break down large codebase analysis into multiple sessions
+* **Iterative refinement**: Continue refining a subagent's work without losing context
+* **Multi-step workflows**: Have a subagent work on related tasks sequentially while maintaining context
+
+**Technical details:**
+
+* Agent transcripts are stored in your project directory
+* Recording is disabled during resume to avoid duplicating messages
+* Both synchronous and asynchronous agents can be resumed
+* The `resume` parameter accepts the agent ID from a previous execution
+
+**Programmatic usage:**
+
+If you're using the Agent SDK or interacting with the AgentTool directly, you can pass the `resume` parameter:
+
+```typescript  theme={null}
+{
+  "description": "Continue analysis",
+  "prompt": "Now examine the error handling patterns",
+  "subagent_type": "code-analyzer",
+  "resume": "abc123"  // Agent ID from previous execution
+}
+```
+
+<Tip>
+  Keep track of agent IDs for tasks you may want to resume later. Claude Code displays the agent ID when a subagent completes its work.
+</Tip>
+
 ## Performance considerations
 
 * **Context efficiency**: Agents help preserve main context, enabling longer overall sessions
 * **Latency**: Subagents start off with a clean slate each time they are invoked and may add latency as they gather context that they require to do their job effectively.
-
