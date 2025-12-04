@@ -6,11 +6,12 @@
 [![Python](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![Claude Code](https://img.shields.io/badge/claude--code-compatible-purple.svg)](https://claude.ai/code)
 
-Supercharge your Claude Code experience with **50+ specialized agents**, **8 lifecycle hooks**, **6 slash commands**, and powerful automation tools—all ready to install and customize.
+Supercharge your Claude Code experience with **50+ specialized agents**, **2 example skills**, **8 lifecycle hooks**, **6 slash commands**, and powerful automation tools—all ready to install and customize.
 
 ## ✨ Highlights
 
 - **🤖 50+ Expert Agents** - From code reviewers to framework specialists (React, Django, Temporal, Cloudflare, and more)
+- **🎯 Model-Invoked Skills** - Capabilities Claude discovers and uses automatically based on context
 - **🔒 Safety-First Hooks** - Block dangerous commands, protect sensitive files, audit all operations
 - **⚡ Auto-Linting** - Integrated Python, Go, and JS/TS linters that run automatically
 - **🎯 Smart Orchestration** - Tech-lead agents that coordinate multi-step tasks across specialists
@@ -99,6 +100,22 @@ cp .claude/settings.json ~/my-project/.claude/
 | [`/git-commit`](.claude/commands/git-commit.md) | Analyze changes and create well-formatted commits with emoji conventional format | `[message]` `[--amend]` (Optional)|
 | [`/frontend-mode`](.claude/commands/frontend-mode.md) | Load Ultracite rules for JS/TS development | - |
 | [`/security-scan`](.claude/commands/security-scan.md) | Run security scans on project files (Python/Go/JS/TS) | `[path]` |
+
+### Skills
+
+Model-invoked capabilities that Claude automatically discovers and uses based on task context.
+
+| Skill | Description |
+|-------|-------------|
+| [`commit-helper`](.claude/skills/commit-helper/) | Generate clear, conventional commit messages from git diffs |
+| [`code-reviewer`](.claude/skills/code-reviewer/) | Review code for best practices, security issues, and potential bugs (read-only) |
+| [`kubernetes-operations`](.claude/skills/kubernetes-operations/) | Kubernetes debugging, resource management, and cluster operations with token-efficient scripts |
+
+**Creating new skills:**
+- Use the `skill-creator` agent: `> Use the skill-creator to create a skill for [purpose]`
+- Or copy the skeleton template: `cp -r templates/skill-skeleton .claude/skills/my-skill`
+
+See [`docs/claude-code/agent-skills.md`](docs/claude-code/agent-skills.md) for detailed guidance.
 
 ### Agents
 
@@ -288,10 +305,14 @@ We welcome contributions! See [CONTRIBUTING.md](./CONTRIBUTING.md) for:
 ```
 .claude/
 ├── agents/           # 50+ specialized AI assistants
+├── skills/           # Model-invoked capabilities
 ├── hooks/            # Lifecycle automation scripts
 ├── commands/         # Reusable slash commands
 ├── output-styles/    # Custom system prompts
 └── settings.json     # Hook configuration
+
+templates/
+└── skill-skeleton/   # Starter template for new skills
 
 docs/                 # Claude Code official docs
 install_extensions.py # Interactive installer CLI
