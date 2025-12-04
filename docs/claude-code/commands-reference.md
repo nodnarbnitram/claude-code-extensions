@@ -24,9 +24,11 @@
 | `/permissions`            | View or update [permissions](/en/docs/claude-code/iam#configuring-permissions)                                                               |
 | `/pr_comments`            | View pull request comments                                                                                                                   |
 | `/review`                 | Request code review                                                                                                                          |
+| `/sandbox`                | Enable sandboxed bash tool with filesystem and network isolation for safer, more autonomous execution                                        |
 | `/rewind`                 | Rewind the conversation and/or code                                                                                                          |
 | `/status`                 | Open the Settings interface (Status tab) showing version, model, account, and connectivity                                                   |
 | `/terminal-setup`         | Install Shift+Enter key binding for newlines (iTerm2 and VSCode only)                                                                        |
+| `/usage`                  | Show plan usage limits and rate limit status (subscription plans only)                                                                       |
 | `/vim`                    | Enter vim mode for alternating insert and command modes                                                                                      |
 
 ## Custom slash commands
@@ -56,7 +58,7 @@ Commands stored in your repository and shared with your team. When listed in `/h
 
 In the following example, we create the `/optimize` command:
 
-```bash
+```bash  theme={null}
 # Create a project command
 mkdir -p .claude/commands
 echo "Analyze this code for performance issues and suggest optimizations:" > .claude/commands/optimize.md
@@ -70,7 +72,7 @@ Commands available across all your projects. When listed in `/help`, these comma
 
 In the following example, we create the `/security-review` command:
 
-```bash
+```bash  theme={null}
 # Create a personal command
 mkdir -p ~/.claude/commands
 echo "Review this code for security vulnerabilities:" > ~/.claude/commands/security-review.md
@@ -95,7 +97,7 @@ Pass dynamic values to commands using argument placeholders:
 
 The `$ARGUMENTS` placeholder captures all arguments passed to the command:
 
-```bash
+```bash  theme={null}
 # Command definition
 echo 'Fix issue #$ARGUMENTS following our coding standards' > .claude/commands/fix-issue.md
 
@@ -108,7 +110,7 @@ echo 'Fix issue #$ARGUMENTS following our coding standards' > .claude/commands/f
 
 Access specific arguments individually using positional parameters (similar to shell scripts):
 
-```bash
+```bash  theme={null}
 # Command definition  
 echo 'Review PR #$1 with priority $2 and assign to $3' > .claude/commands/review-pr.md
 
@@ -129,7 +131,7 @@ Execute bash commands before the slash command runs using the `!` prefix. The ou
 
 For example:
 
-```markdown
+```markdown  theme={null}
 ---
 allowed-tools: Bash(git add:*), Bash(git status:*), Bash(git commit:*)
 description: Create a git commit
@@ -153,7 +155,7 @@ Include file contents in commands using the `@` prefix to [reference files](/en/
 
 For example:
 
-```markdown
+```markdown  theme={null}
 # Reference a specific file
 
 Review the implementation in @src/utils/helpers.js
@@ -181,7 +183,7 @@ Command files support frontmatter, useful for specifying metadata about the comm
 
 For example:
 
-```markdown
+```markdown  theme={null}
 ---
 allowed-tools: Bash(git add:*), Bash(git status:*), Bash(git commit:*)
 argument-hint: [message]
@@ -194,7 +196,7 @@ Create a git commit with message: $ARGUMENTS
 
 Example using positional arguments:
 
-```markdown
+```markdown  theme={null}
 ---
 argument-hint: [pr-number] [priority] [assignee]
 description: Review pull request
@@ -202,6 +204,58 @@ description: Review pull request
 
 Review PR #$1 with priority $2 and assign to $3.
 Focus on security, performance, and code style.
+```
+
+## Plugin commands
+
+[Plugins](/en/docs/claude-code/plugins) can provide custom slash commands that integrate seamlessly with Claude Code. Plugin commands work exactly like user-defined commands but are distributed through [plugin marketplaces](/en/docs/claude-code/plugin-marketplaces).
+
+### How plugin commands work
+
+Plugin commands are:
+
+* **Namespaced**: Commands can use the format `/plugin-name:command-name` to avoid conflicts (plugin prefix is optional unless there are name collisions)
+* **Automatically available**: Once a plugin is installed and enabled, its commands appear in `/help`
+* **Fully integrated**: Support all command features (arguments, frontmatter, bash execution, file references)
+
+### Plugin command structure
+
+**Location**: `commands/` directory in plugin root
+
+**File format**: Markdown files with frontmatter
+
+**Basic command structure**:
+
+```markdown  theme={null}
+---
+description: Brief description of what the command does
+---
+
+# Command Name
+
+Detailed instructions for Claude on how to execute this command.
+Include specific guidance on parameters, expected outcomes, and any special considerations.
+```
+
+**Advanced command features**:
+
+* **Arguments**: Use placeholders like `{arg1}` in command descriptions
+* **Subdirectories**: Organize commands in subdirectories for namespacing
+* **Bash integration**: Commands can execute shell scripts and programs
+* **File references**: Commands can reference and modify project files
+
+### Invocation patterns
+
+```shell Direct command (when no conflicts) theme={null}
+/command-name
+```
+
+```shell Plugin-prefixed (when needed for disambiguation) theme={null}
+/plugin-name:command-name
+```
+
+```shell With arguments (if command supports them) theme={null}
+/command-name arg1 arg2
 ```
 
 ## MCP slash commands
@@ -298,7 +352,7 @@ For Claude Code versions >= 1.0.124, you can see which custom slash commands
 
 To prevent Claude from executing any slash commands via the tool:
 
-```bash
+```bash  theme={null}
 /permissions
 # Add to deny rules: SlashCommand
 ```
@@ -333,8 +387,102 @@ The budget includes each custom slash command's name, args, and description.
 When the character budget is exceeded, Claude will see only a subset of the
 available commands. In `/context`, a warning will show with "M of N commands".
 
+## Skills vs slash commands
+
+**Slash commands** and **Agent Skills** serve different purposes in Claude Code:
+
+### Use slash commands for
+
+**Quick, frequently-used prompts**:
+
+* Simple prompt snippets you use often
+* Quick reminders or templates
+* Frequently-used instructions that fit in one file
+
+**Examples**:
+
+* `/review` → "Review this code for bugs and suggest improvements"
+* `/explain` → "Explain this code in simple terms"
+* `/optimize` → "Analyze this code for performance issues"
+
+### Use Skills for
+
+**Comprehensive capabilities with structure**:
+
+* Complex workflows with multiple steps
+* Capabilities requiring scripts or utilities
+* Knowledge organized across multiple files
+* Team workflows you want to standardize
+
+**Examples**:
+
+* PDF processing Skill with form-filling scripts and validation
+* Data analysis Skill with reference docs for different data types
+* Documentation Skill with style guides and templates
+
+### Key differences
+
+| Aspect         | Slash Commands                   | Agent Skills                        |
+| -------------- | -------------------------------- | ----------------------------------- |
+| **Complexity** | Simple prompts                   | Complex capabilities                |
+| **Structure**  | Single .md file                  | Directory with SKILL.md + resources |
+| **Discovery**  | Explicit invocation (`/command`) | Automatic (based on context)        |
+| **Files**      | One file only                    | Multiple files, scripts, templates  |
+| **Scope**      | Project or personal              | Project or personal                 |
+| **Sharing**    | Via git                          | Via git                             |
+
+### Example comparison
+
+**As a slash command**:
+
+```markdown  theme={null}
+# .claude/commands/review.md
+Review this code for:
+- Security vulnerabilities
+- Performance issues
+- Code style violations
+```
+
+Usage: `/review` (manual invocation)
+
+**As a Skill**:
+
+```
+.claude/skills/code-review/
+├── SKILL.md (overview and workflows)
+├── SECURITY.md (security checklist)
+├── PERFORMANCE.md (performance patterns)
+├── STYLE.md (style guide reference)
+└── scripts/
+    └── run-linters.sh
+```
+
+Usage: "Can you review this code?" (automatic discovery)
+
+The Skill provides richer context, validation scripts, and organized reference material.
+
+### When to use each
+
+**Use slash commands**:
+
+* You invoke the same prompt repeatedly
+* The prompt fits in a single file
+* You want explicit control over when it runs
+
+**Use Skills**:
+
+* Claude should discover the capability automatically
+* Multiple files or scripts are needed
+* Complex workflows with validation steps
+* Team needs standardized, detailed guidance
+
+Both slash commands and Skills can coexist. Use the approach that fits your needs.
+
+Learn more about [Agent Skills](/en/docs/claude-code/skills).
+
 ## See also
 
+* [Plugins](/en/docs/claude-code/plugins) - Extend Claude Code with custom commands through plugins
 * [Identity and Access Management](/en/docs/claude-code/iam) - Complete guide to permissions, including MCP tool permissions
 * [Interactive mode](/en/docs/claude-code/interactive-mode) - Shortcuts, input modes, and interactive features
 * [CLI reference](/en/docs/claude-code/cli-reference) - Command-line flags and options
