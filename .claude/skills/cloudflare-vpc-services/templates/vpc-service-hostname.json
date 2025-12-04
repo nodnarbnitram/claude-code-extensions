@@ -1,0 +1,10 @@
+{
+  "type": "http",
+  "host": {
+    "hostname": "internal-api.company.local",
+    "resolver_network": {
+      "tunnel_id": "<YOUR_TUNNEL_ID>",
+      "resolver_ips": ["10.0.0.1"]
+    }
+  }
+}
