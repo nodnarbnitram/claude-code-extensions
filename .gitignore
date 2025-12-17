@@ -3,4 +3,4 @@ logs/
 .ruff_cache/
 .env
 openspec/
-scripts/
+scripts/gh-workflow-minutes.py
