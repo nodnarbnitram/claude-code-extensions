@@ -6,7 +6,7 @@
 [![Python](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![Claude Code](https://img.shields.io/badge/claude--code-compatible-purple.svg)](https://claude.ai/code)
 
-Supercharge your Claude Code experience with **50+ specialized agents**, **2 example skills**, **8 lifecycle hooks**, **6 slash commands**, and powerful automation tools—all ready to install and customize.
+Supercharge your Claude Code experience with **50+ specialized agents**, **4 skills**, **8 lifecycle hooks**, **6 slash commands**, and powerful automation tools—all ready to install and customize.
 
 ## ✨ Highlights
 
@@ -101,6 +101,7 @@ cp .claude/settings.json ~/my-project/.claude/
 | [`/frontend-mode`](.claude/commands/frontend-mode.md) | Load Ultracite rules for JS/TS development | - |
 | [`/security-scan`](.claude/commands/security-scan.md) | Run security scans on project files (Python/Go/JS/TS) | `[path]` |
 | [`/wrapup-skillup`](.claude/commands/wrapup-skillup.md) | Generate session report capturing learnings, tools, pitfalls, and extension recommendations | `[topic-slug]` |
+| [`/k8s-health`](.claude/commands/k8s-health.md) | Run comprehensive Kubernetes cluster health diagnostics with dynamic operator discovery | `[--operator <name>]` `[--output json\|summary\|detailed]` |
 
 ### Skills
 
@@ -111,6 +112,8 @@ Model-invoked capabilities that Claude automatically discovers and uses based on
 | [`commit-helper`](.claude/skills/commit-helper/) | Generate clear, conventional commit messages from git diffs |
 | [`code-reviewer`](.claude/skills/code-reviewer/) | Review code for best practices, security issues, and potential bugs (read-only) |
 | [`kubernetes-operations`](.claude/skills/kubernetes-operations/) | Kubernetes debugging, resource management, and cluster operations with token-efficient scripts |
+| [`kubernetes-health`](.claude/skills/kubernetes-health/) | Comprehensive cluster health diagnostics using dynamic API discovery with operator-specific agents |
+| [`grafana-plugin-scaffolding`](.claude/skills/grafana-plugin-scaffolding/) | Scaffold Grafana plugins (panel, data source, app, backend) with Docker dev environment |
 
 **Creating new skills:**
 - Use the `skill-creator` agent: `> Use the skill-creator to create a skill for [purpose]`
@@ -235,6 +238,23 @@ See [`docs/claude-code/agent-skills.md`](docs/claude-code/agent-skills.md) for d
 |-------|-------------|
 | [`crossplane-upgrade-agent`](.claude/agents/specialized/crossplane/crossplane-upgrade-agent.md) | Crossplane v1 to v2 migrations |
 | [`crossplane-aws-rds-expert`](.claude/agents/specialized/crossplane/crossplane-aws-rds-expert.md) | AWS RDS provider, Aurora, compositions |
+
+#### Specialized: Kubernetes Health
+
+| Agent | Description |
+|-------|-------------|
+| [`k8s-health-orchestrator`](.claude/agents/specialized/kubernetes/k8s-health-orchestrator.md) | Orchestrates cluster health diagnostics, dispatches sub-agents based on API discovery |
+| [`k8s-core-health-agent`](.claude/agents/specialized/kubernetes/k8s-core-health-agent.md) | Core Kubernetes health checks: nodes, pods, deployments, services, PVCs |
+| [`k8s-crossplane-health-agent`](.claude/agents/specialized/kubernetes/k8s-crossplane-health-agent.md) | Crossplane health: providers, compositions, claims, managed resources |
+| [`k8s-argocd-health-agent`](.claude/agents/specialized/kubernetes/k8s-argocd-health-agent.md) | ArgoCD health: applications, sync status, app projects |
+| [`k8s-certmanager-health-agent`](.claude/agents/specialized/kubernetes/k8s-certmanager-health-agent.md) | Cert-manager health: certificates, issuers, expiry warnings |
+| [`k8s-prometheus-health-agent`](.claude/agents/specialized/kubernetes/k8s-prometheus-health-agent.md) | Prometheus health: instances, alertmanagers, service monitors |
+
+#### Specialized: Grafana
+
+| Agent | Description |
+|-------|-------------|
+| [`grafana-plugin-expert`](.claude/agents/specialized/grafana/grafana-plugin-expert.md) | Grafana plugin development (panel, data source, app, backend), SDK patterns, React/Go |
 
 </details>
 
