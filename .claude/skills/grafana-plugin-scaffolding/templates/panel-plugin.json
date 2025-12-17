@@ -1,0 +1,27 @@
+{
+  "$schema": "https://raw.githubusercontent.com/grafana/grafana/main/docs/sources/developers/plugins/plugin.schema.json",
+  "type": "panel",
+  "name": "{{PLUGIN_NAME}}",
+  "id": "{{ORG_NAME}}-{{PLUGIN_SLUG}}-panel",
+  "info": {
+    "description": "{{PLUGIN_DESCRIPTION}}",
+    "author": {
+      "name": "{{AUTHOR_NAME}}",
+      "url": "{{AUTHOR_URL}}"
+    },
+    "keywords": ["panel", "visualization"],
+    "logos": {
+      "small": "img/logo.svg",
+      "large": "img/logo.svg"
+    },
+    "links": [],
+    "screenshots": [],
+    "version": "1.0.0",
+    "updated": "{{CURRENT_DATE}}"
+  },
+  "dependencies": {
+    "grafanaDependency": ">=12.0.0",
+    "grafanaVersion": "12.x",
+    "plugins": []
+  }
+}

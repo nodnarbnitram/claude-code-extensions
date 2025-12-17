@@ -1,0 +1,67 @@
+# Grafana Plugin Development Docker Compose
+# Supports hot-reloading with Docker Compose watch (v2.22.0+)
+#
+# Usage:
+#   docker compose up -d        # Start Grafana
+#   docker compose watch        # Start with file watching (recommended)
+#   docker compose logs -f      # View logs
+#   docker compose down         # Stop
+#
+# Replace {{PLUGIN_ID}} with your plugin ID (e.g., myorg-mypanel-panel)
+
+name: grafana-plugin-dev
+
+services:
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana-dev
+    ports:
+      - "3000:3000"
+    environment:
+      # Development mode
+      - GF_DEFAULT_APP_MODE=development
+      - GF_LOG_LEVEL=debug
+      # Allow unsigned plugins (replace with your plugin ID)
+      - GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS={{PLUGIN_ID}}
+      # Disable login for faster iteration (optional)
+      # - GF_AUTH_ANONYMOUS_ENABLED=true
+      # - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+    volumes:
+      # Mount built plugin
+      - ./dist:/var/lib/grafana/plugins/{{PLUGIN_ID}}
+      # Persist Grafana data between restarts
+      - grafana-storage:/var/lib/grafana
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:3000/api/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    restart: unless-stopped
+
+    # Docker Compose watch for hot-reloading (requires docker compose v2.22.0+)
+    develop:
+      watch:
+        # Sync frontend dist changes without restart
+        - path: ./dist
+          action: sync
+          target: /var/lib/grafana/plugins/{{PLUGIN_ID}}
+          ignore:
+            - "**/*.go"
+            - "**/gpx_*"
+
+        # Restart when backend binaries change
+        - path: ./dist/gpx_*
+          action: sync+restart
+          target: /var/lib/grafana/plugins/{{PLUGIN_ID}}
+
+volumes:
+  grafana-storage:
+
+# Optional: Add provisioning for dashboards/datasources
+# Uncomment and customize as needed
+#
+# services:
+#   grafana:
+#     volumes:
+#       - ./provisioning:/etc/grafana/provisioning
