@@ -3,3 +3,4 @@ logs/
 .ruff_cache/
 .env
 openspec/
+scripts/
