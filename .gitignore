@@ -5,3 +5,4 @@ __pycache__/
 .env
 openspec/
 scripts/gh-workflow-minutes.py
+.opencode/
