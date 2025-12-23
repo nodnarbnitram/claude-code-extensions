@@ -40,6 +40,10 @@
           {
             "type": "command",
             "command": "uv run ./.claude/hooks/notification.py --notify"
+          },
+          {
+            "type": "command",
+            "command": "uv run \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/discord_notification.py"
           }
         ]
       }
@@ -51,6 +55,10 @@
           {
             "type": "command",
             "command": "uv run ./.claude/hooks/stop.py --chat"
+          },
+          {
+            "type": "command",
+            "command": "uv run \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/discord_notification.py --emoji ✅"
           }
         ]
       }
