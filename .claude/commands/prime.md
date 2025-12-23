@@ -16,7 +16,8 @@ Run the commands under the `Execute` section to gather information about the pro
 - @./docs/uv-scripts.md
 - @./docs/claude-code/commands-reference.md
 - @./docs/claude-code/sub-agents.md
-- @./docs/claude-code/plugins.md
+- https://code.claude.com/docs/en/plugins
+- https://code.claude.com/docs/en/plugins-reference
 - @./docs/claude-code/agent-skills.md
 
 ## Report
