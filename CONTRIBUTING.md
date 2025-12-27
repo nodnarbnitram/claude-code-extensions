@@ -306,6 +306,85 @@ echo $?  # Should be 2 (blocked)
 ./install_extensions.py install --type hook --no-interactive ~/test-project
 ```
 
+## Plugin Development
+
+This repository supports both **plugin** and **standalone** installation modes. When making changes, ensure compatibility with both.
+
+### Plugin Structure
+
+The repository provides **5 focused plugins** (Phase 1):
+- `cce-core` - Essential foundation
+- `cce-kubernetes` - Kubernetes operations
+- `cce-cloudflare` - Cloudflare development
+- `cce-esphome` - ESPHome IoT
+- `cce-web-react` - React ecosystem
+
+Each plugin has a manifest at `.claude-plugin/plugins/<name>/plugin.json`.
+
+### When to Update Plugin Versions
+
+Follow semantic versioning for plugin manifests:
+
+- **MAJOR (2.0.0)**: Breaking changes to plugin structure or extension APIs
+- **MINOR (1.1.0)**: New agents, skills, commands, hooks (backward-compatible additions)
+- **PATCH (1.0.1)**: Bug fixes, documentation updates, hook improvements
+
+**Version synchronization**:
+- Update version in ALL affected plugin manifests (`.claude-plugin/plugins/*/plugin.json`)
+- Update marketplace version (`.claude-plugin/marketplace.json`)
+- Create git tag: `git tag -a v1.1.0 -m "Description"`
+
+### Assigning Extensions to Plugins
+
+When adding new extensions, assign them to the correct plugin:
+
+| Extension Type | Plugin Assignment |
+|----------------|-------------------|
+| Core agents (code-reviewer, etc.) | cce-core |
+| Framework agents (react, vue, django) | cce-web-react, cce-web-vue, cce-django |
+| Platform agents (cloudflare, k8s) | cce-cloudflare, cce-kubernetes |
+| IoT agents (esphome) | cce-esphome |
+| Hooks, core commands | cce-core |
+| Domain-specific skills/commands | Corresponding domain plugin |
+
+### Testing Plugin Changes
+
+```bash
+# 1. Validate plugin structure
+/plugin validate .
+
+# 2. Test plugin mode installation
+/plugin marketplace add /path/to/claude-code-extensions
+/plugin install cce-core@cce-marketplace
+
+# 3. Test with namespaced commands
+/cce:git-commit
+
+# 4. Test standalone mode (existing workflow)
+./install_extensions.py install --dry-run ~/test-project
+./install_extensions.py install ~/test-project
+
+# 5. Verify dual-mode compatibility
+cd ~/test-project && claude
+> /git-commit  # Should work unprefixed in standalone mode
+```
+
+**Critical**: Always test both plugin and standalone modes to ensure backward compatibility.
+
+### Hook Path Syntax
+
+When modifying hooks, use the dual-mode path syntax:
+
+```json
+{
+  "command": "uv run \"${CLAUDE_PLUGIN_ROOT:-$CLAUDE_PROJECT_DIR}\"/.claude/hooks/your_hook.py"
+}
+```
+
+This syntax works in both:
+- **Plugin mode**: Uses `${CLAUDE_PLUGIN_ROOT}` (plugin cache path)
+- **Standalone mode**: Falls back to `$CLAUDE_PROJECT_DIR` (project path)
+
 ## Submitting Changes
 
 ### Before You Submit
@@ -317,6 +396,9 @@ echo $?  # Should be 2 (blocked)
 - [ ] **Check for typos** and formatting issues
 - [ ] **Ensure hooks fail gracefully** (always `sys.exit(0)` on errors)
 - [ ] **Verify agents have clear descriptions** with "MUST BE USED" or "use PROACTIVELY" where appropriate
+- [ ] **Validate plugin structure** if modifying plugin manifests: `/plugin validate .`
+- [ ] **Test dual-mode compatibility** if modifying hooks or core extensions
+- [ ] **Update plugin versions** if making breaking changes (see Plugin Development below)
 
 ### Commit Messages
 

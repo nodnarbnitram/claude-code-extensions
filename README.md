@@ -6,11 +6,11 @@
 [![Python](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![Claude Code](https://img.shields.io/badge/claude--code-compatible-purple.svg)](https://claude.ai/code)
 
-Supercharge your Claude Code experience with **50+ specialized agents**, **4 skills**, **8 lifecycle hooks**, **6 slash commands**, and powerful automation tools—all ready to install and customize.
+Supercharge your Claude Code experience with **55+ specialized agents**, **7 skills**, **8 lifecycle hooks**, **8 slash commands**, and powerful automation tools—all ready to install and customize.
 
 ## ✨ Highlights
 
-- **🤖 50+ Expert Agents** - From code reviewers to framework specialists (React, Django, Temporal, Cloudflare, and more)
+- **🤖 55+ Expert Agents** - From code reviewers to deep research specialists (React, Django, Temporal, Cloudflare, Research, and more)
 - **🎯 Model-Invoked Skills** - Capabilities Claude discovers and uses automatically based on context
 - **🔒 Safety-First Hooks** - Block dangerous commands, protect sensitive files, audit all operations
 - **⚡ Auto-Linting** - Integrated Python, Go, and JS/TS linters that run automatically
@@ -18,11 +18,66 @@ Supercharge your Claude Code experience with **50+ specialized agents**, **4 ski
 - **📦 Easy Installation** - Interactive CLI installer with settings.json merging
 - **🧪 Battle-Tested** - Production patterns from real-world Claude Code workflows
 
+## 📦 Available Plugins
+
+The repository provides **8 focused plugins** (Phase 1) with 10+ more coming in future releases:
+
+| Plugin | Description | What's Included |
+|--------|-------------|-----------------|
+| **cce-core** | Essential foundation | 13 agents (core, orchestrators, universal), 8 hooks, 2 skills, 8 commands |
+| **cce-kubernetes** | Kubernetes operations | 6 K8s health agents, 2 skills, 1 command |
+| **cce-cloudflare** | Cloudflare development | 5 Workers/AI/Workflows agents, 1 VPC skill |
+| **cce-esphome** | ESPHome IoT | 6 ESPHome agents, 2 skills (config, Box-3) |
+| **cce-web-react** | React ecosystem | 3 React/Next.js/TanStack agents |
+| **cce-django** | Django backend | 3 Django agents (backend, API, ORM) |
+| **cce-research** | Deep research coordination | 5 research agents (coordinator, academic, web, technical, data) |
+| **cce-grafana** | Grafana observability | 1 plugin expert agent, 2 skills (scaffolding, billing metrics) |
+
+**Coming Soon:** `cce-web-vue`, `cce-temporal`, `cce-devops`, `cce-ai`, `cce-homeassistant`, `cce-go`, `cce-python`, `cce-typescript`, `cce-anthropic`
+
+**Install only what you need** - no need to load 50+ agents if you only work with React!
+
 ## 🚀 Quick Start
 
 ### Installation
 
-**Option 1: Interactive Installer (Recommended)**
+**Option 1: Plugin (Recommended for Multiple Projects)**
+
+Install as modular plugins via Claude Code's plugin system - pick only what you need for your tech stack:
+
+```bash
+# In any Claude Code session:
+/plugin marketplace add github:nodnarbnitram/claude-code-extensions
+```
+
+Then install the plugins you need:
+
+```bash
+# Essential foundation (everyone needs this)
+/plugin install cce-core@cce-marketplace
+
+# Add plugins for your tech stack:
+/plugin install cce-kubernetes@cce-marketplace    # For Kubernetes development
+/plugin install cce-cloudflare@cce-marketplace    # For Cloudflare Workers/AI
+/plugin install cce-esphome@cce-marketplace       # For ESPHome IoT
+/plugin install cce-web-react@cce-marketplace     # For React/Next.js/TanStack
+/plugin install cce-django@cce-marketplace        # For Django backend development
+/plugin install cce-grafana@cce-marketplace       # For Grafana plugin development & billing
+/plugin install cce-research@cce-marketplace      # For deep research tasks
+```
+
+**Benefits:**
+- ✅ Modular - install only what you need
+- ✅ Automatic updates across all projects
+- ✅ Centralized management
+- ✅ No repository cloning needed
+
+**Command namespaces:**
+- Core: `/cce:git-commit`, `/cce:prime`
+- Kubernetes: `/cce-kubernetes:health`
+- (Other plugins currently provide agents/skills only)
+
+**Option 2: Standalone (For Single Project or Custom Setup)**
 
 ```bash
 git clone https://github.com/nodnarbnitram/claude-code-extensions.git
@@ -44,7 +99,7 @@ The installer lets you:
 ./install_extensions.py install --type agent --category core ~/my-project  # Install specific category
 ```
 
-**Option 2: Manual Copy**
+**Option 3: Manual Copy**
 
 ```bash
 # Copy specific items manually
@@ -52,6 +107,14 @@ cp .claude/agents/core/code-reviewer.md ~/my-project/.claude/agents/
 cp -r .claude/hooks ~/my-project/.claude/
 cp .claude/settings.json ~/my-project/.claude/
 ```
+
+### Which Installation Method Should I Use?
+
+| Mode | Best For | Pros | Cons |
+|------|----------|------|------|
+| **Plugin** | Multiple projects, team distribution | Auto-updates, centralized, modular | Namespaced commands |
+| **Standalone** | Single project, custom setup | Full control, unprefixed commands | Manual updates, per-project install |
+| **Manual** | Cherry-picking specific extensions | Maximum control | No automation, manual merging |
 
 ### Creating New Extensions
 
@@ -114,6 +177,7 @@ Model-invoked capabilities that Claude automatically discovers and uses based on
 | [`kubernetes-operations`](.claude/skills/kubernetes-operations/) | Kubernetes debugging, resource management, and cluster operations with token-efficient scripts |
 | [`kubernetes-health`](.claude/skills/kubernetes-health/) | Comprehensive cluster health diagnostics using dynamic API discovery with operator-specific agents |
 | [`grafana-plugin-scaffolding`](.claude/skills/grafana-plugin-scaffolding/) | Scaffold Grafana plugins (panel, data source, app, backend) with Docker dev environment |
+| [`grafana-billing`](.claude/skills/grafana-billing/) | Query Prometheus and Loki billing metrics from Grafana Cloud for cost analysis and optimization |
 
 **Creating new skills:**
 - Use the `skill-creator` agent: `> Use the skill-creator to create a skill for [purpose]`
