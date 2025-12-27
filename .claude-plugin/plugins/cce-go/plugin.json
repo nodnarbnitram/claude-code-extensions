@@ -1,0 +1,14 @@
+{
+  "name": "cce-go",
+  "version": "1.0.0",
+  "description": "Go development following Google Go style guide with Go 1.25+ features and best practices",
+  "author": {
+    "name": "Claude Code Extensions Contributors",
+    "url": "https://github.com/nodnarbnitram/claude-code-extensions"
+  },
+  "homepage": "https://github.com/nodnarbnitram/claude-code-extensions",
+  "repository": "https://github.com/nodnarbnitram/claude-code-extensions",
+  "license": "MIT",
+  "keywords": ["go", "golang", "google-style", "best-practices", "go1.25", "concurrency", "testing"],
+  "agents": "./.claude/agents/specialized/go/"
+}

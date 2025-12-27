@@ -1,0 +1,14 @@
+{
+  "name": "cce-python",
+  "version": "1.0.0",
+  "description": "Python CLI development with Typer for type-hint driven applications, validation, and testing",
+  "author": {
+    "name": "Claude Code Extensions Contributors",
+    "url": "https://github.com/nodnarbnitram/claude-code-extensions"
+  },
+  "homepage": "https://github.com/nodnarbnitram/claude-code-extensions",
+  "repository": "https://github.com/nodnarbnitram/claude-code-extensions",
+  "license": "MIT",
+  "keywords": ["python", "typer", "cli", "type-hints", "click", "argparse"],
+  "agents": "./.claude/agents/specialized/python/"
+}

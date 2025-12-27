@@ -1,0 +1,14 @@
+{
+  "name": "cce-web-vue",
+  "version": "1.0.0",
+  "description": "Vue.js and Nuxt.js development with Composition API, composables, and SSR/SSG patterns",
+  "author": {
+    "name": "Claude Code Extensions Contributors",
+    "url": "https://github.com/nodnarbnitram/claude-code-extensions"
+  },
+  "homepage": "https://github.com/nodnarbnitram/claude-code-extensions",
+  "repository": "https://github.com/nodnarbnitram/claude-code-extensions",
+  "license": "MIT",
+  "keywords": ["vue", "vuejs", "nuxt", "composition-api", "ssr", "ssg"],
+  "agents": "./.claude/agents/specialized/vue/"
+}

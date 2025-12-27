@@ -1,0 +1,16 @@
+{
+  "name": "cce-anthropic",
+  "version": "1.0.0",
+  "description": "Anthropic Claude Agent SDK development for Python and TypeScript autonomous agents",
+  "author": {
+    "name": "Claude Code Extensions Contributors",
+    "url": "https://github.com/nodnarbnitram/claude-code-extensions"
+  },
+  "homepage": "https://github.com/nodnarbnitram/claude-code-extensions",
+  "repository": "https://github.com/nodnarbnitram/claude-code-extensions",
+  "license": "MIT",
+  "keywords": ["anthropic", "claude", "agent-sdk", "autonomous-agents", "python", "typescript", "ai-agents"],
+  "agents": [
+    "./.claude/agents/specialized/anthropic/"
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "name": "cce-grafana",
+  "version": "1.0.0",
+  "description": "Grafana plugin development and billing metrics analysis for Prometheus and Loki",
+  "author": {
+    "name": "Claude Code Extensions Contributors",
+    "url": "https://github.com/nodnarbnitram/claude-code-extensions"
+  },
+  "homepage": "https://github.com/nodnarbnitram/claude-code-extensions",
+  "repository": "https://github.com/nodnarbnitram/claude-code-extensions",
+  "license": "MIT",
+  "keywords": ["grafana", "observability", "metrics", "plugins", "billing", "prometheus", "loki"],
+  "agents": "./.claude/agents/specialized/grafana/",
+  "skills": [
+    "./.claude/skills/grafana-plugin-scaffolding/",
+    "./.claude/skills/grafana-billing/"
+  ]
+}

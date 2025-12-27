@@ -1,0 +1,15 @@
+{
+  "name": "cce-homeassistant",
+  "version": "1.0.0",
+  "description": "Home Assistant Lovelace dashboard configuration, card selection, and theme customization",
+  "author": {
+    "name": "Claude Code Extensions Contributors",
+    "url": "https://github.com/nodnarbnitram/claude-code-extensions"
+  },
+  "homepage": "https://github.com/nodnarbnitram/claude-code-extensions",
+  "repository": "https://github.com/nodnarbnitram/claude-code-extensions",
+  "license": "MIT",
+  "keywords": ["homeassistant", "home-automation", "lovelace", "dashboards"],
+  "agents": "./.claude/agents/specialized/homeassistant/",
+  "skills": "./.claude/skills/ha-dashboard/"
+}

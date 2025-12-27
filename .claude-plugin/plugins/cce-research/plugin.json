@@ -1,0 +1,16 @@
+{
+  "name": "cce-research",
+  "version": "1.0.0",
+  "description": "Deep research coordination: academic papers, technical analysis, data insights, and web intelligence",
+  "author": {
+    "name": "Claude Code Extensions Contributors",
+    "url": "https://github.com/nodnarbnitram/claude-code-extensions"
+  },
+  "homepage": "https://github.com/nodnarbnitram/claude-code-extensions",
+  "repository": "https://github.com/nodnarbnitram/claude-code-extensions",
+  "license": "MIT",
+  "keywords": ["claude-code", "research", "academic", "data-analysis", "technical-research", "web-intelligence"],
+  "agents": [
+    "./.claude/agents/deep-research/"
+  ]
+}

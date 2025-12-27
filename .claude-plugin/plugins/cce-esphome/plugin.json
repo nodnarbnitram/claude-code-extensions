@@ -1,0 +1,18 @@
+{
+  "name": "cce-esphome",
+  "version": "1.0.0",
+  "description": "ESPHome IoT development for ESP32/ESP8266 with Home Assistant integration",
+  "author": {
+    "name": "Claude Code Extensions Contributors",
+    "url": "https://github.com/nodnarbnitram/claude-code-extensions"
+  },
+  "homepage": "https://github.com/nodnarbnitram/claude-code-extensions",
+  "repository": "https://github.com/nodnarbnitram/claude-code-extensions",
+  "license": "MIT",
+  "keywords": ["esphome", "iot", "esp32", "esp8266", "homeassistant"],
+  "agents": "./.claude/agents/specialized/esphome/",
+  "skills": [
+    "./.claude/skills/esphome-config-helper/",
+    "./.claude/skills/esphome-box3-builder/"
+  ]
+}

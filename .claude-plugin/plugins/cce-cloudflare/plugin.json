@@ -1,0 +1,15 @@
+{
+  "name": "cce-cloudflare",
+  "version": "1.0.0",
+  "description": "Cloudflare Workers, AI, Workflows, and VPC services development",
+  "author": {
+    "name": "Claude Code Extensions Contributors",
+    "url": "https://github.com/nodnarbnitram/claude-code-extensions"
+  },
+  "homepage": "https://github.com/nodnarbnitram/claude-code-extensions",
+  "repository": "https://github.com/nodnarbnitram/claude-code-extensions",
+  "license": "MIT",
+  "keywords": ["cloudflare", "workers", "edge", "ai", "workflows"],
+  "agents": "./.claude/agents/specialized/cloudflare/",
+  "skills": "./.claude/skills/cloudflare-vpc-services/"
+}

@@ -1,0 +1,14 @@
+{
+  "name": "cce-web-react",
+  "version": "1.0.0",
+  "description": "React, Next.js, and TanStack Start development",
+  "author": {
+    "name": "Claude Code Extensions Contributors",
+    "url": "https://github.com/nodnarbnitram/claude-code-extensions"
+  },
+  "homepage": "https://github.com/nodnarbnitram/claude-code-extensions",
+  "repository": "https://github.com/nodnarbnitram/claude-code-extensions",
+  "license": "MIT",
+  "keywords": ["react", "nextjs", "tanstack", "frontend", "components"],
+  "agents": "./.claude/agents/specialized/react/"
+}

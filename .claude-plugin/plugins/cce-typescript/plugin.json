@@ -1,0 +1,28 @@
+{
+  "name": "cce-typescript",
+  "version": "1.0.0",
+  "description": "TypeScript and frontend tooling including Braintrust testing and fumadocs documentation",
+  "author": {
+    "name": "Claude Code Extensions Contributors",
+    "url": "https://github.com/nodnarbnitram/claude-code-extensions"
+  },
+  "homepage": "https://github.com/nodnarbnitram/claude-code-extensions",
+  "repository": "https://github.com/nodnarbnitram/claude-code-extensions",
+  "license": "MIT",
+  "keywords": [
+    "claude-code",
+    "typescript",
+    "frontend",
+    "braintrust",
+    "testing",
+    "documentation",
+    "fumadocs",
+    "mdx",
+    "llm-testing",
+    "observability"
+  ],
+  "agents": [
+    "./.claude/agents/specialized/braintrust/",
+    "./.claude/agents/specialized/frontend/"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "name": "cce-temporal",
+  "version": "1.0.0",
+  "description": "Temporal.io workflow development across Python, Go, and TypeScript SDKs with comprehensive testing and troubleshooting support",
+  "author": {
+    "name": "Claude Code Extensions Contributors",
+    "url": "https://github.com/nodnarbnitram/claude-code-extensions"
+  },
+  "homepage": "https://github.com/nodnarbnitram/claude-code-extensions",
+  "repository": "https://github.com/nodnarbnitram/claude-code-extensions",
+  "license": "MIT",
+  "keywords": ["temporal", "workflows", "durable-execution", "distributed-systems", "python", "go", "typescript"],
+  "agents": "./.claude/agents/specialized/temporal/"
+}

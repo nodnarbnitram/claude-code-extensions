@@ -1,0 +1,34 @@
+{
+  "name": "cce-core",
+  "version": "1.0.0",
+  "description": "Essential Claude Code extensions: core agents, hooks, commands, and universal tools",
+  "author": {
+    "name": "Claude Code Extensions Contributors",
+    "url": "https://github.com/nodnarbnitram/claude-code-extensions"
+  },
+  "homepage": "https://github.com/nodnarbnitram/claude-code-extensions",
+  "repository": "https://github.com/nodnarbnitram/claude-code-extensions",
+  "license": "MIT",
+  "keywords": ["claude-code", "core", "essential", "hooks", "automation", "agents"],
+  "agents": [
+    "./.claude/agents/core/",
+    "./.claude/agents/orchestrators/",
+    "./.claude/agents/universal/",
+    "./.claude/agents/meta-agent.md"
+  ],
+  "skills": [
+    "./.claude/skills/commit-helper/",
+    "./.claude/skills/code-reviewer/"
+  ],
+  "commands": [
+    "./.claude/commands/git-commit.md",
+    "./.claude/commands/git-status.md",
+    "./.claude/commands/prime.md",
+    "./.claude/commands/agent-from-docs.md",
+    "./.claude/commands/agent-intent-from-docs.md",
+    "./.claude/commands/security-scan.md",
+    "./.claude/commands/wrapup-skillup.md",
+    "./.claude/commands/frontend-mode.md"
+  ],
+  "hooks": "./.claude/settings.json"
+}

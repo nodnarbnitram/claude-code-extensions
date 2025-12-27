@@ -1,0 +1,183 @@
+{
+  "name": "cce-marketplace",
+  "owner": {
+    "name": "Claude Code Extensions Contributors",
+    "email": "[email protected]"
+  },
+  "metadata": {
+    "description": "Official marketplace for Claude Code Extensions - Modular plugins for every tech stack",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "cce-core",
+      "source": "./.claude-plugin/plugins/cce-core",
+      "description": "Essential Claude Code extensions: core agents, hooks, commands, and universal tools",
+      "version": "1.0.0",
+      "author": {
+        "name": "Claude Code Extensions Contributors"
+      },
+      "keywords": ["core", "essential", "hooks", "automation"]
+    },
+    {
+      "name": "cce-kubernetes",
+      "source": "./.claude-plugin/plugins/cce-kubernetes",
+      "description": "Kubernetes cluster operations, health diagnostics, and operator-specific agents",
+      "version": "1.0.0",
+      "author": {
+        "name": "Claude Code Extensions Contributors"
+      },
+      "keywords": ["kubernetes", "k8s", "cluster-health"]
+    },
+    {
+      "name": "cce-cloudflare",
+      "source": "./.claude-plugin/plugins/cce-cloudflare",
+      "description": "Cloudflare Workers, AI, Workflows, and VPC services development",
+      "version": "1.0.0",
+      "author": {
+        "name": "Claude Code Extensions Contributors"
+      },
+      "keywords": ["cloudflare", "workers", "edge", "ai"]
+    },
+    {
+      "name": "cce-esphome",
+      "source": "./.claude-plugin/plugins/cce-esphome",
+      "description": "ESPHome IoT development for ESP32/ESP8266 with Home Assistant integration",
+      "version": "1.0.0",
+      "author": {
+        "name": "Claude Code Extensions Contributors"
+      },
+      "keywords": ["esphome", "iot", "esp32", "homeassistant"]
+    },
+    {
+      "name": "cce-homeassistant",
+      "source": "./.claude-plugin/plugins/cce-homeassistant",
+      "description": "Home Assistant Lovelace dashboard configuration, card selection, and theme customization",
+      "version": "1.0.0",
+      "author": {
+        "name": "Claude Code Extensions Contributors"
+      },
+      "keywords": ["homeassistant", "home-automation", "lovelace", "dashboards"]
+    },
+    {
+      "name": "cce-web-react",
+      "source": "./.claude-plugin/plugins/cce-web-react",
+      "description": "React, Next.js, and TanStack Start development",
+      "version": "1.0.0",
+      "author": {
+        "name": "Claude Code Extensions Contributors"
+      },
+      "keywords": ["react", "nextjs", "tanstack"]
+    },
+    {
+      "name": "cce-research",
+      "source": "./.claude-plugin/plugins/cce-research",
+      "description": "Deep research coordination: academic papers, technical analysis, data insights, and web intelligence",
+      "version": "1.0.0",
+      "author": {
+        "name": "Claude Code Extensions Contributors"
+      },
+      "keywords": ["research", "academic", "data-analysis", "technical-research"]
+    },
+    {
+      "name": "cce-web-vue",
+      "source": "./.claude-plugin/plugins/cce-web-vue",
+      "description": "Vue.js and Nuxt.js development with Composition API, composables, and SSR/SSG patterns",
+      "version": "1.0.0",
+      "author": {
+        "name": "Claude Code Extensions Contributors"
+      },
+      "keywords": ["vue", "vuejs", "nuxt", "composition-api", "ssr", "ssg"]
+    },
+    {
+      "name": "cce-typescript",
+      "source": "./.claude-plugin/plugins/cce-typescript",
+      "description": "TypeScript and frontend tooling including Braintrust testing and fumadocs documentation",
+      "version": "1.0.0",
+      "author": {
+        "name": "Claude Code Extensions Contributors"
+      },
+      "keywords": ["typescript", "frontend", "braintrust", "testing", "documentation"]
+    },
+    {
+      "name": "cce-go",
+      "source": "./.claude-plugin/plugins/cce-go",
+      "description": "Go development following Google Go style guide with Go 1.25+ features and best practices",
+      "version": "1.0.0",
+      "author": {
+        "name": "Claude Code Extensions Contributors"
+      },
+      "keywords": ["go", "golang", "google-style", "best-practices"]
+    },
+    {
+      "name": "cce-anthropic",
+      "source": "./.claude-plugin/plugins/cce-anthropic",
+      "description": "Anthropic Claude Agent SDK development for Python and TypeScript autonomous agents",
+      "version": "1.0.0",
+      "author": {
+        "name": "Claude Code Extensions Contributors"
+      },
+      "keywords": ["anthropic", "claude", "agent-sdk", "autonomous-agents"]
+    },
+    {
+      "name": "cce-grafana",
+      "source": "./.claude-plugin/plugins/cce-grafana",
+      "description": "Grafana plugin development and billing metrics analysis for Prometheus and Loki",
+      "version": "1.0.0",
+      "author": {
+        "name": "Claude Code Extensions Contributors"
+      },
+      "keywords": ["grafana", "observability", "metrics", "plugins", "billing"]
+    },
+    {
+      "name": "cce-django",
+      "source": "./.claude-plugin/plugins/cce-django",
+      "description": "Django backend development suite: models, views, DRF APIs, GraphQL, and ORM optimization for professional Django projects",
+      "version": "1.0.0",
+      "author": {
+        "name": "Claude Code Extensions Contributors"
+      },
+      "keywords": ["django", "python", "drf", "graphql", "orm", "backend"]
+    },
+    {
+      "name": "cce-temporal",
+      "source": "./.claude-plugin/plugins/cce-temporal",
+      "description": "Temporal.io workflow development across Python, Go, and TypeScript SDKs with testing and troubleshooting",
+      "version": "1.0.0",
+      "author": {
+        "name": "Claude Code Extensions Contributors"
+      },
+      "keywords": ["temporal", "workflows", "durable-execution", "distributed-systems"]
+    },
+    {
+      "name": "cce-devops",
+      "source": "./.claude-plugin/plugins/cce-devops",
+      "description": "DevOps tooling: GitHub Actions, Helm, ArgoCD, and Crossplane for CI/CD and infrastructure",
+      "version": "1.0.0",
+      "author": {
+        "name": "Claude Code Extensions Contributors"
+      },
+      "keywords": ["devops", "ci-cd", "github-actions", "helm", "argocd", "crossplane"]
+    },
+    {
+      "name": "cce-ai",
+      "source": "./.claude-plugin/plugins/cce-ai",
+      "description": "AI/ML development: LLM architecture, prompt engineering, ML ops, and NLP with production deployment focus",
+      "version": "1.0.0",
+      "author": {
+        "name": "Claude Code Extensions Contributors"
+      },
+      "keywords": ["ai", "ml", "llm", "machine-learning", "nlp", "prompt-engineering"]
+    },
+    {
+      "name": "cce-python",
+      "source": "./.claude-plugin/plugins/cce-python",
+      "description": "Python CLI development with Typer for type-hint driven applications, validation, and testing",
+      "version": "1.0.0",
+      "author": {
+        "name": "Claude Code Extensions Contributors"
+      },
+      "keywords": ["python", "typer", "cli", "type-hints"]
+    }
+  ]
+}
