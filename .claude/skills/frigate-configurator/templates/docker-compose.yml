@@ -1,0 +1,104 @@
+# Frigate NVR Docker Compose Template
+# Production-ready configuration with common options
+#
+# Usage:
+#   1. Copy this file to your Frigate directory
+#   2. Create a .env file with your credentials
+#   3. Uncomment hardware-specific sections as needed
+#   4. Run: docker-compose up -d
+#
+# Required .env variables:
+#   RTSP_PASSWORD=your_camera_password
+#   MQTT_PASSWORD=your_mqtt_password (optional)
+
+services:
+  frigate:
+    container_name: frigate
+    image: ghcr.io/blakeblackshear/frigate:stable
+    restart: unless-stopped
+
+    # Shared memory - increase if you have many cameras
+    # Rule of thumb: 64MB per camera minimum
+    shm_size: "256mb"
+
+    # ============================================
+    # DEVICE MAPPING - Uncomment what you need
+    # ============================================
+    devices:
+      # USB Coral TPU
+      - /dev/bus/usb:/dev/bus/usb
+
+      # Intel GPU (VAAPI/QSV)
+      - /dev/dri/renderD128:/dev/dri/renderD128
+
+      # PCIe/M.2 Coral TPU (uncomment if using)
+      # - /dev/apex_0:/dev/apex_0
+
+      # Raspberry Pi GPU (uncomment on RPi)
+      # - /dev/video10:/dev/video10
+      # - /dev/video11:/dev/video11
+      # - /dev/video12:/dev/video12
+
+    # ============================================
+    # NVIDIA GPU SUPPORT (uncomment if using)
+    # ============================================
+    # runtime: nvidia
+    # environment:
+    #   - NVIDIA_VISIBLE_DEVICES=all
+    #   - NVIDIA_DRIVER_CAPABILITIES=compute,video,utility
+
+    volumes:
+      # Configuration directory
+      - ./config:/config
+
+      # Media storage (recordings, snapshots, exports)
+      - ./storage:/media/frigate
+
+      # RAM-based cache for performance
+      - type: tmpfs
+        target: /tmp/cache
+        tmpfs:
+          size: 1000000000  # 1GB
+
+    ports:
+      # Web UI (HTTPS)
+      - "8971:8971"
+
+      # RTSP feeds (for external players)
+      - "8554:8554"
+
+      # WebRTC (for low-latency live view)
+      - "8555:8555/tcp"
+      - "8555:8555/udp"
+
+    environment:
+      # Camera credentials (used in config with {FRIGATE_RTSP_USER})
+      FRIGATE_RTSP_USER: admin
+      FRIGATE_RTSP_PASSWORD: ${RTSP_PASSWORD}
+
+      # MQTT credentials (optional, for Home Assistant)
+      FRIGATE_MQTT_USER: frigate
+      FRIGATE_MQTT_PASSWORD: ${MQTT_PASSWORD:-}
+
+      # AMD GPU driver (uncomment for AMD)
+      # LIBVA_DRIVER_NAME: radeonsi
+
+    # ============================================
+    # HEALTH CHECK
+    # ============================================
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/api/version"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+    # ============================================
+    # RESOURCE LIMITS (optional, uncomment to enable)
+    # ============================================
+    # deploy:
+    #   resources:
+    #     limits:
+    #       memory: 4G
+    #     reservations:
+    #       memory: 2G

@@ -8,7 +8,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "uv run ./.claude/hooks/pre_tool_use.py"
+            "command": "uv run \"${CLAUDE_PLUGIN_ROOT:-$CLAUDE_PROJECT_DIR}\"/.claude/hooks/pre_tool_use.py"
           }
         ]
       }
@@ -19,7 +19,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "uv run ./.claude/hooks/post_tool_use.py"
+            "command": "uv run \"${CLAUDE_PLUGIN_ROOT:-$CLAUDE_PROJECT_DIR}\"/.claude/hooks/post_tool_use.py"
           }
         ]
       },
@@ -28,7 +28,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "uv run ./.claude/hooks/lint/check.py"
+            "command": "uv run \"${CLAUDE_PLUGIN_ROOT:-$CLAUDE_PROJECT_DIR}\"/.claude/hooks/lint/check.py"
           }
         ]
       }
@@ -39,11 +39,11 @@
         "hooks": [
           {
             "type": "command",
-            "command": "uv run ./.claude/hooks/notification.py --notify"
+            "command": "uv run \"${CLAUDE_PLUGIN_ROOT:-$CLAUDE_PROJECT_DIR}\"/.claude/hooks/notification.py --notify"
           },
           {
             "type": "command",
-            "command": "uv run \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/discord_notification.py"
+            "command": "uv run \"${CLAUDE_PLUGIN_ROOT:-$CLAUDE_PROJECT_DIR}\"/.claude/hooks/discord_notification.py"
           }
         ]
       }
@@ -54,11 +54,11 @@
         "hooks": [
           {
             "type": "command",
-            "command": "uv run ./.claude/hooks/stop.py --chat"
+            "command": "uv run \"${CLAUDE_PLUGIN_ROOT:-$CLAUDE_PROJECT_DIR}\"/.claude/hooks/stop.py --chat"
           },
           {
             "type": "command",
-            "command": "uv run \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/discord_notification.py --emoji ✅"
+            "command": "uv run \"${CLAUDE_PLUGIN_ROOT:-$CLAUDE_PROJECT_DIR}\"/.claude/hooks/discord_notification.py --emoji ✅"
           }
         ]
       }
@@ -69,7 +69,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "uv run ./.claude/hooks/subagent_stop.py"
+            "command": "uv run \"${CLAUDE_PLUGIN_ROOT:-$CLAUDE_PROJECT_DIR}\"/.claude/hooks/subagent_stop.py"
           }
         ]
       }
@@ -79,11 +79,11 @@
         "hooks": [
           {
             "type": "command",
-            "command": ".claude/hooks/skill_forced_eval.sh"
+            "command": "\"${CLAUDE_PLUGIN_ROOT:-$CLAUDE_PROJECT_DIR}\"/.claude/hooks/skill_forced_eval.sh"
           },
           {
             "type": "command",
-            "command": "uv run ./.claude/hooks/user_prompt_submit.py --log-only"
+            "command": "uv run \"${CLAUDE_PLUGIN_ROOT:-$CLAUDE_PROJECT_DIR}\"/.claude/hooks/user_prompt_submit.py --log-only"
           }
         ]
       }
@@ -94,7 +94,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "uv run ./.claude/hooks/pre_compact.py"
+            "command": "uv run \"${CLAUDE_PLUGIN_ROOT:-$CLAUDE_PROJECT_DIR}\"/.claude/hooks/pre_compact.py"
           }
         ]
       }
@@ -105,7 +105,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "uv run ./.claude/hooks/session_start.py"
+            "command": "uv run \"${CLAUDE_PLUGIN_ROOT:-$CLAUDE_PROJECT_DIR}\"/.claude/hooks/session_start.py"
           }
         ]
       }

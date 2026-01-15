@@ -1,0 +1,270 @@
+# Frigate Full Configuration Template
+# Production-ready configuration with all common features
+#
+# Features included:
+#   - MQTT integration (for Home Assistant)
+#   - USB Coral TPU detector
+#   - Hardware-accelerated video decoding
+#   - Separate detect and record streams
+#   - Recording with retention policies
+#   - Snapshots
+#   - Zones with required_zones for alerts
+#   - Motion masks
+#   - go2rtc for WebRTC streaming
+#
+# Usage:
+#   1. Update all RTSP paths and credentials
+#   2. Adjust hardware acceleration preset for your system
+#   3. Modify zones coordinates using the Frigate UI zone editor
+#   4. Save as config.yml
+
+# ============================================
+# MQTT CONFIGURATION
+# ============================================
+mqtt:
+  enabled: true
+  host: 192.168.1.50  # Your MQTT broker IP
+  port: 1883
+  user: "{FRIGATE_MQTT_USER}"
+  password: "{FRIGATE_MQTT_PASSWORD}"
+  topic_prefix: frigate
+
+# ============================================
+# DATABASE
+# ============================================
+database:
+  path: /config/frigate.db
+
+# ============================================
+# DETECTOR CONFIGURATION
+# ============================================
+# USB Coral TPU (recommended)
+detectors:
+  coral:
+    type: edgetpu
+    device: usb
+
+# Alternative: OpenVINO for Intel GPUs
+# detectors:
+#   ov:
+#     type: openvino
+#     device: GPU
+
+# ============================================
+# HARDWARE ACCELERATION
+# ============================================
+ffmpeg:
+  # Intel QSV (gen8+)
+  hwaccel_args: preset-intel-qsv-h264
+
+  # Intel VAAPI (gen1-gen7)
+  # hwaccel_args: preset-vaapi
+
+  # NVIDIA
+  # hwaccel_args: preset-nvidia
+
+  # AMD
+  # hwaccel_args: preset-vaapi
+
+  # Raspberry Pi
+  # hwaccel_args: preset-rpi-64-h264
+
+# ============================================
+# OBJECT DETECTION SETTINGS
+# ============================================
+objects:
+  track:
+    - person
+    - car
+    - dog
+    - cat
+    - package
+  filters:
+    person:
+      min_area: 5000
+      max_area: 100000
+      min_score: 0.5
+      threshold: 0.7
+    car:
+      min_area: 10000
+      min_score: 0.5
+      threshold: 0.7
+
+# ============================================
+# RECORDING CONFIGURATION
+# ============================================
+record:
+  enabled: true
+  retain:
+    days: 1
+    mode: motion  # Only keep segments with motion
+  alerts:
+    retain:
+      days: 14    # Keep alert clips longer
+  detections:
+    retain:
+      days: 7     # Keep detection clips
+  export:
+    timelapse_args: "-vf setpts=PTS/60 -r 25"
+
+# ============================================
+# SNAPSHOT CONFIGURATION
+# ============================================
+snapshots:
+  enabled: true
+  clean_copy: true
+  timestamp: true
+  bounding_box: true
+  retain:
+    default: 7
+
+# ============================================
+# GO2RTC CONFIGURATION
+# ============================================
+go2rtc:
+  streams:
+    front_door:
+      - "rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@192.168.1.100:554/stream1"
+    back_yard:
+      - "rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@192.168.1.101:554/stream1"
+  webrtc:
+    candidates:
+      - 192.168.1.50:8555  # Your Frigate server IP
+      - stun:8555
+
+# ============================================
+# CAMERA CONFIGURATIONS
+# ============================================
+cameras:
+  # -----------------------------------------
+  # FRONT DOOR CAMERA
+  # -----------------------------------------
+  front_door:
+    enabled: true
+
+    ffmpeg:
+      inputs:
+        # Sub-stream for detection (lower resolution, less bandwidth)
+        - path: "rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@192.168.1.100:554/stream1"
+          input_args: preset-rtsp-restream
+          roles:
+            - detect
+        # Main stream for recording (full resolution)
+        - path: "rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@192.168.1.100:554/stream0"
+          input_args: preset-rtsp-restream
+          roles:
+            - record
+      output_args:
+        record: preset-record-generic-audio-aac
+
+    # Live view source
+    live:
+      stream_name: front_door
+
+    # Detection settings
+    detect:
+      width: 1280
+      height: 720
+      fps: 5
+
+    # Motion detection tuning
+    motion:
+      threshold: 30
+      contour_area: 10
+      mask:
+        # Mask the timestamp overlay area (top-left corner)
+        - 0,0,200,0,200,50,0,50
+
+    # Detection zones
+    zones:
+      front_porch:
+        coordinates: 100,500,400,500,400,720,100,720
+        objects:
+          - person
+          - package
+      driveway:
+        coordinates: 500,400,1280,400,1280,720,500,720
+        objects:
+          - person
+          - car
+
+    # Review settings
+    review:
+      alerts:
+        required_zones:
+          - front_porch
+          - driveway
+
+    # Camera-specific object filters
+    objects:
+      filters:
+        person:
+          min_area: 3000
+          mask:
+            # Mask area where tree causes false positives
+            - 800,0,1000,0,1000,300,800,300
+
+  # -----------------------------------------
+  # BACK YARD CAMERA
+  # -----------------------------------------
+  back_yard:
+    enabled: true
+
+    ffmpeg:
+      inputs:
+        - path: "rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@192.168.1.101:554/stream1"
+          input_args: preset-rtsp-restream
+          roles:
+            - detect
+        - path: "rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@192.168.1.101:554/stream0"
+          input_args: preset-rtsp-restream
+          roles:
+            - record
+      output_args:
+        record: preset-record-generic-audio-aac
+
+    live:
+      stream_name: back_yard
+
+    detect:
+      width: 1280
+      height: 720
+      fps: 5
+
+    motion:
+      threshold: 30
+      mask:
+        - 0,0,150,0,150,40,0,40
+
+    zones:
+      patio:
+        coordinates: 0,400,600,400,600,720,0,720
+        objects:
+          - person
+          - dog
+          - cat
+
+    review:
+      alerts:
+        required_zones:
+          - patio
+
+# ============================================
+# UI SETTINGS
+# ============================================
+ui:
+  timezone: America/Los_Angeles
+  time_format: "%I:%M %p"
+  date_style: short
+  live:
+    stream_name: front_door
+
+# ============================================
+# BIRDSEYE VIEW
+# ============================================
+birdseye:
+  enabled: true
+  mode: continuous
+  width: 1920
+  height: 1080
+  quality: 8

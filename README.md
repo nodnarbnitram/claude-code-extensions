@@ -6,11 +6,11 @@
 [![Python](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![Claude Code](https://img.shields.io/badge/claude--code-compatible-purple.svg)](https://claude.ai/code)
 
-Supercharge your Claude Code experience with **55+ specialized agents**, **7 skills**, **8 lifecycle hooks**, **8 slash commands**, and powerful automation tools—all ready to install and customize.
+Supercharge your Claude Code experience with **60+ specialized agents**, **15 skills**, **8 lifecycle hooks**, **11 slash commands**, and powerful automation tools—all ready to install and customize.
 
 ## ✨ Highlights
 
-- **🤖 55+ Expert Agents** - From code reviewers to deep research specialists (React, Django, Temporal, Cloudflare, Research, and more)
+- **🤖 60+ Expert Agents** - From code reviewers to deep research specialists (React, Django, Temporal, Cloudflare, Home Assistant, and more)
 - **🎯 Model-Invoked Skills** - Capabilities Claude discovers and uses automatically based on context
 - **🔒 Safety-First Hooks** - Block dangerous commands, protect sensitive files, audit all operations
 - **⚡ Auto-Linting** - Integrated Python, Go, and JS/TS linters that run automatically
@@ -32,8 +32,9 @@ The repository provides **8 focused plugins** (Phase 1) with 10+ more coming in 
 | **cce-django** | Django backend | 3 Django agents (backend, API, ORM) |
 | **cce-research** | Deep research coordination | 5 research agents (coordinator, academic, web, technical, data) |
 | **cce-grafana** | Grafana observability | 1 plugin expert agent, 2 skills (scaffolding, billing metrics) |
+| **cce-homeassistant** | Home Assistant automation | 7 HA experts (automation, integration, dashboard, add-on, API, voice, energy), 7 skills, 3 commands |
 
-**Coming Soon:** `cce-web-vue`, `cce-temporal`, `cce-devops`, `cce-ai`, `cce-homeassistant`, `cce-go`, `cce-python`, `cce-typescript`, `cce-anthropic`
+**Coming Soon:** `cce-web-vue`, `cce-temporal`, `cce-devops`, `cce-ai`, `cce-go`, `cce-python`, `cce-typescript`, `cce-anthropic`
 
 **Install only what you need** - no need to load 50+ agents if you only work with React!
 
@@ -165,6 +166,9 @@ cp .claude/settings.json ~/my-project/.claude/
 | [`/security-scan`](.claude/commands/security-scan.md) | Run security scans on project files (Python/Go/JS/TS) | `[path]` |
 | [`/wrapup-skillup`](.claude/commands/wrapup-skillup.md) | Generate session report capturing learnings, tools, pitfalls, and extension recommendations | `[topic-slug]` |
 | [`/k8s-health`](.claude/commands/k8s-health.md) | Run comprehensive Kubernetes cluster health diagnostics with dynamic operator discovery | `[--operator <name>]` `[--output json\|summary\|detailed]` |
+| [`/ha-automation-lint`](.claude/commands/ha-automation-lint.md) | Validate Home Assistant automation YAML for syntax and best practices | `[file-path]` |
+| [`/ha-blueprint-create`](.claude/commands/ha-blueprint-create.md) | Convert a Home Assistant automation into a reusable blueprint | `<automation-id-or-file>` |
+| [`/ha-integration-scaffold`](.claude/commands/ha-integration-scaffold.md) | Generate boilerplate for a new Home Assistant custom integration | `<domain>` `[--with-config-flow]` `[--platforms ...]` |
 
 ### Skills
 
@@ -178,6 +182,14 @@ Model-invoked capabilities that Claude automatically discovers and uses based on
 | [`kubernetes-health`](.claude/skills/kubernetes-health/) | Comprehensive cluster health diagnostics using dynamic API discovery with operator-specific agents |
 | [`grafana-plugin-scaffolding`](.claude/skills/grafana-plugin-scaffolding/) | Scaffold Grafana plugins (panel, data source, app, backend) with Docker dev environment |
 | [`grafana-billing`](.claude/skills/grafana-billing/) | Query Prometheus and Loki billing metrics from Grafana Cloud for cost analysis and optimization |
+| [`ha-automation`](.claude/skills/ha-automation/) | Create and debug Home Assistant automations, scripts, blueprints, and Jinja2 templates |
+| [`ha-integration`](.claude/skills/ha-integration/) | Develop custom Home Assistant integrations, config flows, entities, and platforms |
+| [`ha-dashboard`](.claude/skills/ha-dashboard/) | Configure Home Assistant Lovelace dashboards, cards, views, and themes |
+| [`ha-addon`](.claude/skills/ha-addon/) | Develop Home Assistant add-ons with Docker, Supervisor API, and multi-arch builds |
+| [`ha-api`](.claude/skills/ha-api/) | Integrate with Home Assistant REST and WebSocket APIs |
+| [`ha-voice`](.claude/skills/ha-voice/) | Configure Home Assistant Assist voice control with pipelines, intents, and wake words |
+| [`ha-energy`](.claude/skills/ha-energy/) | Set up Home Assistant energy monitoring with dashboards, solar, grid, and device tracking |
+| [`tauri-v2`](.claude/skills/tauri-v2/) | Tauri v2 cross-platform desktop/mobile app development with Rust backend, IPC patterns, and security configuration |
 
 **Creating new skills:**
 - Use the `skill-creator` agent: `> Use the skill-creator to create a skill for [purpose]`
@@ -247,6 +259,12 @@ See [`docs/claude-code/agent-skills.md`](docs/claude-code/agent-skills.md) for d
 |-------|-------------|
 | [`vue-component-architect`](.claude/agents/specialized/vue/vue-component-architect.md) | Vue 3 Composition API, composables |
 | [`vue-nuxt-expert`](.claude/agents/specialized/vue/vue-nuxt-expert.md) | Nuxt.js SSR, SSG, full-stack Vue |
+
+#### Specialized: Tauri
+
+| Agent | Description |
+|-------|-------------|
+| [`tauri-v2-expert`](.claude/agents/specialized/tauri/tauri-v2-expert.md) | Tauri v2 cross-platform desktop/mobile apps, Rust commands, IPC, security, Vite + TanStack Router |
 
 #### Specialized: Django
 
@@ -319,6 +337,18 @@ See [`docs/claude-code/agent-skills.md`](docs/claude-code/agent-skills.md) for d
 | Agent | Description |
 |-------|-------------|
 | [`grafana-plugin-expert`](.claude/agents/specialized/grafana/grafana-plugin-expert.md) | Grafana plugin development (panel, data source, app, backend), SDK patterns, React/Go |
+
+#### Specialized: Home Assistant
+
+| Agent | Description |
+|-------|-------------|
+| [`ha-automation-expert`](.claude/agents/specialized/homeassistant/ha-automation-expert.md) | Automations, scripts, blueprints, Jinja2 templates |
+| [`ha-integration-developer`](.claude/agents/specialized/homeassistant/ha-integration-developer.md) | Custom integrations, config flows, entities, platforms |
+| [`ha-dashboard-expert`](.claude/agents/specialized/homeassistant/ha-dashboard-expert.md) | Lovelace dashboards, cards, views, themes |
+| [`ha-addon-developer`](.claude/agents/specialized/homeassistant/ha-addon-developer.md) | Add-on development with Docker, Supervisor, S6 overlay |
+| [`ha-api-expert`](.claude/agents/specialized/homeassistant/ha-api-expert.md) | REST API, WebSocket API, authentication, service calls |
+| [`ha-voice-expert`](.claude/agents/specialized/homeassistant/ha-voice-expert.md) | Assist pipelines, intents, wake words, voice satellites |
+| [`ha-energy-expert`](.claude/agents/specialized/homeassistant/ha-energy-expert.md) | Energy dashboard, solar tracking, utility meters |
 
 </details>
 
