@@ -1,0 +1,11 @@
+{
+  "domain": "my_integration",
+  "name": "My Integration",
+  "codeowners": ["@github_username"],
+  "config_flow": true,
+  "documentation": "https://github.com/username/ha-my-integration",
+  "homeassistant": "2024.1.0",
+  "requirements": [],
+  "version": "0.0.1",
+  "issue_tracker": "https://github.com/username/ha-my-integration/issues"
+}

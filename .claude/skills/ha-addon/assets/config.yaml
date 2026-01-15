@@ -1,0 +1,141 @@
+---
+# Home Assistant Add-On Configuration Template
+# Reference: https://developers.home-assistant.io/docs/add-ons/configuration
+
+name: My Custom Add-On
+description: A brief description of what your add-on does
+version: 1.0.0
+
+# URL-safe identifier used by Home Assistant internally
+slug: my-addon
+
+# Docker image URL - use {arch} placeholder for multi-architecture support
+# Supported architectures: amd64, armv7, aarch64, armhf, i386
+image: ghcr.io/home-assistant/{arch}-addon-my-addon
+
+# List of supported architectures
+arch:
+  - amd64      # Intel/AMD 64-bit (Desktop, NAS, most servers)
+  - armv7      # ARM 32-bit (Raspberry Pi 2/3)
+  - aarch64    # ARM 64-bit (Raspberry Pi 4/5, newer ARMs)
+  # Optional:
+  # - armhf    # ARM hard-float
+  # - i386     # Intel/AMD 32-bit (rarely used)
+
+# Port mappings: internal_port/protocol: external_port (null = internal only)
+ports:
+  8080/tcp: 8080          # Expose port 8080 externally
+  9090/tcp: null          # Internal only
+  53/udp: 53              # UDP port
+  # Format: [HOST_IP:]HOST_PORT:CONTAINER_PORT/PROTOCOL
+  # null = not exposed externally (internal communication only)
+
+# USB/serial device access (if needed)
+devices: []
+# Example:
+# devices:
+#   - /dev/ttyUSB0
+#   - /dev/ttyACM0
+
+# Other add-on services this add-on depends on
+services: []
+# Example:
+# services:
+#   - mysql
+
+# User-configurable options (appears in UI)
+options:
+  debug: false
+  log_level: info
+
+# Configuration option schema (validation and UI generation)
+schema:
+  debug: bool
+  log_level:
+    type: list
+    items:
+      enum:
+        - debug
+        - info
+        - warning
+        - error
+
+# Supervisor API permissions required by this add-on
+# - homeassistant: Read/write Home Assistant core data
+# - hassio: Full Supervisor API access
+# - admin: Broad system access
+# - backup: Backup/restore operations
+permissions:
+  - homeassistant
+
+# Environment variables for the add-on container
+environment:
+  NODE_ENV: production
+  TZ: UTC
+
+# Web UI configuration (if add-on has a web interface)
+webui: http://[HOST]:[PORT:8080]
+
+# Ingress configuration (reverse proxy through Home Assistant)
+# Set to true to access add-on UI through Home Assistant frontend
+ingress: true
+ingress_port: 8080        # Internal port to proxy to
+ingress_entry: /          # URL path for ingress (e.g., /my-addon/)
+
+# Backup configuration (if add-on stores important data)
+homeassistant_api: true   # Allow access to Home Assistant API
+
+# Changelog URL
+codenotary: null
+
+# Advanced: Audio/Video support
+audio: false
+video: false
+
+# Docker image pull policy
+docker_api: true
+
+# Health check
+healthcheck: true
+
+# Example advanced configuration (uncomment as needed):
+#
+# # Volume mounts
+# volumes:
+#   config:
+#     description: Configuration directory
+#     size: 2GB
+#
+# # Required: Add-on won't start if services are unavailable
+# services:
+#   - mysql
+#
+# # Icon (relative to add-on directory)
+# icon: icon.png
+#
+# # Logo
+# logo: logo.png
+#
+# # Rating (1-5)
+# rating: 4
+#
+# # Requires Home Assistant (minimum version)
+# homeassistant: 2024.1.0
+#
+# # Add-on author
+# author: Your Name <your.email@example.com>
+#
+# # Add-on documentation URL
+# documentation: https://github.com/your-user/your-addon/blob/main/README.md
+#
+# # Issue tracker
+# issue_tracker: https://github.com/your-user/your-addon/issues
+#
+# # Repository/source code
+# repository: https://github.com/your-user/your-addon
+#
+# # Feature flags
+# full_access: false
+# privileged:
+#   - NET_ADMIN
+#   - NET_RAW
