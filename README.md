@@ -20,7 +20,7 @@ Supercharge your Claude Code experience with **60+ specialized agents**, **15 sk
 
 ## 📦 Available Plugins
 
-The repository provides **8 focused plugins** (Phase 1) with 10+ more coming in future releases:
+The repository provides **9 focused plugins** (Phase 1) with 10+ more coming in future releases:
 
 | Plugin | Description | What's Included |
 |--------|-------------|-----------------|
@@ -32,7 +32,8 @@ The repository provides **8 focused plugins** (Phase 1) with 10+ more coming in 
 | **cce-django** | Django backend | 3 Django agents (backend, API, ORM) |
 | **cce-research** | Deep research coordination | 5 research agents (coordinator, academic, web, technical, data) |
 | **cce-grafana** | Grafana observability | 1 plugin expert agent, 2 skills (scaffolding, billing metrics) |
-| **cce-homeassistant** | Home Assistant automation | 7 HA experts (automation, integration, dashboard, add-on, API, voice, energy), 7 skills, 3 commands |
+| **cce-homeassistant** | Home Assistant automation | 7 HA experts (automation, integration, dashboard, add-on, API, voice, energy), 8 skills (incl. Frigate), 3 commands |
+| **cce-tauri** | Tauri v2 desktop apps | 1 Tauri v2 expert agent, 1 skill (IPC, capabilities, security) |
 
 **Coming Soon:** `cce-web-vue`, `cce-temporal`, `cce-devops`, `cce-ai`, `cce-go`, `cce-python`, `cce-typescript`, `cce-anthropic`
 
