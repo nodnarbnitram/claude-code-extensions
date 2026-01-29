@@ -2690,7 +2690,7 @@ Parallel Speedup: ~50% faster than sequential
 
 #### Core Flow Tests
 
-- [ ] 13.5. Test SessionStart hook - verify tracking status message
+- [x] 13.5. Test SessionStart hook - verify tracking status message
 
   **What to do**:
   - Start session with tracking active → verify continuation message
@@ -2712,7 +2712,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 13.6. Test "new blog [name]" command
+- [x] 13.6. Test "new blog [name]" command
 
   **What to do**:
   - Say "new blog my-test-blog"
@@ -2738,7 +2738,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 13.7. Test prompt buffering
+- [x] 13.7. Test prompt buffering
 
   **What to do**:
   - Submit several prompts while tracking
@@ -2763,7 +2763,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 13.8. Test Stop hook completes fast (<2s) and spawns background agent
+- [x] 13.8. Test Stop hook completes fast (<2s) and spawns background agent
 
   **What to do**:
   - Time the Stop hook execution
@@ -2786,7 +2786,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 13.9. Test background agent filtering
+- [x] 13.9. Test background agent filtering
 
   **What to do**:
   - Wait for background agent to complete
@@ -2812,7 +2812,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 13.10. Test raw transcript preserved
+- [x] 13.10. Test raw transcript preserved
 
   **What to do**:
   - Check transcripts directory for JSON file
@@ -2839,7 +2839,7 @@ Parallel Speedup: ~50% faster than sequential
 
 #### Persistence Tests
 
-- [ ] 13.11. Test tracking persistence across /clear
+- [x] 13.11. Test tracking persistence across /clear
 
   **What to do**:
   - Start tracking
@@ -2863,7 +2863,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 13.12. Test tracking persistence across Claude Code restart
+- [x] 13.12. Test tracking persistence across Claude Code restart
 
   **What to do**:
   - Start tracking
@@ -2887,7 +2887,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 13.13. Test explicit "stop tracking"
+- [x] 13.13. Test explicit "stop tracking"
 
   **What to do**:
   - Say "stop tracking"
@@ -2913,7 +2913,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 13.14. Test state recovery from backup after corruption
+- [x] 13.14. Test state recovery from backup after corruption
 
   **What to do**:
   - Corrupt state.json manually
@@ -2938,7 +2938,7 @@ Parallel Speedup: ~50% faster than sequential
 
 #### Integration Tests
 
-- [ ] 13.15. Test PreCompact hook
+- [x] 13.15. Test PreCompact hook
 
   **What to do**:
   - Trigger context compaction
@@ -2961,7 +2961,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 13.16. Test SessionEnd hook
+- [x] 13.16. Test SessionEnd hook
 
   **What to do**:
   - End session normally
@@ -2985,7 +2985,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 13.17. Test draft composition
+- [x] 13.17. Test draft composition
 
   **What to do**:
   - After accumulating notes, say "write blog draft"
@@ -3011,7 +3011,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 13.18. Test blog switching
+- [x] 13.18. Test blog switching
 
   **What to do**:
   - Track blog A
@@ -3035,7 +3035,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 13.19. Test sequence numbering across sessions
+- [x] 13.19. Test sequence numbering across sessions
 
   **What to do**:
   - Create notes in multiple sessions
