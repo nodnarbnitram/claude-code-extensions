@@ -564,3 +564,93 @@ All acceptance criteria met:
 
 ### Next Steps
 Phase 2 will populate these directories with plugin implementation files.
+
+## State Management Utilities (2026-01-28)
+
+### Implementation
+- Created `utils/state.py` with `ensure_blog_dir()` function
+- Uses `Path.mkdir(parents=True, exist_ok=True)` for safe directory creation
+- Handles first-run gracefully - no errors if directory already exists
+- Returns Path object for chaining operations
+
+### Pattern Verified
+- Atomic write pattern confirmed safe
+- Function tested and working
+- Follows Python pathlib best practices
+- Docstring includes return type and error handling
+
+### Key Learning
+- `exist_ok=True` is critical for idempotent operations
+- First-run scenarios benefit from explicit error handling in docstring
+
+## [2026-01-29 06:05] Task 0.1 CRITICAL UPDATE: Assistant Messages Investigation
+
+**User's Concern**: Assistant responses MUST be stored somewhere - transcripts can't be the only source
+
+**Investigation Results**:
+1. `~/.claude/transcripts/*.jsonl` - Contains ONLY: user, tool_use, tool_result (NO assistant)
+2. `~/.claude/history.jsonl` - Contains command history (display, project, timestamp) - NOT conversation
+3. No `~/.claude/sessions/` directory found
+4. No conversation/chat/history files with assistant messages found yet
+
+**Hypothesis**: Assistant messages might be:
+- Stored in API response cache
+- In Claude Code's internal session state (ephemeral)
+- In a different location we haven't found yet
+- Not persisted to disk at all (only in-memory during session)
+
+**Action Required**: Need to examine oh-my-opencode source code or check if there's API-level storage
+
+
+## [2026-01-29 06:08] CRITICAL DISCOVERY: Assistant Messages Location
+
+**USER WAS RIGHT!** Assistant messages ARE persisted!
+
+**Two Separate Storage Systems**:
+
+1. **Transcripts** (`~/.claude/transcripts/{sessionId}.jsonl`):
+   - Contains: `user`, `tool_use`, `tool_result` ONLY
+   - Purpose: Tool execution log
+   - NOT conversation history
+
+2. **Session Files** (`~/.claude/projects/{project-path}/{sessionId}.jsonl`):
+   - Contains: `summary`, `file-history-snapshot`, `user`, `assistant`
+   - Purpose: Full conversation history with assistant responses
+   - THIS is where assistant messages live!
+
+**Example Structure**:
+```
+~/.claude/projects/-Users-brandonmartin-Projects-hq-infrastructure-argo-apps/
+  ├── sessions-index.json  (metadata)
+  └── {sessionId}.jsonl    (full conversation)
+```
+
+**Implication for Auto-Blog**:
+- Need BOTH sources:
+  - Transcripts for tool interactions
+  - Session files for assistant reasoning/explanations
+- Session files are ONLY created when using session persistence (NOT with `--no-session-persistence`)
+
+**Action**: Update Phase 0 verification docs and schema documentation
+
+
+## [2026-01-29 06:10] Session Persistence Discovery
+
+**Critical Finding**: Current session has NO session file!
+
+**Evidence**:
+- Newest session files: January 20, 2026 (9 days old)
+- Current session: ses_3f7b84fb9ffe5rqLm769ZrMT7A (today)
+- No matching session file in `~/.claude/projects/`
+
+**Conclusion**: This session is running with `--no-session-persistence` flag
+
+**Implication for Auto-Blog**:
+- Session files ONLY exist when persistence is enabled
+- For auto-blog to capture assistant messages, sessions MUST use persistence
+- Need to document this requirement in plugin docs
+
+**Two Data Sources Confirmed**:
+1. **Transcripts** (always created): Tool interactions only
+2. **Session files** (optional): Full conversation with assistant messages
+
