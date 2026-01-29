@@ -946,3 +946,49 @@ Phase 5 (Stop Hook) will:
 - Spawn background agent for note filtering
 - Increment sequence number
 - Trigger blog-note-capture skill
+
+## Task 4.5-4.6: UserPromptSubmit Hook Enhancement (2026-01-29 00:27)
+
+### Implementation Summary
+Enhanced the UserPromptSubmit hook to extract and store session context in blog metadata.
+
+### Changes Made
+1. **BlogMetadata TypedDict** - Added two new fields:
+   - `session_id: str` - Stores the session identifier from hook input
+   - `extracted_title: str` - Stores the intelligently extracted title
+
+2. **New Functions in user_prompt_submit.py**:
+   - `extract_session_id(hook_input)` - Extracts sessionId or session_id from JSON
+   - `extract_title_from_prompt(prompt)` - Intelligently extracts title:
+     * Strips #blog and trigger keywords
+     * Finds first sentence (ends with . ? !)
+     * Falls back to first 50 chars if no sentence boundary
+     * Capitalizes first letter
+
+3. **Updated main()** - Now captures session_id and extracted_title in metadata
+
+### Test Results
+✅ Test 1: Basic extraction with camelCase sessionId
+- Input: `{"sessionId": "ses_abc123", "prompt": "#blog How to test Python code effectively"}`
+- Output: title="How to test python code effectively", session_id="ses_abc123"
+
+✅ Test 2: Long prompt truncation (>50 chars, no sentence boundary)
+- Input: Long prompt exceeding 50 chars
+- Output: Correctly truncated to 50 chars
+
+✅ Test 3: Sentence boundary detection
+- Input: `"#blog Building a REST API. Second sentence..."`
+- Output: title="Building a rest api" (stops at period)
+
+✅ Test 4: snake_case session_id fallback
+- Input: `{"session_id": "ses_xyz789", ...}`
+- Output: Correctly extracted session_id
+
+### Key Patterns
+- Hook extracts both camelCase and snake_case variants of session_id
+- Title extraction prioritizes sentence boundaries over character count
+- All trigger keywords (#blog, "blog this", "write blog") are stripped before extraction
+- Metadata now enables future transcript linking via session_id
+
+### Verification
+All tests pass. Hook executes in <100ms. Metadata stored correctly in .blog/state.json.

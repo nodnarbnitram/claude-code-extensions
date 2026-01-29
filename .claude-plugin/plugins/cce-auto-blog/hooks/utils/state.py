@@ -8,7 +8,7 @@ class BlogMetadata(TypedDict):
     """Metadata for a single blog entry.
 
     Tracks essential information about a blog post being tracked,
-    including creation timestamp, current status, and file paths.
+    including creation timestamp, current status, file paths, and session context.
     """
 
     title: str
@@ -16,6 +16,8 @@ class BlogMetadata(TypedDict):
     status: str
     transcript_path: str
     session_path: str
+    session_id: str
+    extracted_title: str
 
 
 class BlogState(TypedDict):
