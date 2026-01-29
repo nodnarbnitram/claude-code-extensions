@@ -77,10 +77,7 @@
     "UserPromptSubmit": [
       {
         "hooks": [
-          {
-            "type": "command",
-            "command": "\"${CLAUDE_PLUGIN_ROOT:-$CLAUDE_PROJECT_DIR}\"/.claude/hooks/skill_forced_eval.sh"
-          },
+
           {
             "type": "command",
             "command": "uv run \"${CLAUDE_PLUGIN_ROOT:-$CLAUDE_PROJECT_DIR}\"/.claude/hooks/user_prompt_submit.py --log-only"
