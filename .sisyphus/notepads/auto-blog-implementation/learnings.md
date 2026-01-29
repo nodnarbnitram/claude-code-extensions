@@ -775,3 +775,28 @@ const response = await client.session.messages({
 ### Next Steps
 - Task 2.4: Implement blog_id generation (sequence-based)
 - Task 2.5: Implement add_blog() function
+
+## Backup/Restore Implementation (2026-01-29)
+
+### Pattern: Disaster Recovery Functions
+- **backup_state()**: Creates timestamped backups using `shutil.copy2()` for metadata preservation
+- **restore_state()**: Finds most recent backup via `glob()` + `st_mtime` sorting, restores via `write_state()` for atomicity
+- Timestamp format: `%Y%m%d_%H%M%S` ensures lexicographic sort matches chronological order
+
+### Key Decisions
+1. **Atomic restore**: Uses existing `write_state()` to ensure atomic writes during recovery
+2. **Metadata preservation**: `shutil.copy2()` preserves timestamps/permissions on backup files
+3. **Most-recent selection**: Sorts by `st_mtime` (modification time) in reverse order for reliability
+4. **Graceful degradation**: `restore_state()` returns `False` if no backup exists (no exceptions)
+
+### Testing Coverage
+- ✅ Initial state creation and backup
+- ✅ Backup file existence verification
+- ✅ State modification and restoration
+- ✅ Restoration accuracy (sequence ID verification)
+- ✅ No-backup scenario (returns False)
+
+### Integration Notes
+- Functions follow existing module patterns (imports inside functions, ensure_blog_dir() usage)
+- No external dependencies beyond stdlib (shutil, datetime, json, pathlib)
+- Compatible with existing atomic write pattern via write_state()

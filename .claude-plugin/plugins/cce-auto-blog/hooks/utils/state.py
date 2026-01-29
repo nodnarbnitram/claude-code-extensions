@@ -110,3 +110,69 @@ def write_state(state: BlogState) -> None:
 
     # Atomic replace
     os.replace(temp_path, state_path)
+
+
+def backup_state() -> Path:
+    """
+    Create a timestamped backup of state.json for disaster recovery.
+
+    Copies .blog/state.json to .blog/state.json.bak.{timestamp} using
+    shutil.copy2 to preserve metadata. Enables recovery from accidental
+    state corruption or data loss.
+
+    Returns:
+        Path: The backup file path
+
+    Raises:
+        OSError: If backup creation fails due to permissions or I/O errors
+    """
+    import shutil
+    from datetime import datetime
+
+    blog_dir = ensure_blog_dir()
+    state_path = blog_dir / "state.json"
+
+    # Generate timestamp for unique backup filename
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    backup_path = blog_dir / f"state.json.bak.{timestamp}"
+
+    # Copy with metadata preservation
+    if state_path.exists():
+        shutil.copy2(state_path, backup_path)
+
+    return backup_path
+
+
+def restore_state() -> bool:
+    """
+    Restore state from the most recent backup file.
+
+    Finds the most recent .blog/state.json.bak.* file and restores it
+    using write_state() for atomic writes. Enables recovery from
+    accidental state corruption.
+
+    Returns:
+        bool: True if restore succeeded, False if no backup found
+
+    Raises:
+        OSError: If restore operation fails due to permissions or I/O errors
+    """
+    import json
+
+    blog_dir = ensure_blog_dir()
+
+    # Find all backup files and sort by modification time (newest first)
+    backup_files = sorted(
+        blog_dir.glob("state.json.bak.*"), key=lambda p: p.stat().st_mtime, reverse=True
+    )
+
+    if not backup_files:
+        return False
+
+    # Restore from most recent backup
+    most_recent_backup = backup_files[0]
+    with open(most_recent_backup, "r") as f:
+        state = json.load(f)
+
+    write_state(state)
+    return True
