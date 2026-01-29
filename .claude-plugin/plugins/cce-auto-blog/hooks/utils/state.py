@@ -1,6 +1,32 @@
 """State management utilities for auto-blog plugin."""
 
 from pathlib import Path
+from typing import TypedDict
+
+
+class BlogMetadata(TypedDict):
+    """Metadata for a single blog entry.
+
+    Tracks essential information about a blog post being tracked,
+    including creation timestamp, current status, and file paths.
+    """
+
+    title: str
+    created_at: str
+    status: str
+    transcript_path: str
+    session_path: str
+
+
+class BlogState(TypedDict):
+    """Root state schema for state.json.
+
+    Manages global blog tracking state including the next sequence ID
+    and a mapping of blog IDs to their metadata.
+    """
+
+    next_sequence_id: int
+    blogs: dict[str, BlogMetadata]
 
 
 def ensure_blog_dir() -> Path:

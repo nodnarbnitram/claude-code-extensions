@@ -654,3 +654,48 @@ Phase 2 will populate these directories with plugin implementation files.
 1. **Transcripts** (always created): Tool interactions only
 2. **Session files** (optional): Full conversation with assistant messages
 
+
+## Phase 2.2: TypedDict Schema Implementation (2025-01-29)
+
+### What Was Done
+Added TypedDict schemas to `.claude-plugin/plugins/cce-auto-blog/hooks/utils/state.py`:
+- `BlogMetadata`: Tracks individual blog entry metadata (title, created_at, status, transcript_path, session_path)
+- `BlogState`: Root schema with next_sequence_id (int) and blogs dict mapping blog_id to BlogMetadata
+
+### Key Decisions
+1. **Type Hints**: Used `dict[str, BlogMetadata]` for Python 3.10+ compatibility (matches project baseline)
+2. **Docstrings**: Added comprehensive docstrings for public API documentation (necessary for schema clarity)
+3. **Field Selection**: Aligned with plan requirements - all 5 fields for BlogMetadata, 2 for BlogState
+
+### Verification
+- ✓ Python syntax valid (py_compile)
+- ✓ Imports work correctly
+- ✓ Type annotations properly resolved
+- ✓ BlogState.__annotations__ shows correct field types
+- ✓ BlogMetadata.__annotations__ shows all 5 fields
+
+### Next Steps
+- Phase 2.3: Implement read_state() and write_state() with atomic writes
+- Phase 2.4-2.9: Complete state management utilities
+
+## [2026-01-29 06:14] Session File Investigation - Current Session
+
+**User Question**: What about opencode session files for THIS session?
+
+**Findings**:
+- ✅ Transcript EXISTS: `~/.claude/transcripts/ses_3f7b84fb9ffe5rqLm769ZrMT7A.jsonl` (current session)
+- ❌ Session file DOES NOT EXIST in `~/.claude/projects/-Users-brandonmartin-Projects-hq-claude-code-extensions/`
+- No `.jsonl` files in current project directory at all
+
+**Conclusions**:
+1. Transcripts are written in real-time (file exists during session)
+2. Session files (with assistant messages) either:
+   - Only written at SessionEnd hook (not yet fired for this session)
+   - OR this session IS using --no-session-persistence flag
+   - OR opencode handles persistence differently than Claude CLI
+
+**Critical Question**: When are session files written?
+- Need to check hook source code or test by ending a session
+
+**Impact on Auto-Blog**: If session files are only written at SessionEnd, we can capture them in the SessionEnd hook!
+
