@@ -176,3 +176,109 @@ def restore_state() -> bool:
 
     write_state(state)
     return True
+
+
+def create_blog_dir(blog_id: str) -> Path:
+    """
+    Create a blog directory structure at .blog/{blog_id}/.
+
+    Creates the blog directory and subdirectories (notes/, transcripts/, drafts/)
+    for organizing blog content. Handles first-run scenario gracefully.
+
+    Args:
+        blog_id: The blog identifier (typically kebab-case, e.g., "my-blog")
+
+    Returns:
+        Path: The created blog directory path (.blog/{blog_id}/)
+
+    Raises:
+        OSError: If directory creation fails due to permissions or other OS errors
+    """
+    blog_dir = ensure_blog_dir()
+    blog_path = blog_dir / blog_id
+
+    # Create blog directory and subdirectories
+    (blog_path / "notes").mkdir(parents=True, exist_ok=True)
+    (blog_path / "transcripts").mkdir(parents=True, exist_ok=True)
+    (blog_path / "drafts").mkdir(parents=True, exist_ok=True)
+
+    return blog_path
+
+
+def get_next_sequence_id() -> int:
+    """
+    Get the next sequence ID from state without incrementing.
+
+    Reads the current next_sequence_id from state.json and returns it.
+    Use increment_sequence_id() to advance the counter.
+
+    Returns:
+        int: The next available sequence ID (1-based)
+
+    Raises:
+        OSError: If state read fails due to permissions or I/O errors
+    """
+    state = read_state()
+    return state["next_sequence_id"]
+
+
+def increment_sequence_id() -> int:
+    """
+    Increment the sequence ID counter and persist to state.
+
+    Atomically increments next_sequence_id in state.json and returns
+    the new value. Used after capturing a blog session to ensure
+    unique sequence numbers for each capture.
+
+    Returns:
+        int: The new sequence ID after incrementing
+
+    Raises:
+        OSError: If state read/write fails due to permissions or I/O errors
+    """
+    state = read_state()
+    state["next_sequence_id"] += 1
+    write_state(state)
+    return state["next_sequence_id"]
+
+
+def add_blog_to_state(blog_id: str, metadata: BlogMetadata) -> None:
+    """
+    Add a new blog entry to state with metadata.
+
+    Creates a new blog entry in the blogs mapping with the provided metadata.
+    Atomically persists to state.json. Does not create the blog directory
+    (use create_blog_dir() for that).
+
+    Args:
+        blog_id: The blog identifier (typically kebab-case)
+        metadata: BlogMetadata dict with title, created_at, status, paths
+
+    Raises:
+        OSError: If state read/write fails due to permissions or I/O errors
+    """
+    state = read_state()
+    state["blogs"][blog_id] = metadata
+    write_state(state)
+
+
+def update_blog_status(blog_id: str, status: str) -> None:
+    """
+    Update the status field of an existing blog entry.
+
+    Atomically updates the status field in the blogs mapping and persists
+    to state.json. Useful for tracking blog lifecycle (draft, published, etc.).
+
+    Args:
+        blog_id: The blog identifier to update
+        status: The new status value (e.g., "draft", "published", "archived")
+
+    Raises:
+        KeyError: If blog_id does not exist in state
+        OSError: If state read/write fails due to permissions or I/O errors
+    """
+    state = read_state()
+    if blog_id not in state["blogs"]:
+        raise KeyError(f"Blog '{blog_id}' not found in state")
+    state["blogs"][blog_id]["status"] = status
+    write_state(state)

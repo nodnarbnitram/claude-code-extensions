@@ -800,3 +800,91 @@ const response = await client.session.messages({
 - Functions follow existing module patterns (imports inside functions, ensure_blog_dir() usage)
 - No external dependencies beyond stdlib (shutil, datetime, json, pathlib)
 - Compatible with existing atomic write pattern via write_state()
+
+---
+
+## [2026-01-29 12:00] Tasks 2.5-2.9: State Management Utility Functions
+
+### Implementation Summary
+Added 5 utility functions to `.claude-plugin/plugins/cce-auto-blog/hooks/utils/state.py`:
+
+1. **`create_blog_dir(blog_id: str) -> Path`**
+   - Creates `.blog/{blog_id}/` with subdirectories: `notes/`, `transcripts/`, `drafts/`
+   - Uses `mkdir(parents=True, exist_ok=True)` for safe idempotent creation
+   - Returns the blog directory Path
+
+2. **`get_next_sequence_id() -> int`**
+   - Reads `next_sequence_id` from state without modifying it
+   - Returns current value (1-based)
+   - Used for file naming before incrementing
+
+3. **`increment_sequence_id() -> int`**
+   - Atomically increments `next_sequence_id` in state.json
+   - Persists immediately via `write_state()`
+   - Returns new value after increment
+   - Ensures unique sequence numbers across sessions
+
+4. **`add_blog_to_state(blog_id: str, metadata: BlogMetadata) -> None`**
+   - Adds new blog entry to `state["blogs"]` mapping
+   - Accepts BlogMetadata TypedDict with: title, created_at, status, transcript_path, session_path
+   - Atomically persists to state.json
+   - Does NOT create blog directory (separate concern)
+
+5. **`update_blog_status(blog_id: str, status: str) -> None`**
+   - Updates status field of existing blog entry
+   - Raises KeyError if blog_id not found (fail-fast pattern)
+   - Atomically persists to state.json
+   - Useful for tracking lifecycle: draft → published → archived
+
+### Design Patterns Applied
+- **Atomic Operations**: All functions use existing `read_state()`/`write_state()` which handle atomic writes
+- **Type Hints**: Full type annotations on all parameters and returns
+- **Error Handling**: Explicit KeyError for missing blogs, OSError propagation for I/O
+- **Docstrings**: Comprehensive docstrings with Args, Returns, Raises sections
+- **Idempotency**: `create_blog_dir()` uses `exist_ok=True` for safe repeated calls
+
+### Testing Results
+All 8 acceptance tests passed:
+- ✅ `get_next_sequence_id()` returns 1 initially
+- ✅ `increment_sequence_id()` returns 2 and persists
+- ✅ `get_next_sequence_id()` reflects incremented value
+- ✅ `create_blog_dir()` creates all subdirectories
+- ✅ `add_blog_to_state()` stores metadata correctly
+- ✅ `update_blog_status()` updates status field
+- ✅ state.json structure verified (next_sequence_id, blogs)
+- ✅ KeyError raised for non-existent blog in update
+
+### Code Quality
+- ✅ No LSP diagnostics (errors/warnings)
+- ✅ Follows existing code style and patterns
+- ✅ Consistent with TypedDict schema (BlogMetadata, BlogState)
+- ✅ Minimal inline comments (only where necessary)
+
+### Integration Points
+These functions are used by:
+- **Phase 3 (SessionStart)**: `create_blog_dir()` when "new blog" command detected
+- **Phase 4 (UserPromptSubmit)**: `add_blog_to_state()` to register new blogs
+- **Phase 5 (Stop)**: `get_next_sequence_id()`, `increment_sequence_id()` for file naming
+- **Phase 8+ (Skills)**: `update_blog_status()` for lifecycle tracking
+
+### Lessons Learned
+1. **Atomic writes are critical**: All state mutations use the existing atomic pattern (tempfile + os.replace)
+2. **TypedDict provides clarity**: BlogMetadata and BlogState TypedDicts make function signatures self-documenting
+3. **Fail-fast on errors**: KeyError for missing blogs prevents silent failures
+4. **Idempotency matters**: `exist_ok=True` on mkdir prevents errors on repeated calls
+5. **Sequence IDs are 1-based**: Initial state has `next_sequence_id: 1`, not 0
+
+
+## [2026-01-29 06:20] Phase 2 Complete - State Management Semantics
+
+**Note on increment_sequence_id() semantics**:
+- Current implementation increments THEN returns the NEW value
+- Slightly confusing: returns the incremented value, not the consumed ID
+- Usage pattern: Always call increment_sequence_id() to get an ID (don't get then increment separately)
+- Functional but not ideal naming - consider refactoring in future
+
+**Phase 2 Status**: ✅ COMPLETE (9/9 tasks)
+- All state management utilities implemented and tested
+- Atomic writes verified throughout
+- Ready for Phase 3 (Hook Implementation)
+
