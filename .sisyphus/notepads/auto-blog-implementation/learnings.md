@@ -1119,3 +1119,70 @@ echo $?  # Should be 0
 - Minimal dependencies (only json, sys, pathlib)
 - Graceful error handling (silent exit on missing blog)
 - Consistent with existing hook patterns
+
+## Phase 7: Note Capture Utility (2026-01-29 00:35)
+
+### Implementation Summary
+Created complete note capture utility at `.claude-plugin/plugins/cce-auto-blog/hooks/utils/notes.py` with all required functions.
+
+### Key Patterns Established
+
+#### 1. NoteMetadata TypedDict
+```python
+class NoteMetadata(TypedDict):
+    title: str
+    created_at: str
+    tags: list[str]
+    sequence_id: int
+```
+- Matches state.py pattern for type safety
+- Includes ISO timestamp for sorting
+- Sequence ID for ordering across sessions
+
+#### 2. parse_note() Function
+- Extracts first line as title (truncates to 50 chars if needed)
+- Finds all #hashtags in content (case-insensitive, deduplicated)
+- Returns dict with title, body, tags
+- Handles edge cases: no tags, long titles, no body
+
+#### 3. save_note() Function
+- Uses state utilities: `get_next_sequence_id()`, `increment_sequence_id()`
+- Saves to `.blog/{blog_id}/notes/{seq:03d}-{timestamp}.md`
+- Creates YAML frontmatter with metadata
+- Writes JSON sidecar for metadata retrieval
+- Atomic writes via state utilities
+
+#### 4. list_notes() Function
+- Returns all notes for blog, sorted by sequence_id
+- Gracefully handles missing directories (returns [])
+- Skips corrupted metadata files
+- Enables blog-wide note enumeration
+
+#### 5. get_note() Function
+- Retrieves specific note by sequence_id
+- Returns None if not found
+- Enables direct note access by ID
+
+### Testing Results
+✓ All acceptance criteria met
+✓ parse_note: 4/4 tests passed (basic, truncation, no tags, dedup)
+✓ save_note: 4/4 tests passed (creation, content, metadata, sequencing)
+✓ list_notes: 4/4 tests passed (listing, sorting, empty blog, non-existent)
+✓ get_note: 2/2 tests passed (retrieval, non-existent)
+
+### Integration Points
+- Depends on: `state.py` (create_blog_dir, get_next_sequence_id, increment_sequence_id)
+- Used by: Phase 9 blog-note-capture skill (background agent)
+- File format: Markdown with YAML frontmatter + JSON sidecar
+
+### Decisions Made
+1. **Sequence numbering**: Zero-padded 3-digit format (001, 002, ...) for consistent sorting
+2. **Metadata storage**: Both YAML frontmatter (human-readable) + JSON sidecar (machine-readable)
+3. **Tag handling**: Lowercase, deduplicated, extracted from entire content
+4. **Title truncation**: 50 chars max (reasonable for blog post titles)
+5. **Error handling**: Graceful degradation (skip corrupted files, return empty lists)
+
+### Next Steps
+- Phase 8: blog-session-manager skill (user-facing commands)
+- Phase 9: blog-note-capture skill (background agent invocation)
+- Phase 10: blog-draft-composer skill (MDX generation)

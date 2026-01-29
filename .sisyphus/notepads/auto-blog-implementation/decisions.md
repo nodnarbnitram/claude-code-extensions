@@ -53,3 +53,48 @@
 
 **Rationale**: Quality over speed - proper verification prevents compounding errors worth the token cost
 
+
+## Phase 7: Note Capture Utility Design Decisions
+
+### 1. Metadata Storage Strategy
+**Decision**: Dual storage (YAML frontmatter + JSON sidecar)
+**Rationale**: 
+- YAML frontmatter makes notes human-readable in editors
+- JSON sidecar enables fast machine parsing without markdown parsing
+- Sidecar pattern matches existing cce-core conventions
+
+### 2. Sequence Numbering Format
+**Decision**: Zero-padded 3-digit format (001, 002, 003, ...)
+**Rationale**:
+- Consistent sorting in filesystem (lexicographic = numeric)
+- Supports up to 999 notes per blog (sufficient for typical use)
+- Matches state.py pattern for consistency
+
+### 3. Tag Extraction
+**Decision**: Regex-based #hashtag extraction, case-insensitive, deduplicated
+**Rationale**:
+- Simple, fast extraction without NLP
+- Case-insensitive for consistency (#Python = #python)
+- Deduplication prevents tag bloat
+- Works across entire content (title + body)
+
+### 4. Title Truncation
+**Decision**: 50 character maximum
+**Rationale**:
+- Reasonable for blog post titles
+- Prevents filesystem path length issues
+- Matches common blog title conventions
+
+### 5. Error Handling Philosophy
+**Decision**: Graceful degradation (skip corrupted files, return empty lists)
+**Rationale**:
+- Prevents cascading failures
+- Allows partial recovery from corruption
+- Matches state.py backup/recovery pattern
+
+### 6. Import Strategy
+**Decision**: Relative imports from state.py
+**Rationale**:
+- Maintains package structure
+- Enables reuse of state utilities
+- Follows Python best practices for package modules
