@@ -16,6 +16,71 @@ Activate this skill when the user:
 - Wants to see what blogs have been captured
 - Needs to inspect blog metadata or transcripts
 
+## Blog Creation and Tracking
+
+### Create New Blog
+Start tracking a new blog session by using trigger keywords in your prompts.
+
+**Trigger Keywords**: `#blog`, `"blog this"`, or `"write blog"` (case-insensitive)
+
+**Usage**: Include trigger keyword in any prompt to start capturing
+
+**Example**:
+```
+User: #blog How to build scalable microservices
+Assistant: ✓ Started tracking blog: "How to build scalable microservices"
+Blog ID: blog-20260129-120000
+Status: draft
+
+I'll capture notes from our conversation. Say "stop tracking" when done.
+```
+
+**Blog Name Rules**:
+- Auto-generated as `blog-YYYYMMDD-HHMMSS` (timestamp-based)
+- Title extracted from prompt (first sentence or 50 chars)
+- Stored in `.blog/{blog-id}/` directory
+
+**Valid Examples**:
+- `#blog Building REST APIs with FastAPI`
+- `"I want to blog this conversation about Docker"`
+- `"Write blog about Python testing strategies"`
+
+### Track Existing Blog
+Resume tracking an existing blog session (currently not implemented - one blog per session).
+
+**Note**: The current implementation supports one active blog per session. To switch blogs, you must stop tracking the current blog first.
+
+### Stop Tracking
+End the current blog tracking session and finalize capture.
+
+**Usage**: `stop tracking`
+
+**Example**:
+```
+User: stop tracking
+Assistant: ✓ Stopped tracking blog: "How to build scalable microservices"
+Blog ID: blog-20260129-120000
+Status: captured
+
+Captured:
+- 3 transcript sessions
+- 5 notes extracted
+- Ready for draft composition
+
+Use "view blog blog-20260129-120000" to see details.
+```
+
+**Important**: This is the **ONLY** way to end tracking. Tracking persists across Claude Code sessions until explicitly stopped.
+
+### One Blog Per Session Rule
+You can only track **one blog at a time** per Claude Code session.
+
+**To switch blogs**:
+1. Say `stop tracking` to end current blog
+2. Use trigger keyword (`#blog`) to start new blog
+
+**Why**: This prevents accidental mixing of content from different topics.
+
 ## Commands
 
 ### List All Blogs

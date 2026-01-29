@@ -1214,3 +1214,25 @@ class NoteMetadata(TypedDict):
 - Includes clear usage examples with realistic output
 - Documents implementation details for transparency
 
+
+## [2026-01-29 06:42] Tasks 8.2-8.7: Blog Creation/Tracking Workflows
+
+### Added Sections to SKILL.md
+1. **Blog Creation and Tracking** section (new)
+   - Create New Blog: Trigger keywords, usage examples, naming rules
+   - Track Existing Blog: Noted as not implemented (one blog per session)
+   - Stop Tracking: How to end tracking, persistence behavior
+   - One Blog Per Session Rule: Switching blogs workflow
+
+### Key Documentation Points
+- **Trigger Keywords**: #blog, "blog this", "write blog" (case-insensitive)
+- **Auto-generated IDs**: blog-YYYYMMDD-HHMMSS format
+- **Title Extraction**: First sentence or 50 chars from prompt
+- **Persistence**: Tracking continues across sessions until "stop tracking"
+- **One Blog Limit**: Must stop current blog before starting new one
+
+### Pattern Verified
+- Documented actual hook behavior (UserPromptSubmit)
+- Clarified limitations (one blog per session)
+- Provided clear examples for each workflow
+
