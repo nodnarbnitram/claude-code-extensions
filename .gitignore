@@ -6,3 +6,4 @@ __pycache__/
 openspec/
 scripts/gh-workflow-minutes.py
 .opencode/.blog/
+.sisyphus/
