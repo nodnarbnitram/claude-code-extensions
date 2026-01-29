@@ -992,3 +992,107 @@ Enhanced the UserPromptSubmit hook to extract and store session context in blog 
 
 ### Verification
 All tests pass. Hook executes in <100ms. Metadata stored correctly in .blog/state.json.
+
+---
+
+## [2026-01-29 06:30] Task 5.1-5.10: Stop Hook Implementation
+
+### Implementation Pattern
+- **File**: `.claude-plugin/plugins/cce-auto-blog/hooks/stop.py`
+- **Pattern**: uv run --script with inline dependencies
+- **Timeout**: 5s (hook protocol requirement)
+
+### Key Functions Implemented
+
+#### 1. Session ID Extraction
+```python
+def extract_session_id(hook_input: dict) -> str:
+    """Extract session_id from hook input, checking both camelCase and snake_case."""
+    return hook_input.get("sessionId") or hook_input.get("session_id") or ""
+```
+- Handles both naming conventions (camelCase from Claude Code, snake_case for consistency)
+- Returns empty string if not found (graceful degradation)
+
+#### 2. Blog Lookup by Session ID
+```python
+def find_blog_by_session_id(session_id: str) -> tuple[str | None, dict]:
+    """Find blog entry with matching session_id."""
+    state = read_state()
+    for blog_id, metadata in state["blogs"].items():
+        if metadata.get("session_id") == session_id:
+            return blog_id, metadata
+    return None, {}
+```
+- Linear search through state.blogs (acceptable for small number of blogs)
+- Returns tuple of (blog_id, metadata) for easy unpacking
+- Returns (None, {}) if not found
+
+#### 3. Transcript File Copy
+```python
+def copy_transcript_to_blog(
+    transcript_path: str, blog_id: str, sequence_id: int
+) -> str | None:
+    """Copy transcript file to blog's transcripts directory."""
+    # Destination: .blog/{blog_id}/transcripts/{seq:03d}-{timestamp}.jsonl
+    # Uses shutil.copy2 to preserve metadata
+    # Returns destination path or None on failure
+```
+- Gracefully handles missing transcript files (returns None)
+- Destination naming: `{sequence_id:03d}-{timestamp}.jsonl` (e.g., `001-20260129-063000.jsonl`)
+- Uses `shutil.copy2` to preserve file metadata (timestamps, permissions)
+- Silently fails on copy errors (hook protocol pattern)
+
+#### 4. Metadata Update
+```python
+def update_blog_with_transcript(blog_id: str, transcript_path: str) -> None:
+    """Update blog metadata with transcript_path."""
+    state = read_state()
+    if blog_id in state["blogs"]:
+        state["blogs"][blog_id]["transcript_path"] = transcript_path
+        write_state(state)
+```
+- Atomically updates state using existing write_state() utility
+- Checks blog_id exists before updating (defensive)
+
+### Sequence ID Management
+- **Increment Pattern**: `sequence_id = increment_sequence_id()` before copying
+- **Naming**: Zero-padded to 3 digits (001, 002, etc.)
+- **Persistence**: Automatically saved to state.json by increment_sequence_id()
+
+### Hook Registration
+- **Event**: Stop (fires when main agent finishes)
+- **Path**: `./hooks/stop.py` (relative to plugin root)
+- **Timeout**: 5s (configured in plugin.json)
+
+### Error Handling Strategy
+- **Missing transcript file**: Gracefully returns None, blog metadata not updated
+- **Copy failures**: Silently caught, blog metadata not updated
+- **State read/write errors**: Propagate (critical path)
+- **Missing blog_id**: Early exit with sys.exit(0) (silent failure)
+
+### Integration Points
+- **State utilities**: Uses read_state(), write_state(), increment_sequence_id()
+- **Blog directory structure**: Assumes .blog/{blog_id}/transcripts/ exists (created by user_prompt_submit.py)
+- **Metadata schema**: Extends BlogMetadata with transcript_path field
+
+### Testing Acceptance Criteria
+```bash
+# Setup: Create test blog and transcript
+echo '{"sessionId": "ses_test", "prompt": "#blog test"}' | uv run ./hooks/user_prompt_submit.py
+echo '{"type":"user","timestamp":"2026-01-29","content":"test"}' > ~/.claude/transcripts/ses_test.jsonl
+
+# Test Stop hook
+echo '{"sessionId": "ses_test", "transcriptPath": "~/.claude/transcripts/ses_test.jsonl"}' | uv run ./hooks/stop.py
+
+# Verify transcript copied
+test -f .blog/blog-*/transcripts/001-*.jsonl
+echo $?  # Should be 0
+```
+
+### Lessons Learned
+1. **Graceful degradation**: Missing transcript files don't break the hook
+2. **Atomic writes**: State updates use existing atomic write pattern
+3. **Naming conventions**: Support both camelCase (Claude Code) and snake_case
+4. **Silent failures**: Hook protocol expects exit 0 even on errors
+5. **Sequence management**: Increment before use to ensure unique IDs
+

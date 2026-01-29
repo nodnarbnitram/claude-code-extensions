@@ -19,6 +19,9 @@
     ],
     "UserPromptSubmit": [
       "./hooks/user_prompt_submit.py"
+    ],
+    "Stop": [
+      "./hooks/stop.py"
     ]
   }
 }
