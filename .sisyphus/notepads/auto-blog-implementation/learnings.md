@@ -1322,3 +1322,37 @@ class NoteMetadata(TypedDict):
 - Replaces placeholders with actual image paths
 - Tracks pending vs captured images
 
+
+## [2026-01-29 06:54] Tasks 12.1-12.3: Plugin Configuration
+
+### Implementation Summary
+- Created settings.json with all hook registrations and timeouts
+- Created comprehensive README.md with usage documentation
+
+### settings.json Structure
+- **SessionStart**: 5s timeout
+- **UserPromptSubmit**: 2s timeout
+- **Stop**: 5s timeout
+- **SessionEnd**: 10s timeout
+- Uses `${CLAUDE_PLUGIN_ROOT:-$CLAUDE_PROJECT_DIR}` for path resolution
+- All hooks use `uv run` for zero-config Python execution
+
+### README.md Sections
+1. **Overview**: Features and capabilities
+2. **Installation**: Step-by-step setup
+3. **Quick Start**: 5-step workflow (start, work, stop, compose, manage images)
+4. **Command Reference**: All commands with descriptions
+5. **Directory Structure**: File organization
+6. **How It Works**: Hook system, note capture, draft composition
+7. **Configuration**: Timeouts, triggers, note format
+8. **Troubleshooting**: Common issues and solutions
+9. **Advanced Usage**: Customization and state management
+10. **Development**: Testing and extending
+
+### Key Documentation Points
+- Clear quick start workflow
+- Complete command reference table
+- Directory structure visualization
+- Troubleshooting section for common issues
+- Advanced usage for power users
+

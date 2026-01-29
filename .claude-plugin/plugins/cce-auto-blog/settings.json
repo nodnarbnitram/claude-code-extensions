@@ -1,0 +1,52 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uv run ${CLAUDE_PLUGIN_ROOT:-$CLAUDE_PROJECT_DIR}/.claude-plugin/plugins/cce-auto-blog/hooks/session_start.py",
+            "timeout": 5000
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uv run ${CLAUDE_PLUGIN_ROOT:-$CLAUDE_PROJECT_DIR}/.claude-plugin/plugins/cce-auto-blog/hooks/user_prompt_submit.py",
+            "timeout": 2000
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uv run ${CLAUDE_PLUGIN_ROOT:-$CLAUDE_PROJECT_DIR}/.claude-plugin/plugins/cce-auto-blog/hooks/stop.py",
+            "timeout": 5000
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uv run ${CLAUDE_PLUGIN_ROOT:-$CLAUDE_PROJECT_DIR}/.claude-plugin/plugins/cce-auto-blog/hooks/session_end.py",
+            "timeout": 10000
+          }
+        ]
+      }
+    ]
+  }
+}
