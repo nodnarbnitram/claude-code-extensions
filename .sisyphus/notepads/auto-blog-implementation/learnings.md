@@ -1266,3 +1266,33 @@ class NoteMetadata(TypedDict):
 - Uses `state.py` utilities: `read_state()`, `get_next_sequence_id()`, `increment_sequence_id()`
 - Invoked by Stop/SessionEnd/PreCompact hooks via background agent
 
+
+## [2026-01-29 06:48] Tasks 10.1-10.8: Blog Draft Composer Skill Documentation
+
+### Implementation Approach
+- Created comprehensive SKILL.md for blog-draft-composer skill
+- Documented all 8 required aspects in single file
+
+### Key Sections Documented
+
+1. **Compose Command Workflow** (10.2): "write blog draft" and "compose blog" commands
+2. **Draft Structure Template** (10.3): 8-section template (Title, Hero, Intro, Problem, Solution, Results, Lessons, Conclusion)
+3. **Reading from Notes/Transcripts** (10.4): Source priority (notes primary, transcripts reference)
+4. **Code Block Formatting** (10.5): Language tags, context before code, working code only
+5. **Image Placeholder Insertion** (10.6): Hero image, step screenshots, placeholder syntax
+6. **Review Notes Mode** (10.7): Review and curate notes before composing, exclusion support
+7. **Iterative Refinement** (10.8): Expand sections, add sections, refine code, adjust tone
+
+### Design Patterns
+- **Structured output**: Consistent 8-section blog template
+- **Source hierarchy**: Notes for structure, transcripts for detail
+- **Working code only**: Filter out failed attempts
+- **Iterative refinement**: Support post-composition edits
+- **Draft versioning**: v1, v2, v3... for each refinement
+
+### Integration Points
+- Uses `notes.py` utilities: `list_notes()`, `get_note()`
+- Uses `state.py` utilities: `read_state()`
+- Saves drafts to `.blog/{blog-id}/drafts/draft-v{N}.mdx`
+- User-triggered (not background process)
+
