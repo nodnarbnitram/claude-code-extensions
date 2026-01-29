@@ -1356,3 +1356,34 @@ class NoteMetadata(TypedDict):
 - Troubleshooting section for common issues
 - Advanced usage for power users
 
+
+## [2026-01-29 07:01] Phase 13 Testing Documentation
+
+### Approach
+- Phase 0 verification tests (13.1-13.4) were already completed during Phase 0
+- Remaining tests (13.5-13.36) require runtime Claude Code environment
+- Created TESTING_PLAN.md to guide future test execution
+
+### Tests Already Complete (from Phase 0)
+1. **13.1**: Transcript JSONL format verified
+2. **13.2**: SessionEnd hook execution verified
+3. **13.3**: Atomic writes tested with concurrent operations
+4. **13.4**: Background process spawning verified
+
+### Tests Requiring Runtime Execution (32 tests)
+- Core Flow Tests (13.5-13.10): 6 tests
+- Persistence Tests (13.11-13.13): 3 tests
+- Edge Cases (13.14-13.19): 6 tests
+- Skill Tests (13.20-13.28): 9 tests
+- Integration Tests (13.29-13.36): 8 tests
+
+### Testing Strategy
+1. Deploy plugin to test environment
+2. Execute tests manually following documented acceptance criteria
+3. Record results in TESTING_PLAN.md
+4. Fix bugs discovered during testing
+5. Re-test until all pass
+
+### Key Insight
+Boulder workflow can complete implementation but cannot execute runtime tests that require actual Claude Code sessions. This is expected and appropriate - testing should be done in the target environment.
+

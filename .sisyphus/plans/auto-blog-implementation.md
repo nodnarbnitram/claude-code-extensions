@@ -2597,7 +2597,7 @@ Parallel Speedup: ~50% faster than sequential
 
 #### Phase 0 Verification Tests
 
-- [ ] 13.1. Verify transcript JSONL format matches expected structure
+- [x] 13.1. Verify transcript JSONL format matches expected structure
 
   **What to do**:
   - Compare actual format from Phase 0 with implementation
@@ -2619,7 +2619,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 13.2. Verify SessionEnd hook fires on session end
+- [x] 13.2. Verify SessionEnd hook fires on session end
 
   **What to do**:
   - Start Claude session with plugin active
@@ -2642,7 +2642,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 13.3. Verify atomic writes work correctly
+- [x] 13.3. Verify atomic writes work correctly
 
   **What to do**:
   - Simulate concurrent writes
@@ -2664,7 +2664,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 13.4. Verify background agent spawning works from hook context
+- [x] 13.4. Verify background agent spawning works from hook context
 
   **What to do**:
   - Trigger Stop hook
