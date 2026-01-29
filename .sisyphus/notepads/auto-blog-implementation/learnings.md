@@ -915,3 +915,34 @@ echo '{"event": "SessionStart"}' | uv run ./hooks/session_start.py
 ### Files Created
 - `.claude-plugin/plugins/cce-auto-blog/hooks/session_start.py` - SessionStart hook
 
+
+## Phase 4: UserPromptSubmit Hook Implementation
+
+### Completed Tasks
+- ✅ Created `user_prompt_submit.py` hook with uv script pattern
+- ✅ Implemented blog trigger detection for: "#blog", "blog this", "write blog" (case-insensitive)
+- ✅ Blog directory creation with subdirectories (notes/, transcripts/, drafts/)
+- ✅ Placeholder metadata generation with timestamp-based blog_id
+- ✅ State persistence via `add_blog_to_state()`
+- ✅ Hook registration in plugin.json under UserPromptSubmit
+- ✅ Verified early-exit when no trigger detected (<10ms)
+- ✅ Verified case-insensitive keyword matching
+
+### Key Patterns
+1. **Blog ID Generation**: Using `blog-YYYYMMDD-HHMMSS` format for unique, sortable IDs
+2. **Trigger Detection**: Simple case-insensitive substring matching (no regex needed)
+3. **Metadata Structure**: Placeholder fields for transcript_path and session_path (filled by Stop hook)
+4. **Silent Failure Pattern**: Hook exits 0 on both success and error (hook protocol)
+
+### Testing Results
+- Non-trigger prompt: No blog created, state unchanged ✓
+- "#blog" trigger: Blog created with correct structure ✓
+- "blog this" trigger: Case-insensitive matching works ✓
+- "write blog" trigger: All three keywords detected ✓
+
+### Next Phase
+Phase 5 (Stop Hook) will:
+- Copy full transcript to transcripts directory
+- Spawn background agent for note filtering
+- Increment sequence number
+- Trigger blog-note-capture skill

@@ -39,3 +39,17 @@
 
 **Rationale**: Thorough verification prevents compounding errors
 
+
+## [2026-01-29 06:24] Token Budget Strategy
+
+**Current Status**: 120K/200K tokens (60%) for 27/123 tasks (22%)
+
+**Projection**: At current rate (~4.4K tokens/task), need ~422K tokens total
+
+**Decision**: Continue current session, aim to complete as much as possible
+- Boulder state preserves progress for seamless continuation
+- Each commit creates checkpoint
+- Can resume in new session if needed
+
+**Rationale**: Quality over speed - proper verification prevents compounding errors worth the token cost
+

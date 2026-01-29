@@ -16,6 +16,9 @@
   "hooks": {
     "SessionStart": [
       "./hooks/session_start.py"
+    ],
+    "UserPromptSubmit": [
+      "./hooks/user_prompt_submit.py"
     ]
   }
 }
