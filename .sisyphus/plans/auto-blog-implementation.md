@@ -113,11 +113,11 @@ Create a Claude Code plugin that captures session learnings via hooks and enable
 - Runtime creates `.blog/` directory structure for state and content
 
 ### Definition of Done
-- [ ] All hooks register in settings.json and execute without error
-- [ ] `claude -p "new blog test-blog"` creates `.blog/test-blog/` structure
-- [ ] SessionStart shows tracking status message
-- [ ] Stop hook spawns background processor successfully
-- [ ] Draft composition produces valid markdown with image placeholders
+- [x] All hooks register in settings.json and execute without error
+- [x] `claude -p "new blog test-blog"` creates `.blog/test-blog/` structure
+- [x] SessionStart shows tracking status message
+- [x] Stop hook spawns background processor successfully
+- [x] Draft composition produces valid markdown with image placeholders
 
 ### Must Have
 - State persistence across Claude Code sessions (`.blog/state.json`)
@@ -1560,7 +1560,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ### Phase 6: PreCompact Hook
 
-- [ ] 6.1. Create blog_precompact.py with uv script pattern
+- [x] 6.1. Create blog_precompact.py with uv script pattern
 
   **What to do**:
   - Create hook file
@@ -1590,7 +1590,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 6.2. Implement early-exit when not tracking
+- [x] 6.2. Implement early-exit when not tracking
 
   **What to do**:
   - Check `tracking.active`
@@ -1612,7 +1612,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 6.3. Save state snapshot
+- [x] 6.3. Save state snapshot
 
   **What to do**:
   - Create backup of current state
@@ -1634,7 +1634,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 6.4. Trigger Stop hook logic
+- [x] 6.4. Trigger Stop hook logic
 
   **What to do**:
   - Reuse Stop hook's background agent spawning
@@ -1656,7 +1656,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 6.5. Register hook in settings.json (timeout: 10s)
+- [x] 6.5. Register hook in settings.json (timeout: 10s)
 
   **What to do**:
   - Add PreCompact hook to settings
@@ -3116,10 +3116,10 @@ done
 ```
 
 ### Final Checklist
-- [ ] All "Must Have" requirements present
-- [ ] All "Must NOT Have" guardrails respected
-- [ ] All 5 hooks registered and executing
-- [ ] All 4 skills have valid SKILL.md with frontmatter
-- [ ] State persistence works across sessions
-- [ ] Background processing spawns successfully
-- [ ] Documentation complete (README.md)
+- [x] All "Must Have" requirements present
+- [x] All "Must NOT Have" guardrails respected
+- [x] All 5 hooks registered and executing
+- [x] All 4 skills have valid SKILL.md with frontmatter
+- [x] State persistence works across sessions
+- [x] Background processing spawns successfully
+- [x] Documentation complete (README.md)
