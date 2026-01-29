@@ -699,3 +699,79 @@ Added TypedDict schemas to `.claude-plugin/plugins/cce-auto-blog/hooks/utils/sta
 
 **Impact on Auto-Blog**: If session files are only written at SessionEnd, we can capture them in the SessionEnd hook!
 
+
+## [2026-01-29 06:16] CRITICAL: Assistant Messages ARE Available Via API!
+
+**Source**: https://github.com/code-yeongyu/oh-my-opencode/blob/dev/src/hooks/claude-code-hooks/transcript.ts
+
+**KEY FINDINGS**:
+
+### 1. Two Transcript Systems:
+
+**A) Simple Transcript** (`~/.claude/transcripts/{sessionId}.jsonl`):
+- Written via `appendTranscriptEntry()` by hooks
+- Has functions for: `recordUserMessage`, `recordToolUse`, `recordToolResult`, `recordAssistantMessage`
+- **BUT** hooks may not be calling `recordAssistantMessage()` (which is why we don't see assistant entries)
+
+**B) Session Messages API** (`client.session.messages()`):
+- Fetches FULL session history from API
+- Returns assistant messages with this structure:
+  ```typescript
+  {
+    type: "assistant",
+    message: {
+      role: "assistant",
+      content: [{
+        type: "tool_use",
+        name: string,
+        input: Record<string, unknown>
+      }]
+    }
+  }
+  ```
+
+### 2. The Solution: `buildTranscriptFromSession()`
+
+This function shows HOW to fetch assistant messages:
+```typescript
+const response = await client.session.messages({
+  path: { id: sessionId },
+  query: { directory }
+})
+```
+
+**Implication for Auto-Blog**:
+- We CAN get assistant messages!
+- Need to use OpenCode client API: `client.session.messages()`
+- This returns the full conversation including assistant responses
+- We can call this from SessionEnd hook to capture everything
+
+**Action Required**: Implement API-based session fetching in Phase 3+
+
+
+## Task 2.3: read_state() and write_state() Implementation (2025-01-29)
+
+### Implementation Details
+- **read_state()**: Returns BlogState from `.blog/state.json`, creates default `{next_sequence_id: 1, blogs: {}}` on first-run
+- **write_state()**: Uses atomic write pattern with tempfile + os.replace() to prevent corruption
+- Both functions use lazy imports (inside function bodies) to avoid unused import warnings
+
+### Key Patterns
+1. **Atomic Write Pattern**: tempfile.NamedTemporaryFile() in target directory + os.replace() ensures no partial writes
+2. **First-Run Handling**: read_state() gracefully creates default state if file missing
+3. **Error Resilience**: JSON parse errors return default state instead of crashing
+4. **Type Safety**: Full BlogState TypedDict typing for IDE support
+
+### Testing Results
+✅ First-run creates default state
+✅ write_state() persists modifications
+✅ read_state() loads persisted state correctly
+✅ Atomic write creates properly formatted JSON (indent=2)
+✅ All linting checks pass (no unused imports)
+
+### Files Modified
+- `.claude-plugin/plugins/cce-auto-blog/hooks/utils/state.py`: Added read_state() and write_state()
+
+### Next Steps
+- Task 2.4: Implement blog_id generation (sequence-based)
+- Task 2.5: Implement add_blog() function
