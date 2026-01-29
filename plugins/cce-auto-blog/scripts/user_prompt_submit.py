@@ -120,7 +120,9 @@ def main():
         # Add blog to state
         add_blog_to_state(blog_id, metadata)
 
-        # Silent success
+        print(f"Started tracking blog: {metadata['title']}")
+        print(f"Blog ID: {blog_id}")
+
         sys.exit(0)
 
     except Exception:

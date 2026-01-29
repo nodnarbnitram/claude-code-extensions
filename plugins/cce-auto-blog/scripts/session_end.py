@@ -58,7 +58,8 @@ def main():
         # Update blog status to "captured"
         update_blog_status(blog_id, "captured")
 
-        # Silent success
+        print(f"Blog session captured: {blog_id}")
+
         sys.exit(0)
 
     except Exception:

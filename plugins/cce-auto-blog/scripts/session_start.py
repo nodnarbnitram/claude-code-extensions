@@ -26,7 +26,8 @@ def main():
         state = read_state()
         write_state(state)
 
-        # Silent success
+        print("Blog tracking available. Use #blog to start tracking.")
+
         sys.exit(0)
     except Exception:
         # Silent failure - hook protocol pattern
