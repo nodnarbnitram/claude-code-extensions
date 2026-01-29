@@ -1296,3 +1296,29 @@ class NoteMetadata(TypedDict):
 - Saves drafts to `.blog/{blog-id}/drafts/draft-v{N}.mdx`
 - User-triggered (not background process)
 
+
+## [2026-01-29 06:52] Tasks 11.1-11.6: Blog Image Manager Skill Documentation
+
+### Implementation Approach
+- Created comprehensive SKILL.md for blog-image-manager skill
+- Documented all 6 required aspects (11.2-11.6 grouped with 11.1)
+
+### Key Sections Documented
+
+1. **Screenshot Prompt Format** (11.2): Checklist format with clear guidelines
+2. **AI Image Prompt Format** (11.3): Subject + Style + Color + Mood + Details structure
+3. **Placeholder Syntax** (11.4): `<!-- SCREENSHOT: ... -->` and `<!-- IMAGE: ... -->`
+4. **List Pending Images** (11.5): Scan draft and list all placeholders
+5. **Mark Image Captured** (11.6): Replace placeholder with actual path
+
+### Design Patterns
+- **Clear prompts**: Specific, actionable screenshot descriptions
+- **Structured AI prompts**: Consistent format for image generation
+- **Batch operations**: Support marking multiple images at once
+- **Path conventions**: Relative paths preferred, descriptive filenames
+
+### Integration Points
+- Scans draft files for image placeholders
+- Replaces placeholders with actual image paths
+- Tracks pending vs captured images
+
