@@ -13,18 +13,5 @@
   "agents": [],
   "skills": [],
   "commands": [],
-  "hooks": {
-    "SessionStart": [
-      "./hooks/session_start.py"
-    ],
-    "UserPromptSubmit": [
-      "./hooks/user_prompt_submit.py"
-    ],
-    "Stop": [
-      "./hooks/stop.py"
-    ],
-    "SessionEnd": [
-      "./hooks/session_end.py"
-    ]
-  }
+  "hooks": "./hooks/hooks.json"
 }

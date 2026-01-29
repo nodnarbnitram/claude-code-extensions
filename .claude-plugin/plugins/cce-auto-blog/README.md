@@ -33,7 +33,7 @@ The Auto-Blog plugin transforms your Claude Code conversations into structured b
 3. **Verify installation**:
    ```bash
    ls ~/.claude/plugins/cce-auto-blog
-   # Should show: hooks/, skills/, docs/, plugin.json, settings.json
+   # Should show: .claude-plugin/, hooks/, scripts/, skills/, docs/
    ```
 
 ## Quick Start
@@ -180,6 +180,34 @@ Remaining: 6 pending images
         └── hero-image.png
 ```
 
+## Plugin Structure
+
+This plugin follows the standard Claude Code plugin layout:
+
+```
+cce-auto-blog/
+├── .claude-plugin/
+│   └── plugin.json           # Plugin manifest (references hooks/hooks.json)
+├── hooks/
+│   └── hooks.json            # Hook configuration (event → command mapping)
+├── scripts/                  # Hook implementation scripts
+│   ├── session_start.py
+│   ├── session_end.py
+│   ├── stop.py
+│   ├── user_prompt_submit.py
+│   └── utils/
+│       ├── state.py          # Blog state management
+│       └── notes.py          # Note parsing utilities
+├── skills/                   # Model-invoked capabilities
+│   ├── blog-session-manager/
+│   ├── blog-note-capture/
+│   ├── blog-draft-composer/
+│   └── blog-image-manager/
+├── docs/
+│   └── transcript-schema.md
+└── README.md
+```
+
 ## How It Works
 
 ### 1. Hook System
@@ -214,11 +242,11 @@ When you request a draft:
 
 ### Hook Timeouts
 
-Configured in `settings.json`:
-- **SessionStart**: 5s
-- **UserPromptSubmit**: 2s
-- **Stop**: 5s
-- **SessionEnd**: 10s
+Configured in `hooks/hooks.json`:
+- **SessionStart**: 5000ms
+- **UserPromptSubmit**: 2000ms
+- **Stop**: 5000ms
+- **SessionEnd**: 10000ms
 
 ### Blog Triggers
 
@@ -315,20 +343,20 @@ cp .blog/state.json .blog/state.backup.json
 
 ```bash
 # Test hooks individually
-echo '{"event": "SessionStart"}' | uv run ./hooks/session_start.py
+echo '{"event": "SessionStart"}' | uv run ./scripts/session_start.py
 
 # Test state management
-python3 -c "from hooks.utils.state import read_state; print(read_state())"
+python3 -c "from scripts.utils.state import read_state; print(read_state())"
 
 # Test note parsing
-python3 -c "from hooks.utils.notes import parse_note; print(parse_note('# Title\nBody'))"
+python3 -c "from scripts.utils.notes import parse_note; print(parse_note('# Title\nBody'))"
 ```
 
 ### Adding New Hooks
 
-1. Create hook script in `hooks/`
-2. Register in `plugin.json` and `settings.json`
-3. Set appropriate timeout
+1. Create hook script in `scripts/`
+2. Register in `hooks/hooks.json` with command: `uv run ${CLAUDE_PLUGIN_ROOT}/scripts/your_script.py`
+3. Set appropriate timeout in milliseconds
 4. Test with sample JSON input
 
 ### Extending Skills

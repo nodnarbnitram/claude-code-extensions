@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "uv run ${CLAUDE_PLUGIN_ROOT:-$CLAUDE_PROJECT_DIR}/.claude-plugin/plugins/cce-auto-blog/hooks/session_start.py",
+            "command": "uv run ${CLAUDE_PLUGIN_ROOT}/scripts/session_start.py",
             "timeout": 5000
           }
         ]
@@ -18,7 +18,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "uv run ${CLAUDE_PLUGIN_ROOT:-$CLAUDE_PROJECT_DIR}/.claude-plugin/plugins/cce-auto-blog/hooks/user_prompt_submit.py",
+            "command": "uv run ${CLAUDE_PLUGIN_ROOT}/scripts/user_prompt_submit.py",
             "timeout": 2000
           }
         ]
@@ -30,7 +30,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "uv run ${CLAUDE_PLUGIN_ROOT:-$CLAUDE_PROJECT_DIR}/.claude-plugin/plugins/cce-auto-blog/hooks/stop.py",
+            "command": "uv run ${CLAUDE_PLUGIN_ROOT}/scripts/stop.py",
             "timeout": 5000
           }
         ]
@@ -42,7 +42,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "uv run ${CLAUDE_PLUGIN_ROOT:-$CLAUDE_PROJECT_DIR}/.claude-plugin/plugins/cce-auto-blog/hooks/session_end.py",
+            "command": "uv run ${CLAUDE_PLUGIN_ROOT}/scripts/session_end.py",
             "timeout": 10000
           }
         ]
