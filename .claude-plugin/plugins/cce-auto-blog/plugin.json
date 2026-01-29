@@ -13,5 +13,9 @@
   "agents": [],
   "skills": [],
   "commands": [],
-  "hooks": ""
+  "hooks": {
+    "SessionStart": [
+      "./hooks/session_start.py"
+    ]
+  }
 }
