@@ -1096,3 +1096,26 @@ echo $?  # Should be 0
 4. **Silent failures**: Hook protocol expects exit 0 even on errors
 5. **Sequence management**: Increment before use to ensure unique IDs
 
+
+## SessionEnd Hook Implementation (Phase 6)
+
+### Pattern Reuse
+- Extracted `find_blog_by_session_id()` from Stop hook - consistent session lookup
+- Used `update_blog_status()` from state utilities - atomic status updates
+- Followed hook protocol: read stdin JSON, silent success/failure pattern
+
+### Key Implementation Details
+1. **Session ID Extraction**: Handles both camelCase (sessionId) and snake_case (session_id)
+2. **Blog Lookup**: Iterates state["blogs"] to find matching session_id
+3. **Status Update**: Uses atomic write pattern via update_blog_status()
+4. **Hook Registration**: Added to plugin.json under "SessionEnd" key
+
+### Testing Verified
+- Blog creation via UserPromptSubmit with session_id
+- Status transition: draft → captured via SessionEnd hook
+- Silent failure handling for missing sessions
+
+### Code Quality
+- Minimal dependencies (only json, sys, pathlib)
+- Graceful error handling (silent exit on missing blog)
+- Consistent with existing hook patterns

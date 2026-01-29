@@ -22,6 +22,9 @@
     ],
     "Stop": [
       "./hooks/stop.py"
+    ],
+    "SessionEnd": [
+      "./hooks/session_end.py"
     ]
   }
 }
