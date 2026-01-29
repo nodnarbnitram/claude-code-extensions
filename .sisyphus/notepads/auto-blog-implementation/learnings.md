@@ -1236,3 +1236,33 @@ class NoteMetadata(TypedDict):
 - Clarified limitations (one blog per session)
 - Provided clear examples for each workflow
 
+
+## [2026-01-29 06:45] Tasks 9.1-9.10: Blog Note Capture Skill Documentation
+
+### Implementation Approach
+- Created comprehensive SKILL.md for blog-note-capture skill
+- Documented all 10 required aspects in single file
+
+### Key Sections Documented
+
+1. **Invocation Context** (9.2): Background agent invocation, not user-triggered
+2. **Smart Filtering Logic** (9.3): Filter OUT noise, KEEP signal with heuristics
+3. **MDX Note Format** (9.4): Frontmatter fields and body structure
+4. **Body Sections** (9.5): 6 sections (Prompts, Work Done, Key Learnings, Code Highlights, Screenshot Opportunities, Image Prompts)
+5. **Title Generation** (9.6): Accomplishment-based, not attempt-based
+6. **File Naming Convention** (9.7): `{seq:03d}-{YYYY-MM-DD}-{HHMM}.mdx`
+7. **Fallback Behavior** (9.8): Minimal note + raw transcript link if filtering fails
+8. **Screenshot Detection** (9.9): UI-related work detection heuristics
+9. **AI Image Prompts** (9.10): DALL-E/Midjourney prompt structure and examples
+
+### Design Patterns
+- **Outcome-focused filtering**: Prioritize what WORKED, not what was tried
+- **Never lose data**: Fallback to minimal note + transcript reference
+- **Structured output**: Consistent MDX format with frontmatter
+- **Visual content**: Screenshot opportunities + AI image prompts
+
+### Integration Points
+- Uses `notes.py` utilities: `save_note()`, `parse_note()`
+- Uses `state.py` utilities: `read_state()`, `get_next_sequence_id()`, `increment_sequence_id()`
+- Invoked by Stop/SessionEnd/PreCompact hooks via background agent
+
