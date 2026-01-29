@@ -239,7 +239,7 @@ Parallel Speedup: ~50% faster than sequential
 
 > **MUST COMPLETE BEFORE ANY IMPLEMENTATION** - Verify assumptions from design phase
 
-- [ ] 0.1. Verify transcript JSONL format matches documented schema
+- [x] 0.1. Verify transcript JSONL format matches documented schema
 
   **What to do**:
   - Find a recent transcript file at `~/.claude/transcripts/{sessionId}.jsonl`
@@ -290,7 +290,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 0.2. Document transcript field structure
+- [x] 0.2. Document transcript field structure
 
   **What to do**:
   - Create a reference document with transcript schema
@@ -318,7 +318,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 0.3. Verify SessionEnd hook fires correctly
+- [x] 0.3. Verify SessionEnd hook fires correctly
 
   **What to do**:
   - Create a minimal test hook that writes to a log file
@@ -350,7 +350,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 0.4. Test atomic writes implementation
+- [x] 0.4. Test atomic writes implementation
 
   **What to do**:
   - Write a test script that performs atomic write (temp file + os.replace)
@@ -388,7 +388,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 0.5. Benchmark transcript parsing time on ~1MB transcript
+- [x] 0.5. Benchmark transcript parsing time on ~1MB transcript
 
   **What to do**:
   - Find or create a large transcript file (~1MB)
@@ -421,7 +421,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 0.6. Verify CLI background process spawning works
+- [x] 0.6. Verify CLI background process spawning works
 
   **What to do**:
   - Test spawning `claude -p` or `opencode run` as detached subprocess
@@ -462,7 +462,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 0.7. GO/NO-GO DECISION: Document any format adjustments needed
+- [x] 0.7. GO/NO-GO DECISION: Document any format adjustments needed
 
   **What to do**:
   - Review findings from 0.1-0.6
@@ -492,7 +492,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ### Phase 1: Project Setup
 
-- [ ] 1.1. Create plugin directory structure
+- [x] 1.1. Create plugin directory structure
 
   **What to do**:
   - Create `.claude-plugin/plugins/cce-auto-blog/` directory
@@ -519,7 +519,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 1.2. Create plugin.json manifest
+- [x] 1.2. Create plugin.json manifest
 
   **What to do**:
   - Create plugin manifest following cce-core pattern
@@ -548,7 +548,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 1.3. Create hooks directory with __init__.py
+- [x] 1.3. Create hooks directory with __init__.py
 
   **What to do**:
   - Create `hooks/` directory
@@ -573,7 +573,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 1.4. Create blog-session-manager skill directory
+- [x] 1.4. Create blog-session-manager skill directory
 
   **What to do**:
   - Create `skills/blog-session-manager/` directory
@@ -596,7 +596,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 1.5. Create blog-note-capture skill directory
+- [x] 1.5. Create blog-note-capture skill directory
 
   **What to do**:
   - Create `skills/blog-note-capture/` directory
@@ -619,7 +619,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 1.6. Create blog-draft-composer skill directory
+- [x] 1.6. Create blog-draft-composer skill directory
 
   **What to do**:
   - Create `skills/blog-draft-composer/` directory
@@ -642,7 +642,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 1.7. Create blog-image-manager skill directory
+- [x] 1.7. Create blog-image-manager skill directory
 
   **What to do**:
   - Create `skills/blog-image-manager/` directory
@@ -667,7 +667,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ### Phase 2: State Management
 
-- [ ] 2.1. Create .blog/ directory initialization logic
+- [x] 2.1. Create .blog/ directory initialization logic
 
   **What to do**:
   - Create utility function to ensure `.blog/` directory exists
@@ -702,7 +702,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 2.2. Implement state.json schema
+- [x] 2.2. Implement state.json schema
 
   **What to do**:
   - Define state.json structure with tracking object and blogs array
@@ -727,7 +727,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 2.3. Create state read/write utilities with atomic writes
+- [x] 2.3. Create state read/write utilities with atomic writes
 
   **What to do**:
   - Implement `read_state()` function
@@ -763,7 +763,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 2.4. Implement automatic backup on every write
+- [x] 2.4. Implement automatic backup on every write
 
   **What to do**:
   - Before writing state.json, copy current to state.json.bak
@@ -789,7 +789,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 2.5. Implement recovery from backup
+- [x] 2.5. Implement recovery from backup
 
   **What to do**:
   - If state.json is corrupted (invalid JSON), restore from state.json.bak
@@ -816,7 +816,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 2.6. Implement blog directory creation
+- [x] 2.6. Implement blog directory creation
 
   **What to do**:
   - Create function to initialize blog directory structure
@@ -841,7 +841,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 2.7. Create shared utility module
+- [x] 2.7. Create shared utility module
 
   **What to do**:
   - Create `.claude-plugin/plugins/cce-auto-blog/hooks/utils/state.py`
@@ -866,7 +866,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 2.8. Implement sequence number management
+- [x] 2.8. Implement sequence number management
 
   **What to do**:
   - `get_next_sequence(blog_name)`: Return next sequence number
@@ -895,7 +895,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 2.9. Implement transcript path caching
+- [x] 2.9. Implement transcript path caching
 
   **What to do**:
   - Cache transcript path on SessionStart (workaround for stale path bug)
@@ -925,7 +925,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ### Phase 3: SessionStart Hook
 
-- [ ] 3.1. Create blog_session_start.py with uv script pattern
+- [x] 3.1. Create blog_session_start.py with uv script pattern
 
   **What to do**:
   - Create hook file with proper shebang and dependencies
@@ -955,7 +955,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 3.2. Check tracking.active in state.json
+- [x] 3.2. Check tracking.active in state.json
 
   **What to do**:
   - Read state.json on hook invocation
@@ -978,7 +978,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 3.3. Inject context when tracking active
+- [x] 3.3. Inject context when tracking active
 
   **What to do**:
   - If `tracking.active = true`: inject "📝 Still tracking '[name]'. Continue? (say 'stop tracking' to end)"
@@ -1007,7 +1007,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 3.4. Inject context when blogs exist but not tracking
+- [x] 3.4. Inject context when blogs exist but not tracking
 
   **What to do**:
   - If `tracking.active = false` and `blogs.length > 0`:
@@ -1030,7 +1030,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 3.5. Inject context when no blogs exist
+- [x] 3.5. Inject context when no blogs exist
 
   **What to do**:
   - If no blogs and not tracking:
@@ -1052,7 +1052,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 3.6. Cache transcript path in state
+- [x] 3.6. Cache transcript path in state
 
   **What to do**:
   - Extract `transcript_path` from hook input
@@ -1077,7 +1077,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 3.7. Register hook in settings.json
+- [x] 3.7. Register hook in settings.json
 
   **What to do**:
   - Add SessionStart hook to plugin's settings configuration
@@ -1105,7 +1105,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ### Phase 4: UserPromptSubmit Hook
 
-- [ ] 4.1. Create blog_prompt_capture.py with uv script pattern
+- [x] 4.1. Create blog_prompt_capture.py with uv script pattern
 
   **What to do**:
   - Create hook file following existing patterns
@@ -1135,7 +1135,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 4.2. Implement early-exit when not tracking
+- [x] 4.2. Implement early-exit when not tracking
 
   **What to do**:
   - Check `tracking.active` immediately
@@ -1161,7 +1161,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 4.3. Detect blog commands
+- [x] 4.3. Detect blog commands
 
   **What to do**:
   - Parse user prompt from hook input
@@ -1184,7 +1184,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 4.4. Handle "new blog [name]" command
+- [x] 4.4. Handle "new blog [name]" command
 
   **What to do**:
   - Validate kebab-case name
@@ -1212,7 +1212,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 4.5. Handle "track notes for [blog]" command
+- [x] 4.5. Handle "track notes for [blog]" command
 
   **What to do**:
   - Verify blog exists
@@ -1236,7 +1236,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 4.6. Handle "stop tracking" command
+- [x] 4.6. Handle "stop tracking" command
 
   **What to do**:
   - Set `tracking.active = false`
@@ -1262,7 +1262,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 4.7. Buffer prompt with timestamp
+- [x] 4.7. Buffer prompt with timestamp
 
   **What to do**:
   - If tracking active, save prompt to temp buffer file
@@ -1289,7 +1289,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 4.8. Register hook in settings.json (timeout: 2s)
+- [x] 4.8. Register hook in settings.json (timeout: 2s)
 
   **What to do**:
   - Add UserPromptSubmit hook to settings
@@ -1313,7 +1313,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ### Phase 5: Stop Hook (Background Agent Filtering)
 
-- [ ] 5.1. Create blog_stop_capture.py with uv script pattern
+- [x] 5.1. Create blog_stop_capture.py with uv script pattern
 
   **What to do**:
   - Create hook file
@@ -1343,7 +1343,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 5.2. Implement early-exit when not tracking
+- [x] 5.2. Implement early-exit when not tracking
 
   **What to do**:
   - Check `tracking.active` immediately
@@ -1365,7 +1365,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 5.3. Get next sequence number from state
+- [x] 5.3. Get next sequence number from state
 
   **What to do**:
   - Call `get_next_sequence(blog_name)`
@@ -1387,7 +1387,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 5.4. Copy full transcript to transcripts directory
+- [x] 5.4. Copy full transcript to transcripts directory
 
   **What to do**:
   - Copy transcript from `transcript_path` to `.blog/<blog>/transcripts/{seq}-{date}-{time}.json`
@@ -1412,7 +1412,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 5.5. Collect buffered prompts from temp file
+- [x] 5.5. Collect buffered prompts from temp file
 
   **What to do**:
   - Read `.blog/.prompt_buffer`
@@ -1436,7 +1436,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 5.6. Spawn background CLI process for note filtering
+- [x] 5.6. Spawn background CLI process for note filtering
 
   **What to do**:
   - Detect CLI: `claude` or `opencode`
@@ -1471,7 +1471,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 5.7. Pass context to background agent
+- [x] 5.7. Pass context to background agent
 
   **What to do**:
   - Include in prompt: transcript path, buffered prompts, blog name, sequence number
@@ -1492,7 +1492,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 5.8. Return immediately (hook completes fast)
+- [x] 5.8. Return immediately (hook completes fast)
 
   **What to do**:
   - After spawning background process, exit 0 immediately
@@ -1514,7 +1514,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 5.9. Increment sequence number in state
+- [x] 5.9. Increment sequence number in state
 
   **What to do**:
   - Call `increment_sequence(blog_name)`
@@ -1536,7 +1536,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 5.10. Register hook in settings.json (timeout: 5s)
+- [x] 5.10. Register hook in settings.json (timeout: 5s)
 
   **What to do**:
   - Add Stop hook to settings
@@ -1679,7 +1679,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ### Phase 7: SessionEnd Hook
 
-- [ ] 7.1. Create blog_session_end.py with uv script pattern
+- [x] 7.1. Create blog_session_end.py with uv script pattern
 
   **What to do**:
   - Create hook file
@@ -1705,7 +1705,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 7.2. Implement early-exit when not tracking
+- [x] 7.2. Implement early-exit when not tracking
 
   **What to do**:
   - Check `tracking.active`
@@ -1727,7 +1727,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 7.3. Spawn background agent for final capture
+- [x] 7.3. Spawn background agent for final capture
 
   **What to do**:
   - Same as Stop hook logic
@@ -1749,7 +1749,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 7.4. Do NOT set tracking.active=false
+- [x] 7.4. Do NOT set tracking.active=false
 
   **What to do**:
   - Explicitly document that tracking persists across sessions
@@ -1771,7 +1771,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 7.5. Register hook in settings.json (timeout: 10s)
+- [x] 7.5. Register hook in settings.json (timeout: 10s)
 
   **What to do**:
   - Add SessionEnd hook to settings
@@ -1794,7 +1794,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ### Phase 8: Blog Session Manager Skill
 
-- [ ] 8.1. Create SKILL.md with frontmatter
+- [x] 8.1. Create SKILL.md with frontmatter
 
   **What to do**:
   - Create `skills/blog-session-manager/SKILL.md`
@@ -1825,7 +1825,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 8.2. Document "new blog [name]" workflow
+- [x] 8.2. Document "new blog [name]" workflow
 
   **What to do**:
   - Add instructions for creating new blog
@@ -1847,7 +1847,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 8.3. Document "track notes for [blog]" workflow
+- [x] 8.3. Document "track notes for [blog]" workflow
 
   **What to do**:
   - Add instructions for tracking existing blog
@@ -1868,7 +1868,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 8.4. Document "stop tracking" workflow
+- [x] 8.4. Document "stop tracking" workflow
 
   **What to do**:
   - Add instructions for stopping tracking
@@ -1890,7 +1890,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 8.5. Document "list blogs" workflow
+- [x] 8.5. Document "list blogs" workflow
 
   **What to do**:
   - Add instructions for listing blogs with status
@@ -1911,7 +1911,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 8.6. Add kebab-case validation guidance
+- [x] 8.6. Add kebab-case validation guidance
 
   **What to do**:
   - Document blog name validation rules
@@ -1933,7 +1933,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 8.7. Clarify one blog per session rule
+- [x] 8.7. Clarify one blog per session rule
 
   **What to do**:
   - Document that switching blogs requires "stop tracking" first
@@ -1956,7 +1956,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ### Phase 9: Blog Note Capture Skill
 
-- [ ] 9.1. Create SKILL.md with frontmatter
+- [x] 9.1. Create SKILL.md with frontmatter
 
   **What to do**:
   - Create skill file
@@ -1985,7 +1985,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 9.2. Document background agent invocation
+- [x] 9.2. Document background agent invocation
 
   **What to do**:
   - Explain this skill is called by Stop hook's background agent
@@ -2007,7 +2007,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 9.3. Document smart filtering logic
+- [x] 9.3. Document smart filtering logic
 
   **What to do**:
   - Filter OUT: file listings, typos, debugging loops, failed attempts
@@ -2029,7 +2029,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 9.4. Document MDX note format
+- [x] 9.4. Document MDX note format
 
   **What to do**:
   - Define frontmatter fields: title, date, sequence, blog, transcript
@@ -2051,7 +2051,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 9.5. Document section structure
+- [x] 9.5. Document section structure
 
   **What to do**:
   - Detail each section: Prompts, Work Done, Key Learnings, Code Highlights, Screenshot Opportunities, Image Prompts
@@ -2072,7 +2072,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 9.6. Document title generation
+- [x] 9.6. Document title generation
 
   **What to do**:
   - Generate title from ACCOMPLISHMENTS, not attempts
@@ -2094,7 +2094,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 9.7. Document file naming convention
+- [x] 9.7. Document file naming convention
 
   **What to do**:
   - Format: `{seq}-{YYYY-MM-DD}-{HHMM}.mdx`
@@ -2116,7 +2116,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 9.8. Document fallback behavior
+- [x] 9.8. Document fallback behavior
 
   **What to do**:
   - If filtering fails: save minimal note + raw transcript
@@ -2138,7 +2138,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 9.9. Document screenshot opportunity detection
+- [x] 9.9. Document screenshot opportunity detection
 
   **What to do**:
   - Detect UI-related tasks
@@ -2160,7 +2160,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 9.10. Document AI image prompt generation
+- [x] 9.10. Document AI image prompt generation
 
   **What to do**:
   - Generate DALL-E/Midjourney style prompts
@@ -2184,7 +2184,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ### Phase 10: Blog Draft Composer Skill
 
-- [ ] 10.1. Create SKILL.md with frontmatter
+- [x] 10.1. Create SKILL.md with frontmatter
 
   **What to do**:
   - Create skill with triggers: "write blog draft", "compose blog"
@@ -2212,7 +2212,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 10.2. Document compose command workflow
+- [x] 10.2. Document compose command workflow
 
   **What to do**:
   - "write blog draft" or "compose blog for [name]"
@@ -2234,7 +2234,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 10.3. Define draft structure template
+- [x] 10.3. Define draft structure template
 
   **What to do**:
   - Sections: Title, Hero Image, Introduction, The Problem, The Solution (steps), Results, Lessons Learned, Conclusion
@@ -2255,7 +2255,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 10.4. Document reading from notes and transcripts
+- [x] 10.4. Document reading from notes and transcripts
 
   **What to do**:
   - Read MDX summaries for structure
@@ -2277,7 +2277,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 10.5. Document code block formatting
+- [x] 10.5. Document code block formatting
 
   **What to do**:
   - Language tags (```yaml, ```python)
@@ -2300,7 +2300,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 10.6. Document image placeholder insertion
+- [x] 10.6. Document image placeholder insertion
 
   **What to do**:
   - Hero image after title
@@ -2323,7 +2323,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 10.7. Add "review notes" mode documentation
+- [x] 10.7. Add "review notes" mode documentation
 
   **What to do**:
   - Allow reviewing notes before composing
@@ -2345,7 +2345,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 10.8. Add iterative refinement commands
+- [x] 10.8. Add iterative refinement commands
 
   **What to do**:
   - "expand the Introduction"
@@ -2369,7 +2369,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ### Phase 11: Blog Image Manager Skill
 
-- [ ] 11.1. Create SKILL.md with frontmatter
+- [x] 11.1. Create SKILL.md with frontmatter
 
   **What to do**:
   - Create skill with triggers: "add image", "screenshot prompt"
@@ -2397,7 +2397,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 11.2. Document screenshot prompt format
+- [x] 11.2. Document screenshot prompt format
 
   **What to do**:
   - Clear instructions on what to capture
@@ -2419,7 +2419,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 11.3. Document AI image prompt format
+- [x] 11.3. Document AI image prompt format
 
   **What to do**:
   - Include: subject, style, color scheme, mood
@@ -2441,7 +2441,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 11.4. Define placeholder syntax
+- [x] 11.4. Define placeholder syntax
 
   **What to do**:
   - Screenshot: `![Desc](<!-- SCREENSHOT: detailed description -->)`
@@ -2463,7 +2463,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 11.5. Document "list pending images" command
+- [x] 11.5. Document "list pending images" command
 
   **What to do**:
   - Scan draft for placeholders
@@ -2485,7 +2485,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 11.6. Document "mark image captured" workflow
+- [x] 11.6. Document "mark image captured" workflow
 
   **What to do**:
   - User provides path to captured image
@@ -2509,7 +2509,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ### Phase 12: Plugin Configuration
 
-- [ ] 12.1. Create settings.json with all hook registrations
+- [x] 12.1. Create settings.json with all hook registrations
 
   **What to do**:
   - Consolidate all hooks into plugin's settings.json
@@ -2539,7 +2539,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 12.2. Configure hook timeouts
+- [x] 12.2. Configure hook timeouts
 
   **What to do**:
   - SessionStart: 5s
@@ -2564,7 +2564,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ---
 
-- [ ] 12.3. Create README.md with usage documentation
+- [x] 12.3. Create README.md with usage documentation
 
   **What to do**:
   - Installation instructions
