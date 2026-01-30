@@ -1,0 +1,17 @@
+{
+  "name": "cce-auto-blog",
+  "version": "0.1.0",
+  "description": "Automated blog generation and content management for Claude Code projects",
+  "author": {
+    "name": "Claude Code Extensions Contributors",
+    "url": "https://github.com/nodnarbnitram/claude-code-extensions"
+  },
+  "homepage": "https://github.com/nodnarbnitram/claude-code-extensions",
+  "repository": "https://github.com/nodnarbnitram/claude-code-extensions",
+  "license": "MIT",
+  "keywords": ["claude-code", "blog", "content", "automation", "documentation"],
+  "agents": [],
+  "skills": [],
+  "commands": [],
+  "hooks": "./hooks/hooks.json"
+}

@@ -1,0 +1,14 @@
+{
+  "next_sequence_id": 1,
+  "blogs": {
+    "blog-20260129-003104": {
+      "title": "Test",
+      "created_at": "2026-01-29T00:31:04.358626",
+      "status": "captured",
+      "transcript_path": "",
+      "session_path": "",
+      "session_id": "ses_endtest",
+      "extracted_title": "Test"
+    }
+  }
+}
