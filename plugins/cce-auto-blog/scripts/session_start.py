@@ -8,29 +8,19 @@ import json
 import sys
 from pathlib import Path
 
-# noqa: E402 - sys.path modification needed before imports
 sys.path.insert(0, str(Path(__file__).parent))
 
-from utils.state import ensure_blog_dir, read_state, write_state  # noqa: E402
+from utils.state import ensure_blog_dir, read_state, write_state
 
 
 def main():
     try:
-        # Read JSON from stdin (hook protocol requirement)
         json.load(sys.stdin)
-
-        # Initialize blog directory structure
         ensure_blog_dir()
-
-        # Initialize or read blog state and persist it
         state = read_state()
         write_state(state)
-
-        print("Blog tracking available. Use #blog to start tracking.")
-
         sys.exit(0)
     except Exception:
-        # Silent failure - hook protocol pattern
         sys.exit(0)
 
 

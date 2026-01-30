@@ -9,124 +9,120 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
-# noqa: E402 - sys.path modification needed before imports
 sys.path.insert(0, str(Path(__file__).parent))
 
-from utils.state import (  # noqa: E402
+from utils.state import (
     create_blog_dir,
     add_blog_to_state,
+    read_state,
+    write_state,
+    BlogMetadata,
 )
 
 
 def detect_blog_trigger(prompt: str) -> bool:
-    """
-    Check if user prompt contains blog trigger keywords.
-
-    Detects: "#blog", "blog this", "write blog" (case-insensitive)
-
-    Args:
-        prompt: The user prompt text to check
-
-    Returns:
-        bool: True if blog trigger keywords found, False otherwise
-    """
     if not prompt:
         return False
-
-    # Convert to lowercase for case-insensitive matching
     prompt_lower = prompt.lower()
-
-    # Check for trigger keywords
     triggers = ["#blog", "blog this", "write blog"]
     return any(trigger in prompt_lower for trigger in triggers)
 
 
+def detect_stop_tracking(prompt: str) -> bool:
+    if not prompt:
+        return False
+    return "stop tracking" in prompt.lower()
+
+
+def get_active_blog_for_session(session_id: str) -> tuple[str | None, dict | None]:
+    state = read_state()
+    for blog_id, metadata in state.get("blogs", {}).items():
+        if (
+            metadata.get("session_id") == session_id
+            and metadata.get("status") == "draft"
+        ):
+            return blog_id, dict(metadata)
+    return None, None
+
+
 def extract_session_id(hook_input: dict) -> str:
-    """Extract session_id from hook input, checking both camelCase and snake_case."""
     return hook_input.get("sessionId") or hook_input.get("session_id") or ""
 
 
 def extract_title_from_prompt(prompt: str) -> str:
-    """
-    Extract title from prompt intelligently.
-
-    Strategy:
-    1. Strip #blog and trigger keywords
-    2. Find first sentence (ends with . ? !)
-    3. If no sentence boundary, use first 50 chars
-    4. Capitalize first letter
-    """
     if not prompt:
         return ""
-
-    # Strip #blog and common trigger keywords
     text = (
-        prompt.replace("#blog", "").replace("blog this", "").replace("write blog", "")
+        prompt.replace("#blog", "")
+        .replace("blog this", "")
+        .replace("write blog", "")
+        .strip()
     )
-    text = text.strip()
-
     if not text:
         return ""
-
-    # Find first sentence boundary (. ? !)
     for i, char in enumerate(text):
         if char in ".?!":
             sentence = text[:i].strip()
             if sentence:
                 return sentence.capitalize()
-
-    # No sentence boundary - use first 50 chars
-    title = text[:50].strip()
-    return title.capitalize() if title else ""
+    return text[:50].strip().capitalize() if text else ""
 
 
 def generate_blog_id() -> str:
-    """Generate a unique blog ID using timestamp."""
     timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
     return f"blog-{timestamp}"
 
 
 def main():
     try:
-        # Read JSON from stdin (hook protocol requirement)
         hook_input = json.load(sys.stdin)
-
-        # Extract user prompt from hook input
         prompt = hook_input.get("prompt", "")
+        session_id = extract_session_id(hook_input)
 
-        # Check if prompt contains blog trigger keywords
-        if not detect_blog_trigger(prompt):
+        if detect_stop_tracking(prompt):
+            active_blog_id, active_meta = get_active_blog_for_session(session_id)
+            if active_blog_id and active_meta:
+                state = read_state()
+                state["blogs"][active_blog_id]["status"] = "captured"
+                write_state(state)
+                title = active_meta.get("title", active_blog_id)
+                context = f"""[AUTO-BLOG PLUGIN]
+Blog tracking stopped for: {title}
+Blog ID: {active_blog_id}
+Status: captured
+
+The session transcripts have been saved. Use "write blog draft for {active_blog_id}" to compose a draft."""
+                print(json.dumps({"additionalContext": context}))
             sys.exit(0)
 
-        # Blog trigger detected - extract session_id and title
-        session_id = extract_session_id(hook_input)
-        extracted_title = extract_title_from_prompt(prompt)
+        if detect_blog_trigger(prompt):
+            new_blog_id = generate_blog_id()
+            extracted_title = extract_title_from_prompt(prompt)
 
-        # Create blog entry
-        blog_id = generate_blog_id()
-        create_blog_dir(blog_id)
+            create_blog_dir(new_blog_id)
 
-        # Create metadata with session_id and extracted title
-        metadata = {
-            "title": extracted_title or f"Blog Post - {blog_id}",
-            "created_at": datetime.now().isoformat(),
-            "status": "draft",
-            "transcript_path": "",
-            "session_path": "",
-            "session_id": session_id,
-            "extracted_title": extracted_title,
-        }
+            new_metadata: BlogMetadata = {
+                "title": extracted_title or f"Blog Post - {new_blog_id}",
+                "created_at": datetime.now().isoformat(),
+                "status": "draft",
+                "transcript_path": "",
+                "session_path": "",
+                "session_id": session_id,
+                "extracted_title": extracted_title,
+            }
+            add_blog_to_state(new_blog_id, new_metadata)
 
-        # Add blog to state
-        add_blog_to_state(blog_id, metadata)
+            context = f"""[AUTO-BLOG PLUGIN]
+Started tracking blog: "{new_metadata["title"]}"
+Blog ID: {new_blog_id}
+Status: draft
 
-        print(f"Started tracking blog: {metadata['title']}")
-        print(f"Blog ID: {blog_id}")
+I'll capture notes from this conversation. Say "stop tracking" when you're done with this topic."""
+            print(json.dumps({"additionalContext": context}))
+            sys.exit(0)
 
         sys.exit(0)
-
     except Exception:
-        # Silent failure - hook protocol pattern
         sys.exit(0)
 
 
