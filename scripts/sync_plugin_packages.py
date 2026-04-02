@@ -371,7 +371,7 @@ def write_core_hooks(plugin_root: Path) -> None:
     hooks_dir = plugin_root / "hooks"
     hooks_dir.mkdir(parents=True, exist_ok=True)
     hooks_path = hooks_dir / "hooks.json"
-    hooks_path.write_text(json.dumps(build_core_hooks(), indent=2) + "\n")
+    hooks_path.write_text(json.dumps({"hooks": build_core_hooks()}, indent=2) + "\n")
 
 
 def sync_plugin(spec: PluginSpec) -> None:
