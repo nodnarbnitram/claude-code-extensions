@@ -14,7 +14,5 @@
     "workers",
     "edge",
     "ai"
-  ],
-  "agents": "./agents/specialized/cloudflare/",
-  "skills": "./skills/cloudflare-vpc-services/"
+  ]
 }

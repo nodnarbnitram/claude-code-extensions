@@ -13,6 +13,5 @@
     "react",
     "nextjs",
     "tanstack"
-  ],
-  "agents": "./agents/specialized/react/"
+  ]
 }

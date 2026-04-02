@@ -16,6 +16,5 @@
     "composition-api",
     "ssr",
     "ssg"
-  ],
-  "agents": "./agents/specialized/vue/"
+  ]
 }

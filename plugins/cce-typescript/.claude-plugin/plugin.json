@@ -15,9 +15,5 @@
     "braintrust",
     "testing",
     "documentation"
-  ],
-  "agents": [
-    "./agents/specialized/braintrust/",
-    "./agents/specialized/frontend/"
   ]
 }
