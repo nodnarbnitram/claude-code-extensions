@@ -1,0 +1,36 @@
+{
+  "$schema": "https://raw.githubusercontent.com/grafana/grafana/main/docs/sources/developers/plugins/plugin.schema.json",
+  "type": "datasource",
+  "name": "{{PLUGIN_NAME}}",
+  "id": "{{ORG_NAME}}-{{PLUGIN_SLUG}}-datasource",
+  "metrics": true,
+  "alerting": true,
+  "annotations": true,
+  "logs": false,
+  "tracing": false,
+  "streaming": false,
+  "backend": true,
+  "executable": "gpx_{{PLUGIN_SLUG}}",
+  "info": {
+    "description": "{{PLUGIN_DESCRIPTION}}",
+    "author": {
+      "name": "{{AUTHOR_NAME}}",
+      "url": "{{AUTHOR_URL}}"
+    },
+    "keywords": ["datasource", "backend"],
+    "logos": {
+      "small": "img/logo.svg",
+      "large": "img/logo.svg"
+    },
+    "links": [],
+    "screenshots": [],
+    "version": "1.0.0",
+    "updated": "{{CURRENT_DATE}}"
+  },
+  "dependencies": {
+    "grafanaDependency": ">=12.0.0",
+    "grafanaVersion": "12.x",
+    "plugins": []
+  },
+  "routes": []
+}

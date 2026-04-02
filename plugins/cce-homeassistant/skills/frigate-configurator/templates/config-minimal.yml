@@ -1,0 +1,47 @@
+# Frigate Minimal Configuration
+# Start with this to verify camera connectivity
+#
+# Usage:
+#   1. Update the RTSP path with your camera's URL
+#   2. Set width/height to match your camera's sub-stream resolution
+#   3. Save as config.yml in your Frigate config directory
+#   4. Start Frigate and verify video appears in web UI
+
+# Disable MQTT for initial testing
+mqtt:
+  enabled: false
+
+# Use CPU detector initially (add Coral/OpenVINO later)
+detectors:
+  cpu:
+    type: cpu
+    num_threads: 3
+
+# Single camera configuration
+cameras:
+  # Rename to match your camera (lowercase, no spaces)
+  front_door:
+    enabled: true
+
+    ffmpeg:
+      inputs:
+        # Replace with your camera's RTSP URL
+        # Use the SUB-STREAM for detection (lower resolution)
+        - path: rtsp://admin:password@192.168.1.100:554/stream1
+          roles:
+            - detect
+
+    # Detection settings
+    # IMPORTANT: Match these to your camera's actual resolution
+    detect:
+      width: 1280   # Camera sub-stream width
+      height: 720   # Camera sub-stream height
+      fps: 5        # 5 fps is optimal for detection
+
+# Objects to detect
+objects:
+  track:
+    - person
+    - car
+    - dog
+    - cat

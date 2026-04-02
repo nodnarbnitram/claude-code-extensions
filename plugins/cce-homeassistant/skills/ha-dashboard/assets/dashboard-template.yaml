@@ -1,0 +1,285 @@
+# Home Assistant Dashboard Template
+# Copy this file and customize for your setup
+#
+# Usage:
+# 1. Copy to your Home Assistant config directory
+# 2. Rename to ui-lovelace.yaml or dashboards/my-dashboard.yaml
+# 3. Replace entity IDs with your actual entities
+# 4. Enable YAML mode in configuration.yaml if needed
+
+title: My Home
+views:
+  # ============================================
+  # HOME VIEW - Overview of your smart home
+  # ============================================
+  - title: Home
+    path: home
+    icon: mdi:home
+    cards:
+      # Welcome message with dynamic content
+      - type: markdown
+        content: |
+          ## Welcome Home!
+          {{ now().strftime('%A, %B %d') }}
+
+      # Weather at a glance
+      - type: weather-forecast
+        entity: weather.home
+        forecast_type: daily
+        show_current: true
+        show_forecast: true
+
+      # Quick status glance
+      - type: glance
+        title: At a Glance
+        columns: 4
+        show_name: true
+        show_state: true
+        entities:
+          - entity: sensor.indoor_temperature
+            name: Indoor
+          - entity: sensor.outdoor_temperature
+            name: Outdoor
+          - entity: sensor.humidity
+            name: Humidity
+          - entity: binary_sensor.motion
+            name: Motion
+
+      # Main light controls
+      - type: horizontal-stack
+        cards:
+          - type: button
+            entity: light.living_room
+            name: Living Room
+            icon: mdi:sofa
+            tap_action:
+              action: toggle
+          - type: button
+            entity: light.bedroom
+            name: Bedroom
+            icon: mdi:bed
+            tap_action:
+              action: toggle
+          - type: button
+            entity: light.kitchen
+            name: Kitchen
+            icon: mdi:silverware-fork-knife
+            tap_action:
+              action: toggle
+
+  # ============================================
+  # LIGHTS VIEW - All lighting controls
+  # ============================================
+  - title: Lights
+    path: lights
+    icon: mdi:lightbulb-group
+    cards:
+      # All lights with toggle
+      - type: entities
+        title: All Lights
+        show_header_toggle: true
+        state_color: true
+        entities:
+          - entity: light.living_room
+            name: Living Room
+            icon: mdi:ceiling-light
+          - entity: light.bedroom
+            name: Bedroom
+            icon: mdi:lamp
+          - entity: light.kitchen
+            name: Kitchen
+            icon: mdi:ceiling-light
+          - type: divider
+          - type: section
+            label: Outdoor
+          - entity: light.porch
+            name: Porch
+            icon: mdi:outdoor-lamp
+          - entity: light.garage
+            name: Garage
+            icon: mdi:garage
+
+      # Light scenes
+      - type: entities
+        title: Scenes
+        entities:
+          - type: buttons
+            entities:
+              - entity: scene.all_off
+                name: All Off
+                icon: mdi:lightbulb-off
+              - entity: scene.relax
+                name: Relax
+                icon: mdi:sofa
+              - entity: scene.bright
+                name: Bright
+                icon: mdi:brightness-7
+              - entity: scene.movie
+                name: Movie
+                icon: mdi:movie
+
+      # Lights currently on (dynamic filter)
+      - type: entity-filter
+        entities:
+          - light.living_room
+          - light.bedroom
+          - light.kitchen
+          - light.porch
+          - light.garage
+        state_filter:
+          - "on"
+        card:
+          type: glance
+          title: Lights On
+        show_empty: false
+
+  # ============================================
+  # CLIMATE VIEW - Temperature and HVAC
+  # ============================================
+  - title: Climate
+    path: climate
+    icon: mdi:thermostat
+    cards:
+      # Main thermostat
+      - type: thermostat
+        entity: climate.home
+        features:
+          - type: climate-hvac-modes
+            hvac_modes:
+              - heat
+              - cool
+              - auto
+              - "off"
+
+      # Temperature sensors
+      - type: horizontal-stack
+        cards:
+          - type: gauge
+            entity: sensor.indoor_temperature
+            name: Indoor
+            min: 10
+            max: 35
+            severity:
+              green: 18
+              yellow: 24
+              red: 28
+          - type: gauge
+            entity: sensor.outdoor_temperature
+            name: Outdoor
+            min: -10
+            max: 40
+
+      # Temperature history
+      - type: history-graph
+        title: Temperature History
+        entities:
+          - entity: sensor.indoor_temperature
+            name: Indoor
+          - entity: sensor.outdoor_temperature
+            name: Outdoor
+        hours_to_show: 24
+
+  # ============================================
+  # SECURITY VIEW - Locks, cameras, sensors
+  # ============================================
+  - title: Security
+    path: security
+    icon: mdi:shield-home
+    cards:
+      # Alarm panel
+      - type: alarm-panel
+        entity: alarm_control_panel.home
+        states:
+          - arm_home
+          - arm_away
+          - arm_night
+
+      # Door and window sensors
+      - type: entities
+        title: Doors & Windows
+        state_color: true
+        entities:
+          - entity: binary_sensor.front_door
+            name: Front Door
+            icon: mdi:door
+          - entity: binary_sensor.back_door
+            name: Back Door
+            icon: mdi:door
+          - entity: binary_sensor.garage_door
+            name: Garage Door
+            icon: mdi:garage
+          - type: divider
+          - entity: lock.front_door
+            name: Front Lock
+          - entity: lock.back_door
+            name: Back Lock
+
+      # Recent security events
+      - type: logbook
+        title: Recent Activity
+        entities:
+          - binary_sensor.front_door
+          - binary_sensor.back_door
+          - lock.front_door
+          - binary_sensor.motion
+        hours_to_show: 24
+
+  # ============================================
+  # MEDIA VIEW - Entertainment controls
+  # ============================================
+  - title: Media
+    path: media
+    icon: mdi:television
+    cards:
+      # Main media player
+      - type: media-control
+        entity: media_player.living_room_tv
+
+      # Quick media controls
+      - type: entities
+        title: Media Players
+        entities:
+          - entity: media_player.living_room_tv
+            name: Living Room TV
+          - entity: media_player.bedroom_speaker
+            name: Bedroom Speaker
+          - entity: media_player.kitchen_display
+            name: Kitchen Display
+
+  # ============================================
+  # ENERGY VIEW - Power monitoring
+  # ============================================
+  - title: Energy
+    path: energy
+    icon: mdi:lightning-bolt
+    cards:
+      # Current power usage
+      - type: gauge
+        entity: sensor.power_consumption
+        name: Power Usage
+        min: 0
+        max: 10000
+        unit: W
+        severity:
+          green: 0
+          yellow: 5000
+          red: 8000
+        needle: true
+
+      # Energy statistics
+      - type: statistics-graph
+        title: Daily Energy
+        entities:
+          - sensor.daily_energy
+        stat_types:
+          - sum
+        period:
+          calendar:
+            period: day
+        days_to_show: 7
+
+# ============================================
+# THEME (Optional)
+# ============================================
+# Uncomment to apply a custom theme
+# background: "center / cover no-repeat url('/local/background.jpg') fixed"
