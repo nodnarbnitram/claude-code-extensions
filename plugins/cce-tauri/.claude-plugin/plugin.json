@@ -15,7 +15,5 @@
     "rust",
     "ipc",
     "capabilities"
-  ],
-  "agents": "./agents/specialized/tauri/",
-  "skills": "./skills/tauri-v2/"
+  ]
 }

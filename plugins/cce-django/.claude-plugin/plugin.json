@@ -16,6 +16,5 @@
     "graphql",
     "orm",
     "backend"
-  ],
-  "agents": "./agents/specialized/django/"
+  ]
 }

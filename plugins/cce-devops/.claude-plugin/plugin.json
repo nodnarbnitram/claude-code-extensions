@@ -16,11 +16,5 @@
     "helm",
     "argocd",
     "crossplane"
-  ],
-  "agents": [
-    "./agents/specialized/devops/",
-    "./agents/specialized/helm/",
-    "./agents/specialized/argocd/",
-    "./agents/specialized/crossplane/"
   ]
 }

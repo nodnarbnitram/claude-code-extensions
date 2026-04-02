@@ -13,11 +13,5 @@
     "kubernetes",
     "k8s",
     "cluster-health"
-  ],
-  "agents": "./agents/specialized/kubernetes/",
-  "skills": [
-    "./skills/kubernetes-operations/",
-    "./skills/kubernetes-health/"
-  ],
-  "commands": "./commands/k8s-health.md"
+  ]
 }

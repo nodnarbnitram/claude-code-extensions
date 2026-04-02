@@ -15,21 +15,5 @@
     "lovelace",
     "assist",
     "integrations"
-  ],
-  "agents": "./agents/specialized/homeassistant/",
-  "skills": [
-    "./skills/ha-addon/",
-    "./skills/ha-api/",
-    "./skills/ha-automation/",
-    "./skills/ha-dashboard/",
-    "./skills/ha-energy/",
-    "./skills/ha-integration/",
-    "./skills/ha-voice/",
-    "./skills/frigate-configurator/"
-  ],
-  "commands": [
-    "./commands/ha-automation-lint.md",
-    "./commands/ha-blueprint-create.md",
-    "./commands/ha-integration-scaffold.md"
   ]
 }

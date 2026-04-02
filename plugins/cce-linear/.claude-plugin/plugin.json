@@ -15,11 +15,5 @@
     "project-management",
     "triage",
     "workflow"
-  ],
-  "skills": "./skills/linear/",
-  "commands": [
-    "./commands/triage.md",
-    "./commands/create-linear-pr.md",
-    "./commands/existing-linear.md"
   ]
 }

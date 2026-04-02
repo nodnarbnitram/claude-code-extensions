@@ -15,10 +15,5 @@
     "metrics",
     "plugins",
     "billing"
-  ],
-  "agents": "./agents/specialized/grafana/",
-  "skills": [
-    "./skills/grafana-plugin-scaffolding/",
-    "./skills/grafana-billing/"
   ]
 }

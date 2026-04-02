@@ -14,6 +14,5 @@
     "workflows",
     "durable-execution",
     "distributed-systems"
-  ],
-  "agents": "./agents/specialized/temporal/"
+  ]
 }

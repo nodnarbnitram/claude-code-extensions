@@ -16,6 +16,5 @@
     "machine-learning",
     "nlp",
     "prompt-engineering"
-  ],
-  "agents": "./agents/specialized/data-ai/"
+  ]
 }

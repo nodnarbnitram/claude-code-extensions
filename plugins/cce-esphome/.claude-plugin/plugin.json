@@ -14,10 +14,5 @@
     "iot",
     "esp32",
     "homeassistant"
-  ],
-  "agents": "./agents/specialized/esphome/",
-  "skills": [
-    "./skills/esphome-config-helper/",
-    "./skills/esphome-box3-builder/"
   ]
 }
