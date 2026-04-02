@@ -15,6 +15,5 @@
     "hooks",
     "automation",
     "workflow"
-  ],
-  "hooks": "./hooks/hooks.json"
+  ]
 }

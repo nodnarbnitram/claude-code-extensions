@@ -334,9 +334,6 @@ def build_manifest(spec: PluginSpec) -> dict[str, Any]:
         "keywords": spec.keywords,
     }
 
-    if spec.hooks_from_settings:
-        manifest["hooks"] = "./hooks/hooks.json"
-
     return manifest
 
 
