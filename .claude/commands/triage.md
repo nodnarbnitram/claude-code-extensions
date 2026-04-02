@@ -1,12 +1,12 @@
 ---
-description: Start SOC II triage workflow (Linear ticket → branch → OpenSpec → commit → PR)
+description: Start a Linear-backed triage workflow for a new issue
 argument-hint: <issue-description> [--team <team-id>]
 allowed-tools: AskUserQuestion, Skill
 ---
 
-# SOC II Triage Workflow
+# Linear Triage Workflow
 
-You are initiating a triage workflow. Your job is to gather information and then activate the `triage-workflow` skill.
+You are initiating a triage workflow. Your job is to gather information and then activate the `linear` skill.
 
 ## Input Provided
 
@@ -38,18 +38,11 @@ Before proceeding, confirm with the user:
 
 ## Step 4: Activate Skill
 
-Once you have all the information, invoke the **triage-workflow** skill by stating:
+Once you have all the information, invoke the **linear** skill and tell it to create a ticket using the wrapper scripts.
 
-> "Starting triage workflow for: [issue description] in team [team]"
+> "Use the linear skill to create a Linear ticket for: [issue description] in team [team], with priority [priority] and labels [labels if any]."
 
-This will trigger the skill which handles:
-1. Creating the Linear ticket
-2. Creating the branch
-3. Running `/openspec:proposal`
-4. Validating with user
-5. Running `/openspec:apply`
-6. Committing with `/git-commit`
-7. Optionally pushing and creating PR
+The linear skill should be the source of truth for ticket creation and ticket lookup. After ticket creation, the agent can continue with branch, proposal, commit, and PR workflows as needed.
 
 ## Example Usage
 

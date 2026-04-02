@@ -18,10 +18,10 @@ CRITICAL: You MUST call Skill() tool in Step 2. Do NOT skip to implementation.
 The evaluation (Step 1) is WORTHLESS unless you ACTIVATE (Step 2) the skills.
 
 Example of correct sequence:
-- triage-workflow: YES - need to create a Linear ticket, branch, OpenSpec proposal, commit, and PR
+- linear: YES - need to create or update a Linear ticket before continuing the workflow
 
 [Then IMMEDIATELY use Skill() tool:]
-> Skill(triage-workflow)
+> Skill(linear)
 
 [THEN and ONLY THEN start implementation]
 EOF
