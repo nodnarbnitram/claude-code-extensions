@@ -309,25 +309,6 @@ def load_existing_manifest(plugin_name: str) -> dict[str, Any]:
     return {}
 
 
-def unique_parent_dirs(paths: list[str]) -> list[str]:
-    seen: list[str] = []
-    for path in paths:
-        candidate = (
-            path
-            if path.endswith(".md") or path.endswith(".json")
-            else f"{path.rstrip('/')}/"
-        )
-        if candidate not in seen:
-            seen.append(candidate)
-    return seen
-
-
-def to_manifest_value(values: list[str]) -> str | list[str]:
-    if len(values) == 1:
-        return values[0]
-    return values
-
-
 def build_manifest(spec: PluginSpec) -> dict[str, Any]:
     existing = load_existing_manifest(spec.name)
     manifest: dict[str, Any] = {
@@ -341,22 +322,6 @@ def build_manifest(spec: PluginSpec) -> dict[str, Any]:
         "keywords": spec.keywords,
     }
 
-    agents = unique_parent_dirs(
-        [dest for _, dest in spec.assets if dest.startswith("agents/")]
-    )
-    skills = unique_parent_dirs(
-        [dest for _, dest in spec.assets if dest.startswith("skills/")]
-    )
-    commands = unique_parent_dirs(
-        [dest for _, dest in spec.assets if dest.startswith("commands/")]
-    )
-
-    if agents:
-        manifest["agents"] = to_manifest_value([f"./{value}" for value in agents])
-    if skills:
-        manifest["skills"] = to_manifest_value([f"./{value}" for value in skills])
-    if commands:
-        manifest["commands"] = to_manifest_value([f"./{value}" for value in commands])
     if spec.hooks_from_settings:
         manifest["hooks"] = "./hooks/hooks.json"
 
