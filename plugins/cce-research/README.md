@@ -164,7 +164,7 @@ git clone https://github.com/nodnarbnitram/claude-code-extensions.git
 cd claude-code-extensions
 ```
 
-The agents are in `.claude/agents/deep-research/`.
+The agents are in `${CLAUDE_PLUGIN_ROOT}/agents/deep-research/`.
 
 ## Usage
 
@@ -334,7 +334,7 @@ This plugin is part of the [claude-code-extensions](https://github.com/nodnarbni
 
 To contribute:
 1. Fork the repository
-2. Add/modify agents in `.claude/agents/deep-research/`
+2. Add/modify agents in `${CLAUDE_PLUGIN_ROOT}/agents/deep-research/`
 3. Update plugin.json and README.md
 4. Submit a pull request
 

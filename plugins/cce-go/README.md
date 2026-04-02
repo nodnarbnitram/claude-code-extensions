@@ -79,10 +79,10 @@ git clone https://github.com/nodnarbnitram/claude-code-extensions.git
 cd claude-code-extensions
 
 # Copy agents to your project
-cp -r .claude/agents/specialized/go ~/.claude/agents/specialized/
+cp -r plugins/cce-go/agents/specialized/go ~/.claude/agents/specialized/
 
 # Or copy to project-local directory
-cp -r .claude/agents/specialized/go /path/to/your/project/.claude/agents/specialized/
+cp -r plugins/cce-go/agents/specialized/go /path/to/your/project/.claude/agents/specialized/
 ```
 
 ## Usage
@@ -274,7 +274,7 @@ When multiple patterns are possible, the agent follows this hierarchy:
 
 No configuration required. The agent enforces Google Go style guide strictly by default.
 
-For project-specific exceptions, add a `.claude/agents/specialized/go/project-overrides.md` file documenting any necessary deviations from the style guide.
+For project-specific exceptions, add a `${CLAUDE_PLUGIN_ROOT}/agents/specialized/go/project-overrides.md` file documenting any necessary deviations from the style guide.
 
 ## Related Documentation
 

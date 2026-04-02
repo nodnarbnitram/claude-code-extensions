@@ -14,7 +14,7 @@ This plugin is designed for teams building AI-powered applications, training and
 
 ### Agents (5 specialists)
 
-All agents are located in `./.claude/agents/specialized/data-ai/`:
+All agents are located in `${CLAUDE_PLUGIN_ROOT}/agents/specialized/data-ai/`:
 
 1. **ai-engineer** - Senior AI engineer for comprehensive AI system design
    - AI architecture design and model selection

@@ -257,7 +257,7 @@ Contributions welcome! See [CONTRIBUTING.md](https://github.com/nodnarbnitram/cl
 
 For issues or questions:
 1. Check the [official Claude Agent SDK documentation](https://docs.claude.com/en/api/agent-sdk)
-2. Review agent system prompts in `.claude/agents/specialized/anthropic/`
+2. Review agent system prompts in `${CLAUDE_PLUGIN_ROOT}/agents/specialized/anthropic/`
 3. Open an issue on the [GitHub repository](https://github.com/nodnarbnitram/claude-code-extensions/issues)
 
 ---

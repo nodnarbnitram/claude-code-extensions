@@ -20,7 +20,7 @@ Supercharge your Claude Code experience with **60+ specialized agents**, **15 sk
 
 ## 📦 Available Plugins
 
-The repository provides **9 focused plugins** (Phase 1) with 10+ more coming in future releases:
+The repository now provides **19 self-contained plugins** for Claude Code marketplace installs:
 
 | Plugin | Description | What's Included |
 |--------|-------------|-----------------|
@@ -32,10 +32,17 @@ The repository provides **9 focused plugins** (Phase 1) with 10+ more coming in 
 | **cce-django** | Django backend | 3 Django agents (backend, API, ORM) |
 | **cce-research** | Deep research coordination | 5 research agents (coordinator, academic, web, technical, data) |
 | **cce-grafana** | Grafana observability | 1 plugin expert agent, 2 skills (scaffolding, billing metrics) |
-| **cce-homeassistant** | Home Assistant automation | 7 HA experts (automation, integration, dashboard, add-on, API, voice, energy), 8 skills (incl. Frigate), 3 commands |
-| **cce-tauri** | Tauri v2 desktop apps | 1 Tauri v2 expert agent, 1 skill (IPC, capabilities, security) |
-
-**Coming Soon:** `cce-web-vue`, `cce-temporal`, `cce-devops`, `cce-ai`, `cce-go`, `cce-python`, `cce-typescript`, `cce-anthropic`
+| **cce-homeassistant** | Home Assistant workflows | 7 HA experts, 8 skills, 3 commands |
+| **cce-tauri** | Tauri v2 desktop apps | 1 agent, 1 skill |
+| **cce-web-vue** | Vue and Nuxt development | 3 Vue/Nuxt agents |
+| **cce-temporal** | Temporal workflows | 6 Temporal agents |
+| **cce-devops** | DevOps and platform engineering | GitHub Actions, Helm, ArgoCD, and Crossplane agents |
+| **cce-ai** | AI and ML systems | 5 AI/ML specialist agents |
+| **cce-go** | Go development | 1 Go specialist agent |
+| **cce-python** | Python CLI development | 1 Typer-focused agent |
+| **cce-linear** | Linear workflows | 1 Linear skill, 3 ticket/PR workflow commands |
+| **cce-typescript** | TypeScript tooling | Braintrust and fumadocs agents |
+| **cce-anthropic** | Claude Agent SDK development | Python and TypeScript SDK agents |
 
 **Install only what you need** - no need to load 50+ agents if you only work with React!
 
@@ -68,6 +75,8 @@ Then install the plugins you need:
 /plugin install cce-research@cce-marketplace      # For deep research tasks
 ```
 
+Each marketplace package under `plugins/*` is now self-contained with local `agents/`, `commands/`, `skills/`, and `hooks/` content where applicable.
+
 **Benefits:**
 - ✅ Modular - install only what you need
 - ✅ Automatic updates across all projects
@@ -77,6 +86,7 @@ Then install the plugins you need:
 **Command namespaces:**
 - Core: `/cce:git-commit`, `/cce:prime`
 - Kubernetes: `/cce-kubernetes:health`
+- Linear: `/cce-linear:triage`, `/cce-linear:create-linear-pr`
 - (Other plugins currently provide agents/skills only)
 
 **Option 2: Standalone (For Single Project or Custom Setup)**
@@ -170,6 +180,9 @@ cp .claude/settings.json ~/my-project/.claude/
 | [`/ha-automation-lint`](.claude/commands/ha-automation-lint.md) | Validate Home Assistant automation YAML for syntax and best practices | `[file-path]` |
 | [`/ha-blueprint-create`](.claude/commands/ha-blueprint-create.md) | Convert a Home Assistant automation into a reusable blueprint | `<automation-id-or-file>` |
 | [`/ha-integration-scaffold`](.claude/commands/ha-integration-scaffold.md) | Generate boilerplate for a new Home Assistant custom integration | `<domain>` `[--with-config-flow]` `[--platforms ...]` |
+| [`/triage`](.claude/commands/triage.md) | Start a Linear-backed triage workflow for a new issue | `<issue-description>` `[--team <team-id>]` |
+| [`/create-linear-pr`](.claude/commands/create-linear-pr.md) | Create a Linear ticket, branch, commit changes, and open a PR via the linear skill wrappers | `<team>` `["title"]` |
+| [`/existing-linear`](.claude/commands/existing-linear.md) | Create a PR for an existing Linear ticket via the linear skill wrappers | `<ticket-id>` `[--skip-validation]` |
 
 ### Skills
 
@@ -191,6 +204,7 @@ Model-invoked capabilities that Claude automatically discovers and uses based on
 | [`ha-voice`](.claude/skills/ha-voice/) | Configure Home Assistant Assist voice control with pipelines, intents, and wake words |
 | [`ha-energy`](.claude/skills/ha-energy/) | Set up Home Assistant energy monitoring with dashboards, solar, grid, and device tracking |
 | [`tauri-v2`](.claude/skills/tauri-v2/) | Tauri v2 cross-platform desktop/mobile app development with Rust backend, IPC patterns, and security configuration |
+| [`linear`](.claude/skills/linear/) | Manage Linear tickets, projects, milestones, documents, and related PR workflows using wrapper scripts |
 
 **Creating new skills:**
 - Use the `skill-creator` agent: `> Use the skill-creator to create a skill for [purpose]`

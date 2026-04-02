@@ -358,7 +358,7 @@ This plugin is part of the [claude-code-extensions](https://github.com/nodnarbni
 To contribute:
 1. Fork the repository
 2. Create a feature branch
-3. Make your changes to agents in `.claude/agents/specialized/django/`
+3. Make your changes to agents in `${CLAUDE_PLUGIN_ROOT}/agents/specialized/django/`
 4. Test with both plugin and standalone modes
 5. Submit a pull request
 

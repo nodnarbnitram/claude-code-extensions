@@ -423,7 +423,7 @@ This plugin is part of the [claude-code-extensions](https://github.com/nodnarbni
 ### Adding Features
 
 1. Fork the repository
-2. Modify agents in `.claude/agents/specialized/vue/`
+2. Modify agents in `${CLAUDE_PLUGIN_ROOT}/agents/specialized/vue/`
 3. Update plugin.json if needed
 4. Test thoroughly
 5. Submit a pull request

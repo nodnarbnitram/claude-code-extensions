@@ -91,10 +91,10 @@ The `cce-devops` plugin provides specialized agents for:
 git clone https://github.com/nodnarbnitram/claude-code-extensions.git
 
 # Copy agents to your project or user directory
-cp -r claude-code-extensions/.claude/agents/specialized/devops ~/.claude/agents/specialized/
-cp -r claude-code-extensions/.claude/agents/specialized/helm ~/.claude/agents/specialized/
-cp -r claude-code-extensions/.claude/agents/specialized/argocd ~/.claude/agents/specialized/
-cp -r claude-code-extensions/.claude/agents/specialized/crossplane ~/.claude/agents/specialized/
+cp -r claude-code-extensions/plugins/cce-devops/agents/specialized/devops ~/.claude/agents/specialized/
+cp -r claude-code-extensions/plugins/cce-devops/agents/specialized/helm ~/.claude/agents/specialized/
+cp -r claude-code-extensions/plugins/cce-devops/agents/specialized/argocd ~/.claude/agents/specialized/
+cp -r claude-code-extensions/plugins/cce-devops/agents/specialized/crossplane ~/.claude/agents/specialized/
 ```
 
 ## Usage Examples

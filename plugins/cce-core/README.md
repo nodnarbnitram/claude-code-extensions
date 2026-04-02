@@ -10,7 +10,7 @@ The **cce-core** plugin is the foundational plugin that provides essential autom
 
 - **8 Lifecycle Hooks**: Safety guards, logging, context loading, and automation
 - **13 Core Agents**: Code reviewers, orchestrators, meta-agents, and universal specialists
-- **8 Slash Commands**: Git workflows, project analysis, security scanning, and more
+- **9 Slash Commands**: Git workflows, project analysis, security scanning, and extension scaffolding
 - **2 Essential Skills**: Commit message generation and code review automation
 
 ## Plugin Components
@@ -32,7 +32,7 @@ The **cce-core** plugin is the foundational plugin that provides essential autom
 - `api-architect`: RESTful/GraphQL API design
 - `frontend-developer`: Framework-agnostic UI development
 - `backend-developer`: Server-side development across stacks
-- `tailwind-frontend-expert`: Tailwind CSS styling
+- `tailwind-css-expert`: Tailwind CSS styling
 - `fact-checker`: Verification and accuracy validation
 - `meta-agent`: Generate new Claude Code agents
 
@@ -41,7 +41,7 @@ The **cce-core** plugin is the foundational plugin that provides essential autom
 - `commit-helper`: Smart commit message generation
 - `code-reviewer`: Automated code quality checks
 
-### Commands (8)
+### Commands (9)
 
 - `/cce:git-commit`: Intelligent git commit workflow
 - `/cce:git-status`: Repository state analysis
@@ -51,6 +51,7 @@ The **cce-core** plugin is the foundational plugin that provides essential autom
 - `/cce:security-scan`: Run security scans on code
 - `/cce:wrapup-skillup`: Generate session learning reports
 - `/cce:frontend-mode`: Load frontend development rules
+- `/cce:create-skill`: Scaffold a new skill from the template structure
 
 ### Hooks (8 Lifecycle Events)
 

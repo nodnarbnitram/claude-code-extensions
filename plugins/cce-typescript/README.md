@@ -73,8 +73,8 @@ git clone https://github.com/nodnarbnitram/claude-code-extensions.git
 cd claude-code-extensions
 
 # Copy agents to your project
-cp -r .claude/agents/specialized/braintrust ~/.claude/agents/specialized/
-cp -r .claude/agents/specialized/frontend ~/.claude/agents/specialized/
+cp -r plugins/cce-typescript/agents/specialized/braintrust ~/.claude/agents/specialized/
+cp -r plugins/cce-typescript/agents/specialized/frontend ~/.claude/agents/specialized/
 ```
 
 ## Usage
@@ -144,7 +144,7 @@ The agent activates automatically when you work with fumadocs or MDX documentati
 This plugin follows the dual-mode architecture of Claude Code Extensions:
 
 - **Plugin Mode**: Agents namespaced under plugin (no commands in this plugin)
-- **Standalone Mode**: Agents available directly in `.claude/agents/`
+- **Standalone Mode**: Agents available directly in `${CLAUDE_PLUGIN_ROOT}/agents/`
 - **Shared Source**: Both modes use the same agent files
 
 ### Directory Structure
@@ -154,7 +154,7 @@ This plugin follows the dual-mode architecture of Claude Code Extensions:
 ├── plugin.json          # Plugin manifest
 └── README.md            # This file
 
-.claude/agents/specialized/
+${CLAUDE_PLUGIN_ROOT}/agents/specialized/
 ├── braintrust/
 │   └── braintrust-typescript-expert.md
 └── frontend/

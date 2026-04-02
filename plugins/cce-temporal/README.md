@@ -255,7 +255,7 @@ This plugin is part of the [claude-code-extensions](https://github.com/nodnarbni
 
 To contribute:
 1. Fork the repository
-2. Create agents in `.claude/agents/specialized/temporal/`
+2. Create agents in `${CLAUDE_PLUGIN_ROOT}/agents/specialized/temporal/`
 3. Update plugin manifest if adding new agents
 4. Test with `/plugin validate .`
 5. Submit pull request
@@ -276,7 +276,7 @@ All agents are documented with:
 - Anti-patterns to avoid
 - Delegation strategy
 
-See agent source files in `.claude/agents/specialized/temporal/` for complete documentation.
+See agent source files in `${CLAUDE_PLUGIN_ROOT}/agents/specialized/temporal/` for complete documentation.
 
 ## License
 

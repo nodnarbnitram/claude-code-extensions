@@ -76,16 +76,16 @@ Query and analyze billing metrics from Grafana Cloud Prometheus and Loki instanc
 **Commands:**
 ```bash
 # Query both environments
-uv run .claude/skills/grafana-billing/scripts/billing_metrics.py
+uv run ${CLAUDE_PLUGIN_ROOT}/skills/grafana-billing/scripts/billing_metrics.py
 
 # Query specific environment
-uv run .claude/skills/grafana-billing/scripts/billing_metrics.py --env prod
+uv run ${CLAUDE_PLUGIN_ROOT}/skills/grafana-billing/scripts/billing_metrics.py --env prod
 
 # JSON output for automation
-uv run .claude/skills/grafana-billing/scripts/billing_metrics.py --json
+uv run ${CLAUDE_PLUGIN_ROOT}/skills/grafana-billing/scripts/billing_metrics.py --json
 
 # Filter to specific service
-uv run .claude/skills/grafana-billing/scripts/billing_metrics.py --service prometheus
+uv run ${CLAUDE_PLUGIN_ROOT}/skills/grafana-billing/scripts/billing_metrics.py --service prometheus
 ```
 
 ## Installation
