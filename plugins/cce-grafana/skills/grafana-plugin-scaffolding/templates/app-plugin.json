@@ -1,0 +1,47 @@
+{
+  "$schema": "https://raw.githubusercontent.com/grafana/grafana/main/docs/sources/developers/plugins/plugin.schema.json",
+  "type": "app",
+  "name": "{{PLUGIN_NAME}}",
+  "id": "{{ORG_NAME}}-{{PLUGIN_SLUG}}-app",
+  "backend": false,
+  "executable": "",
+  "info": {
+    "description": "{{PLUGIN_DESCRIPTION}}",
+    "author": {
+      "name": "{{AUTHOR_NAME}}",
+      "url": "{{AUTHOR_URL}}"
+    },
+    "keywords": ["app"],
+    "logos": {
+      "small": "img/logo.svg",
+      "large": "img/logo.svg"
+    },
+    "links": [],
+    "screenshots": [],
+    "version": "1.0.0",
+    "updated": "{{CURRENT_DATE}}"
+  },
+  "dependencies": {
+    "grafanaDependency": ">=12.0.0",
+    "grafanaVersion": "12.x",
+    "plugins": []
+  },
+  "includes": [
+    {
+      "type": "page",
+      "name": "Home",
+      "path": "/a/{{ORG_NAME}}-{{PLUGIN_SLUG}}-app",
+      "role": "Viewer",
+      "addToNav": true,
+      "defaultNav": true
+    },
+    {
+      "type": "page",
+      "name": "Configuration",
+      "path": "/plugins/{{ORG_NAME}}-{{PLUGIN_SLUG}}-app",
+      "role": "Admin",
+      "addToNav": true,
+      "defaultNav": false
+    }
+  ]
+}

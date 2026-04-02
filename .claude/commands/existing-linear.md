@@ -1,12 +1,14 @@
 ---
-description: Create a PR for an existing Linear ticket (for additional related changes)
+description: Create a PR for an existing Linear ticket using the linear skill wrappers
 argument-hint: <ticket-id> [--skip-validation]
-allowed-tools: Bash(linearis issues read:*), Bash(git checkout:*), Bash(git add:*), Bash(git commit:*), Bash(git push:*), Bash(git status:*), Bash(git diff:*), Bash(git log:*), Bash(git branch:*), Bash(gh pr create:*), Bash(rm:*)
+allowed-tools: AskUserQuestion, Skill, Bash(uv run:*), Bash(git checkout:*), Bash(git add:*), Bash(git commit:*), Bash(git push:*), Bash(git status:*), Bash(git diff:*), Bash(git log:*), Bash(git branch:*), Bash(gh pr create:*), Bash(rm:*)
 ---
 
 # Existing Linear PR Workflow
 
 Create a new PR for an existing Linear ticket when additional related code changes are required.
+
+Activate the `linear` skill first and use its wrapper scripts for all Linear operations. Do **not** call `linearis` directly from this workflow.
 
 ## Context
 
@@ -25,7 +27,7 @@ If ticket ID is missing, ask the user for it.
 ## Prerequisites
 
 - Changes should already be made to files (staged or unstaged)
-- `linearis` CLI must be configured
+- The `linear` skill must be available and its wrapper scripts must run successfully
 - `gh` CLI must be authenticated
 
 ## Steps
@@ -34,11 +36,11 @@ Track these steps as TODOs and complete them one by one.
 
 1. **Parse arguments** - Extract ticket ID (`$1`) and check for `--skip-validation` in `$ARGUMENTS`.
 
-2. **Read Linear ticket** - Fetch ticket details:
+2. **Read Linear ticket** - Fetch ticket details with the `linear` skill wrapper:
    ```bash
-   linearis issues read $1
+   uv run .claude/skills/linear/scripts/read-ticket.py $1
    ```
-   - Extract: `identifier`, `title`, `description`, `branchName`, `state`
+   - Extract: `identifier`, `title`, `description`, `branchName`, `state`, `url`
    - If ticket not found, stop and inform the user.
 
 3. **Validate success criteria** (skip if `--skip-validation` is present)
@@ -93,7 +95,7 @@ Track these steps as TODOs and complete them one by one.
    <what this specific PR adds/changes>
 
    ## Context
-   Additional changes for [<TICKET-ID>](https://linear.app/axios-hq/issue/<TICKET-ID>): <ticket title from Linear>
+   Additional changes for <ticket URL from script output or plain <TICKET-ID>>: <ticket title from Linear>
 
    ## Test Plan
    - [ ] <verification steps>
@@ -107,7 +109,7 @@ Track these steps as TODOs and complete them one by one.
    ```
    | Item | Details |
    |------|---------|
-   | **Linear Ticket** | [<TICKET-ID>](https://linear.app/axios-hq/issue/<TICKET-ID>) |
+   | **Linear Ticket** | <ticket URL from script output, or plain <TICKET-ID> if URL is empty> |
    | **Branch** | `<branch-name>` |
    | **PR** | <PR URL> |
    | **Note** | Additional PR for existing ticket |

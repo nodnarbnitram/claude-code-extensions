@@ -1,0 +1,92 @@
+# ESPHome Sensor Node Template
+# DHT22 temperature/humidity sensor with WiFi and Home Assistant integration
+
+substitutions:
+  device_name: sensor-node
+  friendly_name: Sensor Node
+  dht_pin: GPIO4
+
+esphome:
+  name: ${device_name}
+  friendly_name: ${friendly_name}
+  platform: ESP32
+  board: esp32dev
+
+# WiFi configuration
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Static IP (optional - recommended for sensors)
+  manual_ip:
+    static_ip: 192.168.1.100
+    gateway: 192.168.1.1
+    subnet: 255.255.255.0
+
+  # Enable fallback hotspot
+  ap:
+    ssid: "${friendly_name} Fallback"
+    password: !secret fallback_password
+
+captive_portal:
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API with encryption
+api:
+  encryption:
+    key: !secret api_encryption_key
+
+# Enable OTA updates
+ota:
+  - platform: esphome
+    password: !secret ota_password
+
+# DHT22 Temperature/Humidity Sensor
+sensor:
+  - platform: dht
+    pin: ${dht_pin}
+    model: DHT22
+    temperature:
+      name: "${friendly_name} Temperature"
+      id: temp_sensor
+      filters:
+        - sliding_window_moving_average:
+            window_size: 5
+            send_every: 5
+    humidity:
+      name: "${friendly_name} Humidity"
+      id: humidity_sensor
+      filters:
+        - sliding_window_moving_average:
+            window_size: 5
+            send_every: 5
+    update_interval: 60s
+
+  # WiFi Signal Strength
+  - platform: wifi_signal
+    name: "${friendly_name} WiFi Signal"
+    update_interval: 60s
+
+  # Uptime
+  - platform: uptime
+    name: "${friendly_name} Uptime"
+    update_interval: 60s
+
+# Text sensors
+text_sensor:
+  - platform: wifi_info
+    ip_address:
+      name: "${friendly_name} IP Address"
+    ssid:
+      name: "${friendly_name} Connected SSID"
+
+  - platform: version
+    name: "${friendly_name} ESPHome Version"
+
+# Status LED
+status_led:
+  pin:
+    number: GPIO2
+    inverted: false

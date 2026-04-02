@@ -1,0 +1,21 @@
+{
+  "name": "cce-tauri",
+  "version": "1.0.0",
+  "description": "Tauri v2 desktop and mobile app development with Rust backend, IPC, capabilities, and security",
+  "author": {
+    "name": "Claude Code Extensions Contributors",
+    "url": "https://github.com/nodnarbnitram/claude-code-extensions"
+  },
+  "homepage": "https://github.com/nodnarbnitram/claude-code-extensions",
+  "repository": "https://github.com/nodnarbnitram/claude-code-extensions",
+  "license": "MIT",
+  "keywords": [
+    "tauri",
+    "desktop",
+    "rust",
+    "ipc",
+    "capabilities"
+  ],
+  "agents": "./agents/specialized/tauri/",
+  "skills": "./skills/tauri-v2/"
+}

@@ -1,0 +1,478 @@
+# Card Snippets for Home Assistant Lovelace
+# Copy-paste these examples into your dashboard configuration
+# Replace entity IDs with your actual entities
+
+# ============================================
+# BASIC CARDS
+# ============================================
+
+# --- Entities Card ---
+# List of entities with optional header toggle
+entities_card:
+  type: entities
+  title: Living Room
+  show_header_toggle: true
+  state_color: true
+  entities:
+    - entity: light.living_room
+      name: Main Light
+      icon: mdi:ceiling-light
+    - entity: switch.fan
+      secondary_info: last-changed
+    - type: divider
+    - type: section
+      label: Climate
+    - entity: climate.thermostat
+
+# --- Button Card ---
+# Single button with tap actions
+button_card:
+  type: button
+  entity: light.living_room
+  name: Living Room
+  icon: mdi:lightbulb
+  show_name: true
+  show_icon: true
+  show_state: true
+  tap_action:
+    action: toggle
+  hold_action:
+    action: more-info
+  double_tap_action:
+    action: call-service
+    service: light.turn_on
+    data:
+      brightness_pct: 100
+      entity_id: light.living_room
+
+# --- Tile Card ---
+# Modern tile with features
+tile_card_light:
+  type: tile
+  entity: light.living_room
+  name: Living Room Light
+  icon: mdi:lightbulb
+  color: amber
+  features:
+    - type: light-brightness
+    - type: light-color-temp
+
+tile_card_climate:
+  type: tile
+  entity: climate.living_room
+  features:
+    - type: climate-hvac-modes
+      hvac_modes:
+        - heat
+        - cool
+        - auto
+        - "off"
+    - type: target-temperature
+
+# --- Glance Card ---
+# Compact overview of multiple entities
+glance_card:
+  type: glance
+  title: At a Glance
+  columns: 4
+  show_name: true
+  show_state: true
+  entities:
+    - entity: sensor.temperature
+      name: Temp
+    - entity: sensor.humidity
+      name: Humidity
+    - entity: binary_sensor.motion
+      show_last_changed: true
+    - entity: light.bedroom
+      tap_action:
+        action: toggle
+
+# --- Gauge Card ---
+# Circular gauge with severity colors
+gauge_card:
+  type: gauge
+  entity: sensor.cpu_usage
+  name: CPU Usage
+  unit: "%"
+  min: 0
+  max: 100
+  severity:
+    green: 0
+    yellow: 60
+    red: 80
+  needle: true
+
+gauge_card_segments:
+  type: gauge
+  entity: sensor.battery
+  name: Battery
+  segments:
+    - from: 0
+      color: red
+    - from: 20
+      color: orange
+    - from: 40
+      color: yellow
+    - from: 60
+      color: green
+
+# ============================================
+# WEATHER & CLIMATE
+# ============================================
+
+# --- Weather Forecast Card ---
+weather_card:
+  type: weather-forecast
+  entity: weather.home
+  show_current: true
+  show_forecast: true
+  forecast_type: daily
+  secondary_info_attribute: humidity
+
+# --- Thermostat Card ---
+thermostat_card:
+  type: thermostat
+  entity: climate.living_room
+  features:
+    - type: climate-hvac-modes
+      hvac_modes:
+        - heat
+        - cool
+        - auto
+        - "off"
+
+# ============================================
+# MEDIA CARDS
+# ============================================
+
+# --- Media Control Card ---
+media_card:
+  type: media-control
+  entity: media_player.living_room
+
+# --- Picture Entity Card ---
+picture_entity_card:
+  type: picture-entity
+  entity: camera.front_door
+  camera_view: live
+  show_name: true
+  show_state: true
+
+# --- Picture Glance Card ---
+picture_glance_card:
+  type: picture-glance
+  title: Living Room
+  image: /local/images/living-room.jpg
+  entities:
+    - entity: light.living_room
+    - entity: binary_sensor.motion
+    - entity: sensor.temperature
+
+# ============================================
+# INFORMATION CARDS
+# ============================================
+
+# --- Markdown Card ---
+markdown_card:
+  type: markdown
+  title: Welcome
+  content: |
+    ## Hello {{ user }}!
+
+    The temperature is **{{ states('sensor.temperature') }}°C**
+
+    {% if is_state('binary_sensor.motion', 'on') %}
+    Motion detected!
+    {% endif %}
+
+# --- History Graph Card ---
+history_graph_card:
+  type: history-graph
+  title: Temperature History
+  entities:
+    - entity: sensor.indoor_temp
+      name: Indoor
+    - entity: sensor.outdoor_temp
+      name: Outdoor
+  hours_to_show: 24
+
+# --- Logbook Card ---
+logbook_card:
+  type: logbook
+  entities:
+    - binary_sensor.front_door
+    - lock.front_door
+  hours_to_show: 24
+
+# --- Calendar Card ---
+calendar_card:
+  type: calendar
+  entities:
+    - calendar.family
+    - calendar.work
+  initial_view: listWeek
+
+# --- Map Card ---
+map_card:
+  type: map
+  entities:
+    - entity: device_tracker.phone
+    - entity: zone.home
+    - entity: zone.work
+  aspect_ratio: 16:9
+  default_zoom: 14
+  dark_mode: true
+
+# ============================================
+# LAYOUT CARDS
+# ============================================
+
+# --- Horizontal Stack ---
+horizontal_stack:
+  type: horizontal-stack
+  cards:
+    - type: button
+      entity: light.one
+      tap_action:
+        action: toggle
+    - type: button
+      entity: light.two
+      tap_action:
+        action: toggle
+    - type: button
+      entity: light.three
+      tap_action:
+        action: toggle
+
+# --- Vertical Stack ---
+vertical_stack:
+  type: vertical-stack
+  cards:
+    - type: markdown
+      content: "## Section Title"
+    - type: entities
+      entities:
+        - light.living_room
+    - type: history-graph
+      entities:
+        - sensor.temperature
+
+# --- Grid Card ---
+grid_card:
+  type: grid
+  columns: 3
+  square: true
+  cards:
+    - type: button
+      entity: light.one
+    - type: button
+      entity: light.two
+    - type: button
+      entity: light.three
+    - type: button
+      entity: light.four
+    - type: button
+      entity: light.five
+    - type: button
+      entity: light.six
+
+# ============================================
+# CONDITIONAL CARDS
+# ============================================
+
+# --- Conditional Card ---
+conditional_card:
+  type: conditional
+  conditions:
+    - condition: state
+      entity: binary_sensor.someone_home
+      state: "on"
+  card:
+    type: entities
+    title: Home Controls
+    entities:
+      - light.living_room
+      - climate.thermostat
+
+conditional_numeric:
+  type: conditional
+  conditions:
+    - condition: numeric_state
+      entity: sensor.temperature
+      above: 25
+  card:
+    type: markdown
+    content: "🔥 It's hot! Temperature is above 25°C"
+
+# --- Entity Filter Card ---
+entity_filter_card:
+  type: entity-filter
+  entities:
+    - light.living_room
+    - light.bedroom
+    - light.kitchen
+    - light.bathroom
+  state_filter:
+    - "on"
+  card:
+    type: glance
+    title: Lights On
+  show_empty: false
+
+entity_filter_low_battery:
+  type: entity-filter
+  entities:
+    - sensor.phone_battery
+    - sensor.tablet_battery
+    - sensor.laptop_battery
+  state_filter:
+    - operator: "<"
+      value: 20
+  card:
+    type: entities
+    title: Low Battery Devices
+
+# ============================================
+# SPECIAL CARDS
+# ============================================
+
+# --- Alarm Panel Card ---
+alarm_panel_card:
+  type: alarm-panel
+  entity: alarm_control_panel.home
+  states:
+    - arm_home
+    - arm_away
+    - arm_night
+
+# --- Sensor Card with Graph ---
+sensor_card:
+  type: sensor
+  entity: sensor.temperature
+  name: Temperature
+  icon: mdi:thermometer
+  graph: line
+  hours_to_show: 24
+  detail: 2
+
+# --- Statistic Card ---
+statistic_card:
+  type: statistic
+  entity: sensor.energy_usage
+  stat_type: sum
+  period:
+    calendar:
+      period: month
+  name: Energy This Month
+
+# ============================================
+# PICTURE ELEMENTS (Floorplan)
+# ============================================
+
+picture_elements_card:
+  type: picture-elements
+  image: /local/images/floorplan.png
+  elements:
+    # State badge
+    - type: state-badge
+      entity: binary_sensor.motion_living
+      style:
+        top: 30%
+        left: 40%
+
+    # Clickable light icon
+    - type: state-icon
+      entity: light.living_room
+      tap_action:
+        action: toggle
+      style:
+        top: 50%
+        left: 60%
+
+    # Temperature label
+    - type: state-label
+      entity: sensor.temperature
+      style:
+        top: 70%
+        left: 20%
+        color: white
+        font-size: 16px
+
+# ============================================
+# ENTITIES CARD SPECIAL ROWS
+# ============================================
+
+entities_special_rows:
+  type: entities
+  title: Special Rows Demo
+  entities:
+    # Basic entity
+    - entity: light.living_room
+      name: Main Light
+
+    # Divider
+    - type: divider
+
+    # Section label
+    - type: section
+      label: Actions
+
+    # Button row
+    - type: buttons
+      entities:
+        - entity: scene.relax
+          name: Relax
+        - entity: scene.bright
+          name: Bright
+
+    # Attribute row
+    - type: attribute
+      entity: sun.sun
+      attribute: next_rising
+      name: Sunrise
+      icon: mdi:weather-sunset-up
+
+    # Call service row
+    - type: call-service
+      name: Restart HA
+      icon: mdi:restart
+      action_name: Restart
+      service: homeassistant.restart
+      confirmation:
+        text: "Are you sure?"
+
+    # Web link row
+    - type: weblink
+      name: Home Assistant
+      url: https://www.home-assistant.io
+      icon: mdi:home-assistant
+
+# ============================================
+# CARD WITH HEADER/FOOTER
+# ============================================
+
+card_with_footer:
+  type: entities
+  title: Living Room
+  entities:
+    - light.living_room
+    - switch.fan
+  footer:
+    type: buttons
+    entities:
+      - entity: scene.relax
+        icon: mdi:sofa
+      - entity: scene.bright
+        icon: mdi:brightness-7
+
+card_with_graph_footer:
+  type: entities
+  title: Climate
+  entities:
+    - climate.thermostat
+  footer:
+    type: graph
+    entity: sensor.temperature
+    hours_to_show: 24
+    detail: 2

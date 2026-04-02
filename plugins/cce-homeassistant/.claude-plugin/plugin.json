@@ -1,0 +1,35 @@
+{
+  "name": "cce-homeassistant",
+  "version": "1.0.0",
+  "description": "Home Assistant automation, integrations, dashboards, voice, and energy workflows",
+  "author": {
+    "name": "Claude Code Extensions Contributors",
+    "url": "https://github.com/nodnarbnitram/claude-code-extensions"
+  },
+  "homepage": "https://github.com/nodnarbnitram/claude-code-extensions",
+  "repository": "https://github.com/nodnarbnitram/claude-code-extensions",
+  "license": "MIT",
+  "keywords": [
+    "homeassistant",
+    "home-automation",
+    "lovelace",
+    "assist",
+    "integrations"
+  ],
+  "agents": "./agents/specialized/homeassistant/",
+  "skills": [
+    "./skills/ha-addon/",
+    "./skills/ha-api/",
+    "./skills/ha-automation/",
+    "./skills/ha-dashboard/",
+    "./skills/ha-energy/",
+    "./skills/ha-integration/",
+    "./skills/ha-voice/",
+    "./skills/frigate-configurator/"
+  ],
+  "commands": [
+    "./commands/ha-automation-lint.md",
+    "./commands/ha-blueprint-create.md",
+    "./commands/ha-integration-scaffold.md"
+  ]
+}

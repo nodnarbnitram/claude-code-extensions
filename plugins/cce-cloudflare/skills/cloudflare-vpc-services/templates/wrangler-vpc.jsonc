@@ -1,0 +1,30 @@
+{
+  "name": "my-worker",
+  "main": "src/index.ts",
+  "compatibility_date": "2024-01-01",
+
+  // VPC Service Bindings
+  // Each binding creates an env variable for accessing private services
+  "vpc_services": [
+    {
+      // Environment variable name: env.PRIVATE_API
+      "binding": "PRIVATE_API",
+      // UUID from VPC service creation (Cloudflare API or dashboard)
+      "service_id": "<YOUR_SERVICE_ID>",
+      // Must be true for VPC services
+      "remote": true
+    }
+    // Add more bindings as needed:
+    // {
+    //   "binding": "PRIVATE_DATABASE",
+    //   "service_id": "<ANOTHER_SERVICE_ID>",
+    //   "remote": true
+    // }
+  ],
+
+  // Other common settings
+  "vars": {
+    // Add any environment variables your Worker needs
+    // "API_TOKEN": "your-token"
+  }
+}
