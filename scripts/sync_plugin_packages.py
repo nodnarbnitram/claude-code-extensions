@@ -272,6 +272,18 @@ def copy_path(src: Path, dest: Path) -> None:
         shutil.copy2(src, dest)
 
 
+def copy_agent_assets_flat(src: Path, plugin_root: Path) -> None:
+    agents_root = plugin_root / "agents"
+    agents_root.mkdir(parents=True, exist_ok=True)
+
+    if src.is_dir():
+        for agent_file in src.rglob("*.md"):
+            shutil.copy2(agent_file, agents_root / agent_file.name)
+        return
+
+    shutil.copy2(src, agents_root / src.name)
+
+
 def is_text_file(path: Path) -> bool:
     return path.suffix.lower() in TEXT_EXTENSIONS or path.name in {
         "hooks.json",
@@ -375,7 +387,11 @@ def sync_plugin(spec: PluginSpec) -> None:
                 generated_path.unlink()
 
     for src, dest in spec.assets:
-        copy_path(REPO_ROOT / src, plugin_root / dest)
+        source_path = REPO_ROOT / src
+        if src.startswith(".claude/agents/"):
+            copy_agent_assets_flat(source_path, plugin_root)
+            continue
+        copy_path(source_path, plugin_root / dest)
 
     if spec.hooks_from_settings:
         write_core_hooks(plugin_root)
