@@ -17,7 +17,13 @@
       "author": {
         "name": "Claude Code Extensions Contributors"
       },
-      "keywords": ["core", "essential", "hooks", "automation"]
+      "keywords": [
+        "core",
+        "essential",
+        "hooks",
+        "automation",
+        "workflow"
+      ]
     },
     {
       "name": "cce-kubernetes",
@@ -27,7 +33,11 @@
       "author": {
         "name": "Claude Code Extensions Contributors"
       },
-      "keywords": ["kubernetes", "k8s", "cluster-health"]
+      "keywords": [
+        "kubernetes",
+        "k8s",
+        "cluster-health"
+      ]
     },
     {
       "name": "cce-cloudflare",
@@ -37,7 +47,12 @@
       "author": {
         "name": "Claude Code Extensions Contributors"
       },
-      "keywords": ["cloudflare", "workers", "edge", "ai"]
+      "keywords": [
+        "cloudflare",
+        "workers",
+        "edge",
+        "ai"
+      ]
     },
     {
       "name": "cce-esphome",
@@ -47,17 +62,28 @@
       "author": {
         "name": "Claude Code Extensions Contributors"
       },
-      "keywords": ["esphome", "iot", "esp32", "homeassistant"]
+      "keywords": [
+        "esphome",
+        "iot",
+        "esp32",
+        "homeassistant"
+      ]
     },
     {
       "name": "cce-homeassistant",
       "source": "./plugins/cce-homeassistant",
-      "description": "Home Assistant Lovelace dashboard configuration, card selection, and theme customization",
+      "description": "Home Assistant automation, integrations, dashboards, voice, and energy workflows",
       "version": "1.0.0",
       "author": {
         "name": "Claude Code Extensions Contributors"
       },
-      "keywords": ["homeassistant", "home-automation", "lovelace", "dashboards"]
+      "keywords": [
+        "homeassistant",
+        "home-automation",
+        "lovelace",
+        "assist",
+        "integrations"
+      ]
     },
     {
       "name": "cce-web-react",
@@ -67,7 +93,11 @@
       "author": {
         "name": "Claude Code Extensions Contributors"
       },
-      "keywords": ["react", "nextjs", "tanstack"]
+      "keywords": [
+        "react",
+        "nextjs",
+        "tanstack"
+      ]
     },
     {
       "name": "cce-research",
@@ -77,7 +107,12 @@
       "author": {
         "name": "Claude Code Extensions Contributors"
       },
-      "keywords": ["research", "academic", "data-analysis", "technical-research"]
+      "keywords": [
+        "research",
+        "academic",
+        "data-analysis",
+        "technical-research"
+      ]
     },
     {
       "name": "cce-web-vue",
@@ -87,7 +122,14 @@
       "author": {
         "name": "Claude Code Extensions Contributors"
       },
-      "keywords": ["vue", "vuejs", "nuxt", "composition-api", "ssr", "ssg"]
+      "keywords": [
+        "vue",
+        "vuejs",
+        "nuxt",
+        "composition-api",
+        "ssr",
+        "ssg"
+      ]
     },
     {
       "name": "cce-typescript",
@@ -97,7 +139,13 @@
       "author": {
         "name": "Claude Code Extensions Contributors"
       },
-      "keywords": ["typescript", "frontend", "braintrust", "testing", "documentation"]
+      "keywords": [
+        "typescript",
+        "frontend",
+        "braintrust",
+        "testing",
+        "documentation"
+      ]
     },
     {
       "name": "cce-go",
@@ -107,7 +155,12 @@
       "author": {
         "name": "Claude Code Extensions Contributors"
       },
-      "keywords": ["go", "golang", "google-style", "best-practices"]
+      "keywords": [
+        "go",
+        "golang",
+        "google-style",
+        "best-practices"
+      ]
     },
     {
       "name": "cce-anthropic",
@@ -117,7 +170,12 @@
       "author": {
         "name": "Claude Code Extensions Contributors"
       },
-      "keywords": ["anthropic", "claude", "agent-sdk", "autonomous-agents"]
+      "keywords": [
+        "anthropic",
+        "claude",
+        "agent-sdk",
+        "autonomous-agents"
+      ]
     },
     {
       "name": "cce-grafana",
@@ -127,17 +185,30 @@
       "author": {
         "name": "Claude Code Extensions Contributors"
       },
-      "keywords": ["grafana", "observability", "metrics", "plugins", "billing"]
+      "keywords": [
+        "grafana",
+        "observability",
+        "metrics",
+        "plugins",
+        "billing"
+      ]
     },
     {
       "name": "cce-django",
       "source": "./plugins/cce-django",
-      "description": "Django backend development suite: models, views, DRF APIs, GraphQL, and ORM optimization for professional Django projects",
+      "description": "Django backend development suite: models, views, DRF APIs, GraphQL, and ORM optimization",
       "version": "1.0.0",
       "author": {
         "name": "Claude Code Extensions Contributors"
       },
-      "keywords": ["django", "python", "drf", "graphql", "orm", "backend"]
+      "keywords": [
+        "django",
+        "python",
+        "drf",
+        "graphql",
+        "orm",
+        "backend"
+      ]
     },
     {
       "name": "cce-temporal",
@@ -147,7 +218,12 @@
       "author": {
         "name": "Claude Code Extensions Contributors"
       },
-      "keywords": ["temporal", "workflows", "durable-execution", "distributed-systems"]
+      "keywords": [
+        "temporal",
+        "workflows",
+        "durable-execution",
+        "distributed-systems"
+      ]
     },
     {
       "name": "cce-devops",
@@ -157,7 +233,14 @@
       "author": {
         "name": "Claude Code Extensions Contributors"
       },
-      "keywords": ["devops", "ci-cd", "github-actions", "helm", "argocd", "crossplane"]
+      "keywords": [
+        "devops",
+        "ci-cd",
+        "github-actions",
+        "helm",
+        "argocd",
+        "crossplane"
+      ]
     },
     {
       "name": "cce-ai",
@@ -167,7 +250,14 @@
       "author": {
         "name": "Claude Code Extensions Contributors"
       },
-      "keywords": ["ai", "ml", "llm", "machine-learning", "nlp", "prompt-engineering"]
+      "keywords": [
+        "ai",
+        "ml",
+        "llm",
+        "machine-learning",
+        "nlp",
+        "prompt-engineering"
+      ]
     },
     {
       "name": "cce-python",
@@ -177,7 +267,44 @@
       "author": {
         "name": "Claude Code Extensions Contributors"
       },
-      "keywords": ["python", "typer", "cli", "type-hints"]
+      "keywords": [
+        "python",
+        "typer",
+        "cli",
+        "type-hints"
+      ]
+    },
+    {
+      "name": "cce-linear",
+      "source": "./plugins/cce-linear",
+      "description": "Linear ticket and project workflows with wrapper scripts for issues, milestones, documents, and PR coordination",
+      "version": "1.0.0",
+      "author": {
+        "name": "Claude Code Extensions Contributors"
+      },
+      "keywords": [
+        "linear",
+        "tickets",
+        "project-management",
+        "triage",
+        "workflow"
+      ]
+    },
+    {
+      "name": "cce-tauri",
+      "source": "./plugins/cce-tauri",
+      "description": "Tauri v2 desktop and mobile app development with Rust backend, IPC, capabilities, and security",
+      "version": "1.0.0",
+      "author": {
+        "name": "Claude Code Extensions Contributors"
+      },
+      "keywords": [
+        "tauri",
+        "desktop",
+        "rust",
+        "ipc",
+        "capabilities"
+      ]
     }
   ]
 }

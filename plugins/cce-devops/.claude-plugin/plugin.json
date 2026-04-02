@@ -1,7 +1,7 @@
 {
   "name": "cce-devops",
   "version": "1.0.0",
-  "description": "DevOps tooling for CI/CD and infrastructure: GitHub Actions, Helm, ArgoCD, and Crossplane",
+  "description": "DevOps tooling: GitHub Actions, Helm, ArgoCD, and Crossplane for CI/CD and infrastructure",
   "author": {
     "name": "Claude Code Extensions Contributors",
     "url": "https://github.com/nodnarbnitram/claude-code-extensions"
@@ -9,11 +9,18 @@
   "homepage": "https://github.com/nodnarbnitram/claude-code-extensions",
   "repository": "https://github.com/nodnarbnitram/claude-code-extensions",
   "license": "MIT",
-  "keywords": ["devops", "ci-cd", "github-actions", "helm", "argocd", "crossplane"],
+  "keywords": [
+    "devops",
+    "ci-cd",
+    "github-actions",
+    "helm",
+    "argocd",
+    "crossplane"
+  ],
   "agents": [
-    "./.claude/agents/specialized/devops/",
-    "./.claude/agents/specialized/helm/",
-    "./.claude/agents/specialized/argocd/",
-    "./.claude/agents/specialized/crossplane/"
+    "./agents/specialized/devops/",
+    "./agents/specialized/helm/",
+    "./agents/specialized/argocd/",
+    "./agents/specialized/crossplane/"
   ]
 }

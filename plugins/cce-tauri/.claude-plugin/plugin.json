@@ -1,7 +1,7 @@
 {
-  "name": "cce-python",
+  "name": "cce-tauri",
   "version": "1.0.0",
-  "description": "Python CLI development with Typer for type-hint driven applications, validation, and testing",
+  "description": "Tauri v2 desktop and mobile app development with Rust backend, IPC, capabilities, and security",
   "author": {
     "name": "Claude Code Extensions Contributors",
     "url": "https://github.com/nodnarbnitram/claude-code-extensions"
@@ -10,10 +10,12 @@
   "repository": "https://github.com/nodnarbnitram/claude-code-extensions",
   "license": "MIT",
   "keywords": [
-    "python",
-    "typer",
-    "cli",
-    "type-hints"
+    "tauri",
+    "desktop",
+    "rust",
+    "ipc",
+    "capabilities"
   ],
-  "agents": "./agents/specialized/python/"
+  "agents": "./agents/specialized/tauri/",
+  "skills": "./skills/tauri-v2/"
 }

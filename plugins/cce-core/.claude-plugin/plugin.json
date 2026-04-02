@@ -9,26 +9,33 @@
   "homepage": "https://github.com/nodnarbnitram/claude-code-extensions",
   "repository": "https://github.com/nodnarbnitram/claude-code-extensions",
   "license": "MIT",
-  "keywords": ["claude-code", "core", "essential", "hooks", "automation", "agents"],
+  "keywords": [
+    "core",
+    "essential",
+    "hooks",
+    "automation",
+    "workflow"
+  ],
   "agents": [
-    "./.claude/agents/core/",
-    "./.claude/agents/orchestrators/",
-    "./.claude/agents/universal/",
-    "./.claude/agents/meta-agent.md"
+    "./agents/core/",
+    "./agents/orchestrators/",
+    "./agents/universal/",
+    "./agents/meta-agent.md"
   ],
   "skills": [
-    "./.claude/skills/commit-helper/",
-    "./.claude/skills/code-reviewer/"
+    "./skills/commit-helper/",
+    "./skills/code-reviewer/"
   ],
   "commands": [
-    "./.claude/commands/git-commit.md",
-    "./.claude/commands/git-status.md",
-    "./.claude/commands/prime.md",
-    "./.claude/commands/agent-from-docs.md",
-    "./.claude/commands/agent-intent-from-docs.md",
-    "./.claude/commands/security-scan.md",
-    "./.claude/commands/wrapup-skillup.md",
-    "./.claude/commands/frontend-mode.md"
+    "./commands/git-commit.md",
+    "./commands/git-status.md",
+    "./commands/prime.md",
+    "./commands/agent-from-docs.md",
+    "./commands/agent-intent-from-docs.md",
+    "./commands/security-scan.md",
+    "./commands/wrapup-skillup.md",
+    "./commands/frontend-mode.md",
+    "./commands/create-skill.md"
   ],
-  "hooks": "./.claude/settings.json"
+  "hooks": "./hooks/hooks.json"
 }

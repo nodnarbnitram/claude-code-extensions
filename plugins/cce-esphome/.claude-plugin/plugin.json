@@ -9,10 +9,15 @@
   "homepage": "https://github.com/nodnarbnitram/claude-code-extensions",
   "repository": "https://github.com/nodnarbnitram/claude-code-extensions",
   "license": "MIT",
-  "keywords": ["esphome", "iot", "esp32", "esp8266", "homeassistant"],
-  "agents": "./.claude/agents/specialized/esphome/",
+  "keywords": [
+    "esphome",
+    "iot",
+    "esp32",
+    "homeassistant"
+  ],
+  "agents": "./agents/specialized/esphome/",
   "skills": [
-    "./.claude/skills/esphome-config-helper/",
-    "./.claude/skills/esphome-box3-builder/"
+    "./skills/esphome-config-helper/",
+    "./skills/esphome-box3-builder/"
   ]
 }

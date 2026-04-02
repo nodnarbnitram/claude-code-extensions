@@ -9,6 +9,13 @@
   "homepage": "https://github.com/nodnarbnitram/claude-code-extensions",
   "repository": "https://github.com/nodnarbnitram/claude-code-extensions",
   "license": "MIT",
-  "keywords": ["vue", "vuejs", "nuxt", "composition-api", "ssr", "ssg"],
-  "agents": "./.claude/agents/specialized/vue/"
+  "keywords": [
+    "vue",
+    "vuejs",
+    "nuxt",
+    "composition-api",
+    "ssr",
+    "ssg"
+  ],
+  "agents": "./agents/specialized/vue/"
 }

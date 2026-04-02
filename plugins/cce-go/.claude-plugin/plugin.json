@@ -9,6 +9,11 @@
   "homepage": "https://github.com/nodnarbnitram/claude-code-extensions",
   "repository": "https://github.com/nodnarbnitram/claude-code-extensions",
   "license": "MIT",
-  "keywords": ["go", "golang", "google-style", "best-practices", "go1.25", "concurrency", "testing"],
-  "agents": "./.claude/agents/specialized/go/"
+  "keywords": [
+    "go",
+    "golang",
+    "google-style",
+    "best-practices"
+  ],
+  "agents": "./agents/specialized/go/"
 }

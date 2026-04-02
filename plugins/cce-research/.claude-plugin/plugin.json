@@ -9,8 +9,11 @@
   "homepage": "https://github.com/nodnarbnitram/claude-code-extensions",
   "repository": "https://github.com/nodnarbnitram/claude-code-extensions",
   "license": "MIT",
-  "keywords": ["claude-code", "research", "academic", "data-analysis", "technical-research", "web-intelligence"],
-  "agents": [
-    "./.claude/agents/deep-research/"
-  ]
+  "keywords": [
+    "research",
+    "academic",
+    "data-analysis",
+    "technical-research"
+  ],
+  "agents": "./agents/deep-research/"
 }

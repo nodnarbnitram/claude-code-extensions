@@ -9,6 +9,10 @@
   "homepage": "https://github.com/nodnarbnitram/claude-code-extensions",
   "repository": "https://github.com/nodnarbnitram/claude-code-extensions",
   "license": "MIT",
-  "keywords": ["react", "nextjs", "tanstack", "frontend", "components"],
-  "agents": "./.claude/agents/specialized/react/"
+  "keywords": [
+    "react",
+    "nextjs",
+    "tanstack"
+  ],
+  "agents": "./agents/specialized/react/"
 }

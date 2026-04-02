@@ -9,7 +9,12 @@
   "homepage": "https://github.com/nodnarbnitram/claude-code-extensions",
   "repository": "https://github.com/nodnarbnitram/claude-code-extensions",
   "license": "MIT",
-  "keywords": ["cloudflare", "workers", "edge", "ai", "workflows"],
-  "agents": "./.claude/agents/specialized/cloudflare/",
-  "skills": "./.claude/skills/cloudflare-vpc-services/"
+  "keywords": [
+    "cloudflare",
+    "workers",
+    "edge",
+    "ai"
+  ],
+  "agents": "./agents/specialized/cloudflare/",
+  "skills": "./skills/cloudflare-vpc-services/"
 }

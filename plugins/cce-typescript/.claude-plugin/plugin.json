@@ -10,19 +10,14 @@
   "repository": "https://github.com/nodnarbnitram/claude-code-extensions",
   "license": "MIT",
   "keywords": [
-    "claude-code",
     "typescript",
     "frontend",
     "braintrust",
     "testing",
-    "documentation",
-    "fumadocs",
-    "mdx",
-    "llm-testing",
-    "observability"
+    "documentation"
   ],
   "agents": [
-    "./.claude/agents/specialized/braintrust/",
-    "./.claude/agents/specialized/frontend/"
+    "./agents/specialized/braintrust/",
+    "./agents/specialized/frontend/"
   ]
 }

@@ -9,8 +9,11 @@
   "homepage": "https://github.com/nodnarbnitram/claude-code-extensions",
   "repository": "https://github.com/nodnarbnitram/claude-code-extensions",
   "license": "MIT",
-  "keywords": ["anthropic", "claude", "agent-sdk", "autonomous-agents", "python", "typescript", "ai-agents"],
-  "agents": [
-    "./.claude/agents/specialized/anthropic/"
-  ]
+  "keywords": [
+    "anthropic",
+    "claude",
+    "agent-sdk",
+    "autonomous-agents"
+  ],
+  "agents": "./agents/specialized/anthropic/"
 }

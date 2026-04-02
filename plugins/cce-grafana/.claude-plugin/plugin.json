@@ -9,10 +9,16 @@
   "homepage": "https://github.com/nodnarbnitram/claude-code-extensions",
   "repository": "https://github.com/nodnarbnitram/claude-code-extensions",
   "license": "MIT",
-  "keywords": ["grafana", "observability", "metrics", "plugins", "billing", "prometheus", "loki"],
-  "agents": "./.claude/agents/specialized/grafana/",
+  "keywords": [
+    "grafana",
+    "observability",
+    "metrics",
+    "plugins",
+    "billing"
+  ],
+  "agents": "./agents/specialized/grafana/",
   "skills": [
-    "./.claude/skills/grafana-plugin-scaffolding/",
-    "./.claude/skills/grafana-billing/"
+    "./skills/grafana-plugin-scaffolding/",
+    "./skills/grafana-billing/"
   ]
 }

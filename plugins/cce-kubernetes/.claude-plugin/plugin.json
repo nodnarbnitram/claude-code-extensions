@@ -9,11 +9,15 @@
   "homepage": "https://github.com/nodnarbnitram/claude-code-extensions",
   "repository": "https://github.com/nodnarbnitram/claude-code-extensions",
   "license": "MIT",
-  "keywords": ["kubernetes", "k8s", "cluster-health", "kubectl", "operators"],
-  "agents": "./.claude/agents/specialized/kubernetes/",
-  "skills": [
-    "./.claude/skills/kubernetes-operations/",
-    "./.claude/skills/kubernetes-health/"
+  "keywords": [
+    "kubernetes",
+    "k8s",
+    "cluster-health"
   ],
-  "commands": "./.claude/commands/k8s-health.md"
+  "agents": "./agents/specialized/kubernetes/",
+  "skills": [
+    "./skills/kubernetes-operations/",
+    "./skills/kubernetes-health/"
+  ],
+  "commands": "./commands/k8s-health.md"
 }
