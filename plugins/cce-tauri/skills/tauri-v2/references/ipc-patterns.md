@@ -1,11 +1,52 @@
-# Tauri v2 IPC Patterns Reference
+# Tauri v2+ IPC Patterns Reference
+
+## Contents
+
+- Overview
+- IPC Decision Framework
+- Commands (invoke)
+- Events
+- Typed Streaming Channels
+- State Management
+- Error Handling Across IPC
+- Window Access and App Handles
+- IPC Selection Guide
 
 ## Overview
 
-Tauri v2 provides three IPC primitives:
+Tauri v2+ provides three IPC primitives:
 1. **Commands**: Request-response (most common)
 2. **Events**: Fire-and-forget notifications
 3. **Channels**: High-frequency streaming
+
+**See also:** [Capabilities Reference](capabilities-reference.md) for permission setup | [Plugin Reference](plugin-reference.md) for plugin-specific IPC
+
+*Last verified: 2026-04-02. Check the official Tauri changelog when IPC API timing matters.*
+
+## IPC Decision Framework
+
+### Commands: Request-Response
+Use `invoke()` when:
+- Frontend needs data from Rust (fetch, compute, query)
+- Frontend triggers an action and needs a result
+- Error handling is needed (returns `Result<T, E>`)
+- **Direction: Frontend → Rust → Frontend** (request/response)
+
+### Events: Fire-and-Forget Notifications
+Use `emit()`/`listen()` when:
+- Rust needs to notify frontend of a background event
+- Multiple windows need to receive the same notification
+- Broadcasting state changes that don't require acknowledgment
+- **Direction: Bidirectional** (but one-way per emit)
+- **Important:** Events are fire-and-forget — there is NO acknowledgment or response channel
+
+### Channels: Typed Streaming
+Use `Channel<T>` when:
+- High-frequency progress updates from a long-running operation
+- Streaming data from Rust to frontend
+- Strongly typed discriminated message streams
+- **Direction: Rust → Frontend** (streaming only)
+- **Key difference from Events:** Channels are scoped to a single command invocation; events are global
 
 ## Commands (invoke)
 
@@ -218,6 +259,8 @@ await invoke('upload_file', fileData);
 
 ## Events
 
+> **Trait imports required:** `use tauri::Emitter;` to call `.emit()` on `AppHandle`/`WebviewWindow`. `use tauri::Listener;` to call `.listen()` on `App`/`AppHandle`. These traits must be in scope.
+
 ### Emit from Rust to Frontend
 
 **Rust:**
@@ -294,9 +337,12 @@ fn emit_to_window(window: WebviewWindow, message: String) {
 
 ---
 
-## Channels (Streaming)
+## Typed Streaming Channels
 
-### Basic Channel Pattern
+`Channel<TSend>` is a typed streaming primitive. The type parameter `TSend` defines what messages can be sent. Both Rust and TypeScript must agree on the shape:
+- Rust: `Channel<MyEvent>` where `MyEvent: serde::Serialize + Clone`
+- Frontend: `new Channel<MyEvent>()` with matching TypeScript type
+- Use `#[serde(tag = "event", content = "data")]` on enums for discriminated union patterns.
 
 **Rust:**
 ```rust

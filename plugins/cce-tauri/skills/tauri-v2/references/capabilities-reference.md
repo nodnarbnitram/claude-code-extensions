@@ -1,8 +1,33 @@
-# Tauri v2 Capabilities & Permissions Reference
+# Tauri v2+ Capabilities & Permissions Reference
+
+## Contents
+
+- Security Model: v1 vs v2
+- Overview
+- Capability File Structure
+- Core Permissions
+- Plugin Permissions
+- Scopes
+- Permission Sets
+- Window and Webview Targeting
+- Capability Best Practices
+- Common Capability Patterns
+- Anti-Patterns
+
+## Security Model: v1 vs v2
+
+Tauri v2 replaces the v1 `allowlist` with a capabilities-first security model. In v1, you listed allowed API calls in `tauri.conf.json`'s `allowlist`. In v2, permissions must be explicitly granted via capability files in `src-tauri/capabilities/`.
+
+**Three-layer security model:**
+- **Capability**: A named collection of permissions, scoped to specific windows/webviews. Lives in `src-tauri/capabilities/*.json`.
+- **Permission**: An identifier that grants access to a specific command or feature (e.g., `fs:allow-read-file`). Defined per-plugin.
+- **Scope**: Optional constraint on a permission that limits what it can access (e.g., only `$APPDATA/*` paths). Part of a permission object.
 
 ## Overview
 
-Tauri v2 uses a capabilities-based security model. By default, **nothing is allowed** - you must explicitly grant permissions through capability files.
+Tauri v2+ uses a capabilities-based security model. By default, **nothing is allowed** - you must explicitly grant permissions through capability files.
+
+*Last verified: 2026-04-02. Check the official Tauri changelog when capability semantics or permission names change.*
 
 ## Capability File Structure
 
@@ -208,6 +233,23 @@ Location: `src-tauri/capabilities/`
 }
 ```
 
+## Permission Sets
+
+Permission sets allow grouping multiple permissions into a single reusable identifier. You can use preset permission sets provided by plugins (like `fs:default`) or define your own in `src-tauri/permissions/`.
+
+```json
+{
+  "permissions": [
+    "fs:default",          // Permission set: includes common fs operations
+    "fs:allow-read-file",  // Individual permission: specific operation
+    {
+      "identifier": "fs:allow-read-file",  // Permission with scope
+      "allow": [{ "path": "$APPDATA/*" }]
+    }
+  ]
+}
+```
+
 ## Platform-Specific Capabilities
 
 ```json
@@ -223,6 +265,19 @@ Location: `src-tauri/capabilities/`
     "identifier": "mobile-only",
     "platforms": ["iOS", "android"],
     "permissions": ["biometric:default", "haptics:default"]
+}
+```
+
+## Windows and Webviews Targeting
+
+Capabilities are applied to specific windows and webviews by their labels. A window or webview can be part of multiple capabilities, in which case their permissions are merged.
+
+```json
+{
+  "identifier": "main-window-cap",
+  "windows": ["main"],        // Target by window label
+  "webviews": [],             // Or target specific webviews
+  "permissions": ["core:default", "fs:default"]
 }
 ```
 
@@ -269,6 +324,12 @@ Reference in capability:
 3. **Separate Capabilities**: Create focused capability files for different features
 4. **Platform-Specific**: Use platform filtering for platform-specific features
 5. **Document**: Add descriptions to explain why permissions are needed
+
+**See also:** [Plugin Reference](plugin-reference.md) for plugin-specific permission strings | [Advanced Runtime](advanced-runtime-reference.md) for tray/sidecar capabilities
+
+## Anti-Pattern: Missing Capability
+
+Plugin installed but **NOT** in capabilities = silent permission denied at runtime. Always add plugin permissions to a capability file that targets the window using the plugin.
 
 ## Common Capability Patterns
 

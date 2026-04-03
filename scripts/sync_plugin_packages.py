@@ -247,6 +247,7 @@ PLUGIN_SPECS: list[PluginSpec] = [
         name="cce-tauri",
         description="Tauri v2 desktop and mobile app development with Rust backend, IPC, capabilities, and security",
         keywords=["tauri", "desktop", "rust", "ipc", "capabilities"],
+        version="1.0.1",
         assets=[
             (".claude/agents/specialized/tauri", "agents/specialized/tauri"),
             (".claude/skills/tauri-v2", "skills/tauri-v2"),
@@ -304,12 +305,24 @@ def rewrite_claude_paths(text: str) -> str:
     return rewritten
 
 
+def rewrite_flat_agent_paths(relative_path: Path, text: str) -> str:
+    if len(relative_path.parts) < 2 or relative_path.parts[0] != "agents":
+        return text
+
+    return re.sub(
+        r"\.\./\.\./\.\./(skills|commands|hooks|agents)/",
+        r"../\1/",
+        text,
+    )
+
+
 def rewrite_text_files(plugin_root: Path) -> None:
     for path in plugin_root.rglob("*"):
         if not path.is_file() or not is_text_file(path):
             continue
         original = path.read_text()
         updated = rewrite_claude_paths(original)
+        updated = rewrite_flat_agent_paths(path.relative_to(plugin_root), updated)
         if updated != original:
             path.write_text(updated)
 
@@ -325,7 +338,7 @@ def build_manifest(spec: PluginSpec) -> dict[str, Any]:
     existing = load_existing_manifest(spec.name)
     manifest: dict[str, Any] = {
         "name": spec.name,
-        "version": existing.get("version", spec.version),
+        "version": spec.version,
         "description": spec.description,
         "author": existing.get("author", DEFAULT_AUTHOR),
         "homepage": existing.get("homepage", DEFAULT_REPOSITORY),

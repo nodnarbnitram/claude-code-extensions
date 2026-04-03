@@ -1,9 +1,10 @@
 ---
 name: tauri-v2
-description: "Tauri v2 cross-platform app development with Rust backend. Use when configuring tauri.conf.json, implementing Rust commands (#[tauri::command]), setting up IPC patterns (invoke, emit, channels), configuring permissions/capabilities, troubleshooting build issues, or deploying desktop/mobile apps. Triggers on Tauri, src-tauri, invoke, emit, capabilities.json."
+description: "Tauri v2+ cross-platform app development with Rust backend. Use when configuring tauri.conf.json, implementing Rust commands (#[tauri::command]), setting up IPC patterns (invoke, emit, channels), configuring permissions/capabilities, troubleshooting build issues, or deploying desktop/mobile apps. Triggers on Tauri, src-tauri, invoke, emit, capabilities.json."
+version: 1.0.1
 ---
 
-# Tauri v2 Development Skill
+# Tauri v2+ Development Skill
 
 > Build cross-platform desktop and mobile apps with web frontends and Rust backends.
 
@@ -36,6 +37,7 @@ fn greet(name: String) -> String {
     format!("Hello, {}!", name)
 }
 
+#[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![greet])
@@ -45,6 +47,16 @@ pub fn run() {
 ```
 
 **Why this matters:** Commands not in `generate_handler![]` silently fail when invoked from frontend.
+
+> **`main.rs` stays thin:** `src-tauri/src/main.rs` should only be a thin passthrough — all application logic lives in `lib.rs`:
+> ```rust
+> // src-tauri/src/main.rs
+> #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
+> fn main() {
+>     app_lib::run();
+> }
+> ```
+> This split is required for mobile builds — Tauri replaces `main()` with `mobile_entry_point` on mobile targets.
 
 ### Step 2: Call from Frontend
 
@@ -80,6 +92,7 @@ console.log(greeting); // "Hello, World!"
 - Use `Mutex<T>` for shared state accessed from multiple commands
 - Add capabilities before using any plugin features
 - Use `lib.rs` for shared code (required for mobile builds)
+- Use `#[cfg_attr(mobile, tauri::mobile_entry_point)]` on `pub fn run()` in `lib.rs` for mobile compatibility
 
 ### Never Do
 
@@ -114,10 +127,22 @@ async fn good(name: String) -> String {
 |-------|-----------|----------|
 | "Command not found" | Missing from `generate_handler!` | Add command to handler macro |
 | "Permission denied" | Missing capability | Add to `capabilities/default.json` |
+| Plugin feature silently fails | Plugin installed but permission not in capability | Add plugin permission string to `capabilities/default.json` |
+| Updater fails in production | Unsigned artifacts or HTTP endpoint | Generate keys with `cargo tauri signer generate`, use HTTPS endpoint only |
+| Sidecar not found | `externalBin` not in `tauri.conf.json` or missing executable | Add path to `bundle.externalBin`, ensure binary is bundled |
+| Feature works on desktop, breaks on mobile | Desktop-only API used | Check if API has mobile support — some plugins are desktop-only |
 | State panic on access | Type mismatch in `State<T>` | Use exact type from `.manage()` |
 | White screen on launch | Frontend not building | Check `beforeDevCommand` in config |
 | IPC timeout | Blocking async command | Remove blocking code or use spawn |
 | Mobile build fails | Missing Rust targets | Run `rustup target add <target>` |
+
+## Deep-Dive References
+
+- **Security & permissions** → [`references/capabilities-reference.md`](references/capabilities-reference.md)
+- **IPC decision guide** → [`references/ipc-patterns.md`](references/ipc-patterns.md)
+- **Official plugins** → [`references/plugin-reference.md`](references/plugin-reference.md)
+- **Updater & distribution** → [`references/updater-distribution-reference.md`](references/updater-distribution-reference.md)
+- **Tray, sidecars, deep links** → [`references/advanced-runtime-reference.md`](references/advanced-runtime-reference.md)
 
 ## Configuration Reference
 
@@ -159,6 +184,27 @@ async fn good(name: String) -> String {
 - `build.devUrl`: Must match your frontend dev server port
 - `app.security.capabilities`: Array of capability file identifiers
 
+**Plugin configuration** — Some plugins require additional `tauri.conf.json` blocks (e.g., `store`, `updater`). Always check the specific plugin docs at `v2.tauri.app/plugin/<plugin-name>/` for required config keys.
+
+## Project Structure
+
+```
+my-tauri-app/
+├── src/                    # Frontend source
+├── src-tauri/
+│   ├── src/
+│   │   ├── main.rs         # Thin passthrough — calls lib::run()
+│   │   └── lib.rs          # ALL application logic lives here
+│   ├── capabilities/
+│   │   └── default.json    # Capability definitions (grant permissions here)
+│   ├── tauri.conf.json     # App configuration (devUrl, bundle, security)
+│   ├── Cargo.toml          # Rust dependencies
+│   └── build.rs            # Build script (required for tauri-build)
+└── package.json
+```
+
+**Why `lib.rs` owns all logic:** Tauri replaces `main()` with `#[cfg_attr(mobile, tauri::mobile_entry_point)]` on mobile. All commands, state, and builder setup must live in `lib.rs::run()`.
+
 ### Cargo.toml
 
 ```toml
@@ -188,6 +234,8 @@ serde_json = "1"
 
 ### Error Handling Pattern
 
+Use `Result<T, E>` and `thiserror` for type-safe error propagation across the IPC boundary. See [`references/ipc-patterns.md`](references/ipc-patterns.md) for full implementation details.
+
 ```rust
 use thiserror::Error;
 
@@ -212,7 +260,41 @@ fn risky_operation() -> Result<String, AppError> {
 }
 ```
 
+### Serde Boundary Rules
+
+All command arguments must implement `serde::Deserialize`, and return types must implement `serde::Serialize`. This is how Tauri bridges JSON over the IPC boundary.
+
+```rust
+use serde::{Deserialize, Serialize};
+
+#[derive(Deserialize)]
+struct CreateUserArgs {
+    name: String,
+    email: String,
+    role: Option<String>,  // Optional fields use Option<T>
+}
+
+#[derive(Serialize)]
+struct User {
+    id: u64,
+    name: String,
+}
+
+#[tauri::command]
+fn create_user(args: CreateUserArgs) -> Result<User, String> {
+    Ok(User { id: 1, name: args.name })
+}
+```
+
+**Common serde pitfalls:**
+- Field names are camelCase in JS, snake_case in Rust — Tauri automatically converts between them
+- `Option<T>` maps to optional JS arguments (can be `undefined` or `null`)
+- Complex enums need `#[serde(tag = "type")]` or similar to be JSON-safe
+- Error types must also implement `Serialize` (see Error Handling Pattern above)
+
 ### State Management Pattern
+
+Tauri state manages application data across commands. See [`references/ipc-patterns.md`](references/ipc-patterns.md) for more complex state patterns.
 
 ```rust
 use std::sync::Mutex;
@@ -236,6 +318,8 @@ tauri::Builder::default()
 
 ### Event Emission Pattern
 
+Events are fire-and-forget notifications. See [`references/ipc-patterns.md`](references/ipc-patterns.md) for bidirectional examples.
+
 ```rust
 use tauri::Emitter;
 
@@ -258,6 +342,8 @@ const unlisten = await listen('task-progress', (e) => {
 ```
 
 ### Channel Streaming Pattern
+
+Channels provide high-frequency, typed streaming from Rust to Frontend. See [`references/ipc-patterns.md`](references/ipc-patterns.md) for full implementation details.
 
 ```rust
 use tauri::ipc::Channel;
@@ -286,6 +372,23 @@ channel.onmessage = (msg) => console.log(msg.event, msg.data);
 await invoke('download', { url: 'https://...', onEvent: channel });
 ```
 
+### Window Access Pattern
+
+Tauri v2 uses `WebviewWindow` for unified window and webview management.
+
+```rust
+use tauri::Manager;
+
+#[tauri::command]
+fn focus_window(app: tauri::AppHandle) {
+    if let Some(window) = app.get_webview_window("main") {
+        let _ = window.set_focus();
+    }
+}
+```
+
+**Why this matters:** Use `tauri::WebviewWindow` and `app.get_webview_window("label")` in v2 — the v1 `app.get_window()` API is removed in v2.
+
 ## Bundled Resources
 
 ### References
@@ -293,6 +396,9 @@ await invoke('download', { url: 'https://...', onEvent: channel });
 Located in `references/`:
 - [`capabilities-reference.md`](references/capabilities-reference.md) - Permission patterns and examples
 - [`ipc-patterns.md`](references/ipc-patterns.md) - Complete IPC examples
+- [`plugin-reference.md`](references/plugin-reference.md) - Official plugin install, registration, and permission strings
+- [`updater-distribution-reference.md`](references/updater-distribution-reference.md) - Signing, HTTPS requirements, and bundle shipping
+- [`advanced-runtime-reference.md`](references/advanced-runtime-reference.md) - `TrayIconBuilder`, sidecars, deep links, and asset protocols
 
 > **Note:** For deep dives on specific topics, see the reference files above.
 
@@ -302,24 +408,28 @@ Located in `references/`:
 
 | Package | Version | Purpose |
 |---------|---------|---------|
-| `@tauri-apps/cli` | ^2.0.0 | CLI tooling |
-| `@tauri-apps/api` | ^2.0.0 | Frontend APIs |
-| `tauri` | ^2.0.0 | Rust core |
-| `tauri-build` | ^2.0.0 | Build scripts |
+| `@tauri-apps/cli` | ^2 (v2+) | CLI tooling |
+| `@tauri-apps/api` | ^2 (v2+) | Frontend APIs |
+| `tauri` | ^2 (v2+) | Rust core |
+| `tauri-build` | ^2 (v2+) | Build scripts |
+
+*\*Last verified: 2026-04-02. Always check [official changelog](https://github.com/tauri-apps/tauri/blob/dev/crates/tauri/CHANGELOG.md) for feature timing.*
 
 ### Optional (Plugins)
 
-| Package | Version | Purpose |
-|---------|---------|---------|
-| `tauri-plugin-fs` | ^2.0.0 | File system access |
-| `tauri-plugin-dialog` | ^2.0.0 | Native dialogs |
-| `tauri-plugin-shell` | ^2.0.0 | Shell commands, open URLs |
-| `tauri-plugin-http` | ^2.0.0 | HTTP client |
-| `tauri-plugin-store` | ^2.0.0 | Key-value storage |
+| Package | Version | Purpose | Key Permission |
+|---------|---------|---------|----------------|
+| `tauri-plugin-fs` | ^2 (v2+) | File system access | `fs:default` |
+| `tauri-plugin-dialog` | ^2 (v2+) | Native dialogs | `dialog:default` |
+| `tauri-plugin-shell` | ^2 (v2+) | Shell commands, open URLs | `shell:default` |
+| `tauri-plugin-http` | ^2 (v2+) | HTTP client | `http:default` |
+| `tauri-plugin-store` | ^2 (v2+) | Key-value storage | `store:default` |
+
+> **Plugin permissions are mandatory.** Installing a plugin without adding its permission string to a capability file causes silent runtime failures. See [`references/plugin-reference.md`](references/plugin-reference.md) for full install + permission details for all official plugins.
 
 ## Official Documentation
 
-- [Tauri v2 Documentation](https://v2.tauri.app/)
+- [Tauri v2+ Documentation](https://v2.tauri.app/)
 - [Commands Reference](https://v2.tauri.app/develop/calling-rust/)
 - [Capabilities & Permissions](https://v2.tauri.app/security/capabilities/)
 - [Configuration Reference](https://v2.tauri.app/reference/config/)
@@ -355,6 +465,25 @@ rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-andro
 
 # iOS targets (macOS only)
 rustup target add aarch64-apple-ios x86_64-apple-ios aarch64-apple-ios-sim
+```
+
+### Desktop vs Mobile Behavioral Differences
+
+Not all Tauri APIs and plugins support mobile (iOS/Android). Before using any plugin or API in a mobile build:
+
+1. **Check the plugin page** at `v2.tauri.app/plugin/<name>/` for platform support matrix
+2. **Common desktop-only items**: System tray (`TrayIconBuilder`), window labels/multi-window, some shell plugin features
+3. **Mobile-safe patterns**: IPC commands/events/channels work on all platforms; `tauri::AppHandle` is mobile-safe
+4. **Conditional compilation**: Use `#[cfg(desktop)]` / `#[cfg(mobile)]` for platform-specific Rust logic
+
+```rust
+#[tauri::command]
+fn platform_info() -> String {
+    #[cfg(desktop)]
+    return "desktop".to_string();
+    #[cfg(mobile)]
+    return "mobile".to_string();
+}
 ```
 
 ## Setup Checklist

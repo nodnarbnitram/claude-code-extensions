@@ -294,7 +294,7 @@
       "name": "cce-tauri",
       "source": "./plugins/cce-tauri",
       "description": "Tauri v2 desktop and mobile app development with Rust backend, IPC, capabilities, and security",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": {
         "name": "Claude Code Extensions Contributors"
       },
