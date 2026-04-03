@@ -247,6 +247,7 @@ PLUGIN_SPECS: list[PluginSpec] = [
         name="cce-tauri",
         description="Tauri v2 desktop and mobile app development with Rust backend, IPC, capabilities, and security",
         keywords=["tauri", "desktop", "rust", "ipc", "capabilities"],
+        version="1.0.1",
         assets=[
             (".claude/agents/specialized/tauri", "agents/specialized/tauri"),
             (".claude/skills/tauri-v2", "skills/tauri-v2"),

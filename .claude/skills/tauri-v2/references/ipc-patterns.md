@@ -1,5 +1,17 @@
 # Tauri v2+ IPC Patterns Reference
 
+## Contents
+
+- Overview
+- IPC Decision Framework
+- Commands (invoke)
+- Events
+- Typed Streaming Channels
+- State Management
+- Error Handling Across IPC
+- Window Access and App Handles
+- IPC Selection Guide
+
 ## Overview
 
 Tauri v2+ provides three IPC primitives:
@@ -8,6 +20,8 @@ Tauri v2+ provides three IPC primitives:
 3. **Channels**: High-frequency streaming
 
 **See also:** [Capabilities Reference](capabilities-reference.md) for permission setup | [Plugin Reference](plugin-reference.md) for plugin-specific IPC
+
+*Last verified: 2026-04-02. Check the official Tauri changelog when IPC API timing matters.*
 
 ## IPC Decision Framework
 

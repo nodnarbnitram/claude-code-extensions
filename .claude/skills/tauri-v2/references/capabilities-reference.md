@@ -1,5 +1,19 @@
 # Tauri v2+ Capabilities & Permissions Reference
 
+## Contents
+
+- Security Model: v1 vs v2
+- Overview
+- Capability File Structure
+- Core Permissions
+- Plugin Permissions
+- Scopes
+- Permission Sets
+- Window and Webview Targeting
+- Capability Best Practices
+- Common Capability Patterns
+- Anti-Patterns
+
 ## Security Model: v1 vs v2
 
 Tauri v2 replaces the v1 `allowlist` with a capabilities-first security model. In v1, you listed allowed API calls in `tauri.conf.json`'s `allowlist`. In v2, permissions must be explicitly granted via capability files in `src-tauri/capabilities/`.
@@ -12,6 +26,8 @@ Tauri v2 replaces the v1 `allowlist` with a capabilities-first security model. I
 ## Overview
 
 Tauri v2+ uses a capabilities-based security model. By default, **nothing is allowed** - you must explicitly grant permissions through capability files.
+
+*Last verified: 2026-04-02. Check the official Tauri changelog when capability semantics or permission names change.*
 
 ## Capability File Structure
 

@@ -1,6 +1,7 @@
 ---
 name: tauri-v2
 description: "Tauri v2+ cross-platform app development with Rust backend. Use when configuring tauri.conf.json, implementing Rust commands (#[tauri::command]), setting up IPC patterns (invoke, emit, channels), configuring permissions/capabilities, troubleshooting build issues, or deploying desktop/mobile apps. Triggers on Tauri, src-tauri, invoke, emit, capabilities.json."
+version: 1.0.1
 ---
 
 # Tauri v2+ Development Skill
@@ -134,6 +135,14 @@ async fn good(name: String) -> String {
 | White screen on launch | Frontend not building | Check `beforeDevCommand` in config |
 | IPC timeout | Blocking async command | Remove blocking code or use spawn |
 | Mobile build fails | Missing Rust targets | Run `rustup target add <target>` |
+
+## Deep-Dive References
+
+- **Security & permissions** → [`references/capabilities-reference.md`](references/capabilities-reference.md)
+- **IPC decision guide** → [`references/ipc-patterns.md`](references/ipc-patterns.md)
+- **Official plugins** → [`references/plugin-reference.md`](references/plugin-reference.md)
+- **Updater & distribution** → [`references/updater-distribution-reference.md`](references/updater-distribution-reference.md)
+- **Tray, sidecars, deep links** → [`references/advanced-runtime-reference.md`](references/advanced-runtime-reference.md)
 
 ## Configuration Reference
 
@@ -387,6 +396,9 @@ fn focus_window(app: tauri::AppHandle) {
 Located in `references/`:
 - [`capabilities-reference.md`](references/capabilities-reference.md) - Permission patterns and examples
 - [`ipc-patterns.md`](references/ipc-patterns.md) - Complete IPC examples
+- [`plugin-reference.md`](references/plugin-reference.md) - Official plugin install, registration, and permission strings
+- [`updater-distribution-reference.md`](references/updater-distribution-reference.md) - Signing, HTTPS requirements, and bundle shipping
+- [`advanced-runtime-reference.md`](references/advanced-runtime-reference.md) - `TrayIconBuilder`, sidecars, deep links, and asset protocols
 
 > **Note:** For deep dives on specific topics, see the reference files above.
 

@@ -5,7 +5,7 @@
 | | |
 |---|---|
 | **Status** | Active |
-| **Version** | 1.0.0 |
+| **Version** | 1.0.1 |
 | **Last Updated** | 2026-04-02 |
 | **Confidence** | 4/5 |
 | **Production Tested** | https://v2.tauri.app/ |
