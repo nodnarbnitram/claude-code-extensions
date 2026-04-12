@@ -10,6 +10,10 @@ Vitest 4 uses the `vi` utility for mocks, spies, stubs, and timers. Prefer Vites
 - `vi.stubEnv('NAME', 'value')` - stub env values
 - `vi.stubGlobal('fetch', mock)` - stub globals
 
+## Architecture Note
+
+Vitest 4 runs on Vite's native Module Runner rather than the older `vite-node` executor model. That matters because seemingly odd mocking or path-resolution behavior is often runner-related, not just test-code related.
+
 ## Type-safe module mock pattern
 
 ```typescript
@@ -26,6 +30,14 @@ vi.mocked(api.fetchUser).mockResolvedValue({ id: '1', name: 'Ada' });
 ## Hoisting rule
 
 `vi.mock()` is hoisted. Treat it like a file-level declaration, not normal runtime code.
+
+If local variables are needed before the mock factory runs, reach for `vi.hoisted()` instead of trying to outsmart hoisting with ordinary top-level state.
+
+```typescript
+const { mockToken } = vi.hoisted(() => ({
+  mockToken: 'test-token',
+}));
+```
 
 ### Bad pattern
 
@@ -80,6 +92,14 @@ vi.mock(import('./math'), async () => {
 ## Non-hoisted mocking
 
 Use `vi.doMock()` when the mock must be created later at runtime rather than hoisted at module load time.
+
+## Constructor behavior
+
+Vitest 4 improved constructor-aware spying and mocking. This matters in class-heavy code because `new` calls now behave more predictably under `vi.spyOn()` / `vi.fn()` than many older examples suggest.
+
+## Module directories
+
+When debugging custom module resolution behavior, know that older `VITE_NODE_DEPS_MODULE_DIRECTORIES` references have moved to `VITEST_MODULE_DIRECTORIES` in the new architecture.
 
 ## Timers
 

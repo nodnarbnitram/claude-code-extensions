@@ -28,6 +28,7 @@ metadata:
 4. HMR bugs from using deprecated `handleHotUpdate` patterns instead of `hotUpdate`
 5. SSR/runtime confusion from older `ssrLoadModule` mental models instead of Module Runner
 6. Performance regressions from missing hook filters in Rust↔JS plugin boundaries
+7. Slow startup and request waterfalls from barrel files, missing warmup, or loose import resolution
 
 ## Quick Start
 
@@ -98,6 +99,7 @@ vite preview
 - Use named environments when plugin or SSR behavior differs by runtime
 - Use hook filters when writing performance-sensitive `transform` or `resolveId` plugins
 - Reach for Module Runner concepts when debugging modern SSR/runtime execution
+- Use explicit file extensions and review barrel files when performance work matters
 - Keep Vite plugin code ESM-first
 
 ### Never Do
@@ -176,6 +178,7 @@ export default function plugin() {
 | SSR dependency crashes | Externalization assumptions are wrong | Review `ssr.noExternal` and runtime-specific needs |
 | Dev/build behavior diverges | Config ignores Vite 8's unified engine model | Validate both `vite dev` and `vite build` under Rolldown |
 | Plugin performance drops | Too much JS-side hook work | Add hook filters and narrower matching |
+| Cold starts are sluggish | Heavy hot paths are not warmed and import graph is noisy | Review `server.warmup`, explicit extensions, and barrel-file usage |
 
 ## Bundled Resources
 
@@ -184,6 +187,7 @@ export default function plugin() {
 - **Core config and CLI patterns** → [`references/core-config-reference.md`](references/core-config-reference.md)
 - **Environment-aware plugin authoring** → [`references/plugin-environment-reference.md`](references/plugin-environment-reference.md)
 - **Build, SSR, and migration guidance** → [`references/build-ssr-migration-reference.md`](references/build-ssr-migration-reference.md)
+- **Performance and dev-server heuristics** → [`references/performance-devserver-reference.md`](references/performance-devserver-reference.md)
 - **Reference index** → [`references/README.md`](references/README.md)
 
 ## Configuration Reference
@@ -223,6 +227,7 @@ export default defineConfig({
 - `oxc`: Preferred JS/TS transform configuration surface in new Vite 8 examples
 - `environments`: Use when runtime behavior differs across client/SSR/edge-like targets
 - `css.lightningcss`: Reflects Vite 8's modern CSS processing direction
+- `server.warmup`: Useful in large apps where cold-start waterfalls hit the same hot files repeatedly
 
 ## Project Structure
 
@@ -236,6 +241,8 @@ my-app/
 ```
 
 **Why this matters:** Vite 8 still rewards simple, explicit project layout. Complexity should come from runtime environments and plugin boundaries, not from hiding the core config.
+
+**Performance heuristic:** If startup feels bad, inspect import-graph shape before chasing exotic bundler flags. Barrel files, omitted extensions, and lack of warmup often matter more than another layer of config cleverness.
 
 ## Common Patterns
 

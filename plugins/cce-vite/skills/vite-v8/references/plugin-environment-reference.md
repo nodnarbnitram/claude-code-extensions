@@ -6,6 +6,8 @@ Vite 8 plugin authoring is increasingly environment-aware.
 
 Use `this.environment` inside plugin hooks when behavior depends on the active runtime.
 
+This is a real architectural shift away from simplistic `ssr` booleans. When a plugin touches multiple runtimes, environment identity should drive the design.
+
 ## Environment-Specific Config
 
 ```typescript
@@ -47,3 +49,11 @@ transform: {
 ## Shared Build Plugins
 
 When a plugin must be shared across environments during build, review `sharedDuringBuild` or related builder-sharing settings instead of assuming old single-pipeline behavior.
+
+## Rolldown Detection
+
+When debugging plugin compatibility, `this.meta.rolldownVersion` can help detect whether the plugin is running under the new engine assumptions.
+
+## Module Type Hint
+
+If a `load` or `transform` hook turns non-JS content into executable JS, return `moduleType: 'js'` so Rolldown can classify it correctly.

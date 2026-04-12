@@ -39,6 +39,12 @@ export default defineConfig({
 - Prefer `oxc` over `esbuild` in new Vite 8 guidance
 - Default build targeting follows the Baseline Widely Available browser target
 - Lightning CSS is part of the modern Vite 8 direction for CSS processing/minification
+- Node.js must satisfy the Vite 8 runtime floor (`20.19+` or `22.12+`)
+- `build.commonjsOptions` is effectively a no-op in the Rolldown era and should not be treated as a first-line tuning lever
+
+## CommonJS Interop Note
+
+Vite 8 tightened default-import behavior for CommonJS modules. When a CJS import suddenly behaves differently across older and newer examples, treat that as a real migration boundary rather than a random build bug.
 
 ## Environment Configuration
 

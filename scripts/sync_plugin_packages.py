@@ -9,7 +9,6 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-
 REPO_ROOT = Path(__file__).resolve().parent.parent
 CLAUDE_ROOT = REPO_ROOT / ".claude"
 PLUGINS_ROOT = REPO_ROOT / "plugins"
@@ -28,7 +27,7 @@ TEXT_EXTENSIONS = {
 }
 
 DEFAULT_AUTHOR = {
-    "name": "Claude Code Extensions Contributors",
+    "name": "Brandon Martin",
     "url": "https://github.com/nodnarbnitram/claude-code-extensions",
 }
 
@@ -241,6 +240,23 @@ PLUGIN_SPECS: list[PluginSpec] = [
             (".claude/commands/triage.md", "commands/triage.md"),
             (".claude/commands/create-linear-pr.md", "commands/create-linear-pr.md"),
             (".claude/commands/existing-linear.md", "commands/existing-linear.md"),
+        ],
+    ),
+    PluginSpec(
+        name="cce-vite",
+        description="Vite v8 and Vitest v4 guidance for config, plugins, builds, Browser Mode, coverage, and migration workflows",
+        keywords=[
+            "vite",
+            "vitest",
+            "testing",
+            "browser-mode",
+            "coverage",
+            "rolldown",
+            "vite8",
+        ],
+        assets=[
+            (".claude/skills/vite-v8", "skills/vite-v8"),
+            (".claude/skills/vitest-v4", "skills/vitest-v4"),
         ],
     ),
     PluginSpec(

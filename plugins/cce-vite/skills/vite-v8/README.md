@@ -21,6 +21,7 @@ Provides expert assistance for Vite 8 projects, from `vite.config.ts` setup thro
 - Author Vite plugins with named environments, hook filters, and environment-aware HMR flows
 - Debug SSR/build/runtime issues using Vite 8 mental models such as Module Runner and isolated environments
 - Improve production build behavior while keeping dev/build assumptions aligned
+- Tune startup and dev-server behavior with warmup, config-loader, and dependency-graph heuristics
 
 ## Auto-Trigger Keywords
 
@@ -111,6 +112,7 @@ For deeper guidance on the most failure-prone areas, see:
 | **Core Config** | [`core-config-reference.md`](references/core-config-reference.md) | CLI, config loading, `rolldownOptions`, `oxc`, and environment config |
 | **Plugin Environments** | [`plugin-environment-reference.md`](references/plugin-environment-reference.md) | `this.environment`, `configEnvironment`, `hotUpdate`, and hook filters |
 | **Build / SSR / Migration** | [`build-ssr-migration-reference.md`](references/build-ssr-migration-reference.md) | Rolldown/Oxc migration, SSR, Module Runner, and production build guidance |
+| **Performance & Dev Server** | [`performance-devserver-reference.md`](references/performance-devserver-reference.md) | warmup, barrel-file costs, explicit extensions, full-bundle direction, and debugging config-loader issues |
 
 See the [References Index](references/README.md) for navigation.
 
@@ -124,7 +126,8 @@ vite-v8/
     ├── README.md                          # Reference index
     ├── core-config-reference.md          # Config and CLI patterns
     ├── plugin-environment-reference.md   # Environment-aware plugin authoring
-    └── build-ssr-migration-reference.md  # Build, SSR, and migration guidance
+    ├── build-ssr-migration-reference.md  # Build, SSR, and migration guidance
+    └── performance-devserver-reference.md # Startup, dev-server, and scaling guidance
 ```
 
 ## Dependencies

@@ -29,6 +29,7 @@ metadata:
 5. Invalid multi-project setup from using deprecated `workspace` terminology
 6. Wrong APIs from mixing Jest helpers into Vitest tests
 7. Flaky browser interactions from using synthetic helpers instead of `vitest/browser`
+8. Slow or unstable large suites from choosing the wrong execution pool or isolation mode
 
 ## Quick Start
 
@@ -91,8 +92,10 @@ vitest run path/to/example.test.ts
 - Prefer `vi.mock(import('./module'))` for type-safe module mocks
 - Configure `restoreMocks`, `clearMocks`, or `mockReset` intentionally
 - Use `projects` for multi-project configs; the rename began in Vitest 3.2 and older workspace-file usage is removed in Vitest 4
+- Use a shared base config when multiple `projects` need common settings; projects do not inherit root config unless you opt in
 - Use `coverage.include` to report on untested source files
 - Use `page` and `userEvent` from `vitest/browser` in Browser Mode
+- Prefer `forks` when native modules or runtime compatibility matter more than raw speed
 - Share `vitest.config.ts` and the implementation file when asking AI to generate tests
 
 ### Never Do
@@ -158,8 +161,10 @@ vi.mock(import('./math'), { spy: true });
 | Mocks leak between tests | Cleanup flags missing | Enable `restoreMocks` / `clearMocks` / `unstubEnvs` |
 | Multi-project config breaks after upgrade | Deprecated workspace terminology or removed workspace-file patterns carried over | Switch to `projects` and `defineProject` |
 | Worker or pool config stops working | Old `maxThreads`, `maxForks`, or `poolOptions` carried forward | Migrate to Vitest 4 worker settings such as `maxWorkers` |
+| Project-specific config unexpectedly disappears | Root config assumptions are not inherited into `projects` | Use `extends: true`, `mergeConfig`, or a shared base explicitly |
 | AI-generated tests use wrong helpers | Jest patterns copied into Vitest | Replace with `vi`, Vitest imports, and Vitest matchers |
 | Browser tests hang | Blocking dialogs or wrong user-event utilities | Mock dialogs and use `vitest/browser` helpers |
+| Fast pool causes strange native-module failures | `threads` chosen for a suite that needs process isolation | Switch to `forks` or narrow thread usage |
 
 ## Bundled Resources
 
@@ -168,6 +173,7 @@ vi.mock(import('./math'), { spy: true });
 - **Mocking rules and hoisting** → [`references/mocking-reference.md`](references/mocking-reference.md)
 - **Browser Mode providers and pitfalls** → [`references/browser-mode-reference.md`](references/browser-mode-reference.md)
 - **Coverage and multi-project config** → [`references/coverage-projects-reference.md`](references/coverage-projects-reference.md)
+- **Pools, isolation, and persistent cache** → [`references/pools-execution-reference.md`](references/pools-execution-reference.md)
 - **Reference index** → [`references/README.md`](references/README.md)
 
 ## Configuration Reference
@@ -213,6 +219,7 @@ export default defineConfig({
 
 **Key settings:**
 - `test.projects`: Stable multi-project terminology; the rename started in Vitest 3.2 and Vitest 4 removes older workspace-file usage
+- `test.projects`: Projects do not magically inherit every root config value; factor shared settings into a reused base when needed
 - `coverage.include`: Required when uncovered source files must appear in the report
 - `browser.provider`: In Vitest 4, import the provider factory from the provider package, such as `playwright()`
 - `restoreMocks` / `unstubEnvs`: Prevent test pollution across files
@@ -234,6 +241,8 @@ my-app/
 **Why this matters:** Keeping Node and Browser Mode tests clearly separated makes provider setup, test selection, and troubleshooting much simpler.
 
 **Choose the right environment:** Prefer `jsdom` for most component tests and lightweight DOM assertions. Use Browser Mode when native browser APIs, real layout/event behavior, or screenshot assertions matter.
+
+**Choose the right execution model:** Prefer `forks` for stability and native-module compatibility, especially in mixed or infrastructure-heavy suites. Reach for `threads` only when you know the test environment is safe for worker-thread execution and the extra speed matters.
 
 ## Common Patterns
 

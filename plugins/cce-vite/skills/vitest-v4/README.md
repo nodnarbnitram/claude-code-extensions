@@ -22,6 +22,7 @@ Provides expert assistance for Vitest 4 projects, from initial `vitest.config.ts
 - Configure V8 or Istanbul coverage with Vitest 4-compatible settings
 - Set up Browser Mode using Playwright, WebdriverIO, or Preview providers with Vitest 4 provider-factory config
 - Migrate deprecated workspace-style configs to `projects`
+- Tune execution pools, isolation, and cache behavior for correctness vs speed
 - Improve AI-generated tests by grounding them in real implementation and config context
 
 ## Auto-Trigger Keywords
@@ -125,6 +126,7 @@ For deeper guidance on the most failure-prone areas, see:
 | **Mocking** | [`mocking-reference.md`](references/mocking-reference.md) | Module mocks, hoisting rules, env/global stubs, and safe cleanup |
 | **Browser Mode** | [`browser-mode-reference.md`](references/browser-mode-reference.md) | Providers, `vitest/browser` patterns, native event caveats, and spying pitfalls |
 | **Coverage & Projects** | [`coverage-projects-reference.md`](references/coverage-projects-reference.md) | Vitest 4 coverage changes, `projects`, and migration-safe config patterns |
+| **Pools & Execution** | [`pools-execution-reference.md`](references/pools-execution-reference.md) | forks vs threads, isolation tradeoffs, persistent cache, and large-suite performance tuning |
 
 See the [References Index](references/README.md) for navigation.
 
@@ -143,7 +145,8 @@ vitest-v4/
     ├── README.md                       # Reference index
     ├── mocking-reference.md           # Mocking APIs, hoisting, and cleanup
     ├── browser-mode-reference.md      # Browser Mode provider and test patterns
-    └── coverage-projects-reference.md # Coverage/provider/projects guidance
+    ├── coverage-projects-reference.md # Coverage/provider/projects guidance
+    └── pools-execution-reference.md   # Execution pools, isolation, and performance tuning
 ```
 
 ## Dependencies
