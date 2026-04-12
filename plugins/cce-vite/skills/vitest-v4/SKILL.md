@@ -218,8 +218,7 @@ export default defineConfig({
 ```
 
 **Key settings:**
-- `test.projects`: Stable multi-project terminology; the rename started in Vitest 3.2 and Vitest 4 removes older workspace-file usage
-- `test.projects`: Projects do not magically inherit every root config value; factor shared settings into a reused base when needed
+- `test.projects`: Stable multi-project terminology; the rename started in Vitest 3.2, and projects do not automatically inherit every root config value, so shared settings should be factored into a reused base when needed
 - `coverage.include`: Required when uncovered source files must appear in the report
 - `browser.provider`: In Vitest 4, import the provider factory from the provider package, such as `playwright()`
 - `restoreMocks` / `unstubEnvs`: Prevent test pollution across files
