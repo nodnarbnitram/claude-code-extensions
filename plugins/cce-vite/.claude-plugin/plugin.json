@@ -1,0 +1,19 @@
+{
+  "name": "cce-vite",
+  "version": "1.0.0",
+  "description": "Vitest 4 testing for Vite projects, including Browser Mode, coverage, and migration guidance",
+  "author": {
+    "name": "Claude Code Extensions Contributors",
+    "url": "https://github.com/nodnarbnitram/claude-code-extensions"
+  },
+  "homepage": "https://github.com/nodnarbnitram/claude-code-extensions",
+  "repository": "https://github.com/nodnarbnitram/claude-code-extensions",
+  "license": "MIT",
+  "keywords": [
+    "vite",
+    "vitest",
+    "testing",
+    "browser-mode",
+    "coverage"
+  ]
+}
