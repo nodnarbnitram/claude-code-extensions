@@ -260,6 +260,19 @@ PLUGIN_SPECS: list[PluginSpec] = [
         ],
     ),
     PluginSpec(
+        name="cce-typescript-v6",
+        description="TypeScript 6 guidance for tsconfig migrations, deprecations, module resolution, and modern standard-library types",
+        keywords=[
+            "typescript",
+            "typescript6",
+            "tsconfig",
+            "migration",
+            "module-resolution",
+            "stdlib",
+        ],
+        assets=[(".claude/skills/typescript-v6", "skills/typescript-v6")],
+    ),
+    PluginSpec(
         name="cce-tauri",
         description="Tauri v2 desktop and mobile app development with Rust backend, IPC, capabilities, and security",
         keywords=["tauri", "desktop", "rust", "ipc", "capabilities"],

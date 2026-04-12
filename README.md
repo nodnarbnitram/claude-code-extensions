@@ -6,7 +6,7 @@
 [![Python](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![Claude Code](https://img.shields.io/badge/claude--code-compatible-purple.svg)](https://claude.ai/code)
 
-Supercharge your Claude Code experience with **60+ specialized agents**, **17 skills**, **8 lifecycle hooks**, **11 slash commands**, and powerful automation tools—all ready to install and customize.
+Supercharge your Claude Code experience with **60+ specialized agents**, **18 skills**, **8 lifecycle hooks**, **11 slash commands**, and powerful automation tools—all ready to install and customize.
 
 ## ✨ Highlights
 
@@ -20,7 +20,7 @@ Supercharge your Claude Code experience with **60+ specialized agents**, **17 sk
 
 ## 📦 Available Plugins
 
-The repository now provides **20 self-contained plugins** for Claude Code marketplace installs:
+The repository now provides **21 self-contained plugins** for Claude Code marketplace installs:
 
 | Plugin | Description | What's Included |
 |--------|-------------|-----------------|
@@ -43,6 +43,7 @@ The repository now provides **20 self-contained plugins** for Claude Code market
 | **cce-python** | Python CLI development | 1 Typer-focused agent |
 | **cce-linear** | Linear workflows | 1 Linear skill, 3 ticket/PR workflow commands |
 | **cce-typescript** | TypeScript tooling | Braintrust and fumadocs agents |
+| **cce-typescript-v6** | TypeScript 6 migration guidance | 1 skill (`typescript-v6`), separate from `cce-typescript` agents |
 | **cce-anthropic** | Claude Agent SDK development | Python and TypeScript SDK agents |
 
 **Install only what you need** - no need to load 50+ agents if you only work with React!
@@ -74,6 +75,7 @@ Then install the plugins you need:
 /plugin install cce-django@cce-marketplace        # For Django backend development
 /plugin install cce-grafana@cce-marketplace       # For Grafana plugin development & billing
 /plugin install cce-vite@cce-marketplace          # For Vite 8 config/build guidance and Vitest v4 testing
+/plugin install cce-typescript-v6@cce-marketplace # For TypeScript 6 migration and tsconfig guidance (skill-only, separate from cce-typescript)
 /plugin install cce-research@cce-marketplace      # For deep research tasks
 ```
 
@@ -208,6 +210,7 @@ Model-invoked capabilities that Claude automatically discovers and uses based on
 | [`tauri-v2`](.claude/skills/tauri-v2/) | Tauri v2 cross-platform desktop/mobile app development with Rust backend, IPC patterns, and security configuration |
 | [`vite-v8`](.claude/skills/vite-v8/) | Vite 8 development with Rolldown, Oxc, environment-aware plugins, SSR, and migration guidance |
 | [`vitest-v4`](.claude/skills/vitest-v4/) | Vitest 4 testing with Vite-native configuration, mocks, Browser Mode, coverage, and migration guidance |
+| [`typescript-v6`](.claude/skills/typescript-v6/) | TypeScript 6 guidance for tsconfig migrations, deprecations, module resolution, and modern standard-library types |
 | [`linear`](.claude/skills/linear/) | Manage Linear tickets, projects, milestones, documents, and related PR workflows using wrapper scripts |
 
 **Creating new skills:**

@@ -1,0 +1,20 @@
+{
+  "name": "cce-typescript-v6",
+  "version": "1.0.0",
+  "description": "TypeScript 6 guidance for tsconfig migrations, deprecations, module resolution, and modern standard-library types",
+  "author": {
+    "name": "Brandon Martin",
+    "url": "https://github.com/nodnarbnitram/claude-code-extensions"
+  },
+  "homepage": "https://github.com/nodnarbnitram/claude-code-extensions",
+  "repository": "https://github.com/nodnarbnitram/claude-code-extensions",
+  "license": "MIT",
+  "keywords": [
+    "typescript",
+    "typescript6",
+    "tsconfig",
+    "migration",
+    "module-resolution",
+    "stdlib"
+  ]
+}
