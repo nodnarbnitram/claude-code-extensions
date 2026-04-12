@@ -1,6 +1,6 @@
 # TypeScript 6 Skill
 
-> Upgrade and operate TypeScript 6 projects with migration-safe tsconfig patterns, modern module resolution, and release-note-grounded guidance.
+> Build and operate TypeScript 6+ projects with modern tsconfig patterns, compiler diagnostics, and release-note-grounded guidance.
 
 | | |
 |---|---|
@@ -12,15 +12,17 @@
 
 ## What This Skill Does
 
-Provides expert assistance for TypeScript 6 upgrades and day-to-day configuration work. It focuses on the compiler changes that most often break or confuse real projects during migration: explicit `types`, explicit `rootDir`, deprecated resolution/module settings, `#/` imports, new ES library types, and the TS 6→TS 7 bridge tools such as `ignoreDeprecations` and `stableTypeOrdering`.
+Provides expert assistance for TypeScript 6+ development and configuration work. It focuses on the compiler changes and workflows that most often break or confuse real projects: explicit `types`, explicit `rootDir`, deprecated resolution/module settings, `#/` imports, newer ES library typings surfaced in TS 6, and the TS 6→TS 7 bridge tools such as `ignoreDeprecations` and `stableTypeOrdering`. It also includes practical compiler-verification workflow and TS-safe type-pattern guidance that fit TypeScript 6+ projects without pretending older generic advice is TS 6-specific.
 
 ### Core Capabilities
 
-- Upgrade `tsconfig.json` safely from TypeScript 5.x-era assumptions to TypeScript 6 expectations
+- Configure `tsconfig.json` intentionally for TypeScript 6+ projects
 - Choose between `bundler` and `nodenext` module-resolution strategies without falling back to deprecated `node` / `node10`
 - Fix common regressions caused by `types` and `rootDir` changes
 - Migrate deprecated `baseUrl`, ES5-era targets, and legacy module settings to forward-looking replacements
-- Explain and apply TypeScript 6 additions such as `#/` subpath imports, `RegExp.escape`, `Temporal`, and `Map.getOrInsert`
+- Explain and apply TypeScript 6-era library typings and patterns such as `#/` subpath imports, `RegExp.escape`, `Temporal`, and `Map.getOrInsert`
+- Use compiler diagnostics like `--showConfig`, `--explainFiles`, and `--traceResolution` before changing source code blindly
+- Apply TS-safe patterns such as `satisfies`, exhaustive unions, and assertion functions when the codebase reveals type ambiguity
 - Use `--stableTypeOrdering` and TS 7 preview context responsibly during migration work
 
 ## Auto-Trigger Keywords
@@ -28,13 +30,15 @@ Provides expert assistance for TypeScript 6 upgrades and day-to-day configuratio
 ### Primary Keywords
 - typescript 6
 - ts 6
-- tsconfig.json
-- rootDir
-- types array
 - ignoreDeprecations
 - stableTypeOrdering
-- moduleResolution bundler
-- nodenext
+- types array
+- noUncheckedSideEffectImports
+- moduleResolution node is deprecated
+- baseUrl is deprecated
+- tsc --showConfig
+- tsc --traceResolution
+- tsc --explainFiles
 
 ### Secondary Keywords
 - subpath imports
@@ -67,8 +71,8 @@ Provides expert assistance for TypeScript 6 upgrades and day-to-day configuratio
 ## When to Use
 
 ### Use This Skill For
-- Upgrading a repo to TypeScript 6
-- Fixing `tsconfig.json` after a TypeScript 6 version bump
+- Building or maintaining a TypeScript 6+ codebase
+- Fixing `tsconfig.json` in an active TypeScript 6+ project
 - Choosing modern module resolution for bundlers or Node.js
 - Migrating deprecated options such as `baseUrl` and `moduleResolution: "node"`
 - Adopting TS 6-era standard-library types and platform APIs
@@ -81,7 +85,7 @@ Provides expert assistance for TypeScript 6 upgrades and day-to-day configuratio
 ## Version Policy
 
 > [!NOTE]
-> This skill targets **TypeScript 6.0**. It includes **TS 7 context only as migration/comparison guidance**, not as the primary implementation target. When exact feature timing or runtime availability matters, verify it against the official release notes and TSConfig docs.
+> This skill targets **TypeScript 6+** with special attention to the TypeScript 6.0 default/deprecation changes. It includes **TS 7 context only as comparison guidance**, not as the primary implementation target. When exact feature timing or runtime availability matters, verify it against the official release notes and TSConfig docs.
 
 ## Quick Usage
 
@@ -101,7 +105,7 @@ npx tsc --noEmit --stableTypeOrdering
 
 | Approach | Estimated Tokens | Time |
 |----------|-----------------|------|
-| Manual TS 6 release-note diffing | ~12,000 | 60-90 min |
+| Manual TS 6+ docs diffing | ~12,000 | 60-90 min |
 | With This Skill | ~6,000 | 20-30 min |
 | **Savings** | **50%** | **~40 min** |
 
@@ -111,10 +115,13 @@ For deeper guidance on the most failure-prone areas, see:
 
 | Topic | Reference File | Purpose |
 |-------|----------------|---------|
-| **Defaults & Migration** | [`defaults-migration-reference.md`](references/defaults-migration-reference.md) | Fix `types`, `rootDir`, and other upgrade-sensitive configuration |
+| **TS 6 Migration** | [`migration-v6-reference.md`](references/migration-v6-reference.md) | Handle the highest-impact changes when moving into TS 6 |
+| **Defaults & Configuration** | [`defaults-migration-reference.md`](references/defaults-migration-reference.md) | Fix `types`, `rootDir`, and other TS 6+ configuration behavior |
 | **Deprecations** | [`deprecations-reference.md`](references/deprecations-reference.md) | Replace deprecated TS 6 options with durable alternatives |
 | **Module Resolution & Imports** | [`module-resolution-imports-reference.md`](references/module-resolution-imports-reference.md) | Choose `bundler` vs `nodenext`, and use `#/` imports correctly |
 | **Standard Library Types** | [`stdlib-types-reference.md`](references/stdlib-types-reference.md) | Use `es2025`, `Temporal`, `RegExp.escape`, and upsert methods responsibly |
+| **Workflow & Diagnostics** | [`workflow-diagnostics-reference.md`](references/workflow-diagnostics-reference.md) | Use compiler commands to verify config, file inclusion, and module resolution |
+| **Type Patterns** | [`type-patterns-reference.md`](references/type-patterns-reference.md) | Apply `satisfies`, exhaustive unions, assertions, and typed results in TS 6+ code |
 | **TS 6→7 Migration Context** | [`stable-ordering-ts7-reference.md`](references/stable-ordering-ts7-reference.md) | Apply `stableTypeOrdering`, preview TS 7 differences, and avoid false assumptions |
 
 See the [References Index](references/README.md) for navigation.
@@ -127,10 +134,13 @@ typescript-v6/
 ├── README.md                             # This file - discovery and quick reference
 └── references/
     ├── README.md                         # Reference index
-    ├── defaults-migration-reference.md   # Upgrade-sensitive defaults and fixes
+    ├── migration-v6-reference.md         # Dedicated TypeScript 6 migration guide
+    ├── defaults-migration-reference.md   # TS 6+ defaults and configuration behavior
     ├── deprecations-reference.md         # Deprecated options and replacements
     ├── module-resolution-imports-reference.md # bundler/nodenext and `#/` imports
     ├── stdlib-types-reference.md         # New platform/library types in TS 6
+    ├── workflow-diagnostics-reference.md # Compiler commands for migration debugging
+    ├── type-patterns-reference.md        # TS-safe patterns for TS 6+ code
     └── stable-ordering-ts7-reference.md  # `stableTypeOrdering` and TS 7 context
 ```
 

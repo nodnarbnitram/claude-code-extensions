@@ -46,6 +46,8 @@ TypeScript 6 supports Node's `#/`-style subpath imports under `bundler` and `nod
 import * as utils from '#/utils.js';
 ```
 
+This example is a package/runtime alignment pattern, not a generic source-alias recipe. The mapping should reflect the files the package actually ships and resolves at runtime.
+
 ## Alias Decision Heuristic
 
 - Use `paths` when you need TypeScript/build-tool aliasing inside a project

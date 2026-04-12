@@ -7,10 +7,11 @@ TypeScript 6 keeps compatibility pressure high so TS 7 does not need to carry le
 | Deprecated | Replace With |
 |------------|--------------|
 | `moduleResolution: "node"` / `"node10"` | `"bundler"` for bundled apps or `"nodenext"` for Node.js packages |
-| `moduleResolution: "classic"` | `"bundler"` or `"nodenext"` |
+| `moduleResolution: "classic"` | Removed in TS 6 — replace with `"bundler"` or `"nodenext"` |
 | `target: "es5"` | `"es2015"` minimum, usually something more modern |
 | `downlevelIteration` | Remove it |
 | `baseUrl` | Use direct `paths` entries |
+| `skipDefaultLibCheck` | Removed — use `skipLibCheck` only if you intentionally want broader lib checking skipped |
 | legacy non-modern module targets such as AMD/UMD/System/none | Use `esnext`, `preserve`, `commonjs`, or `nodenext` as appropriate |
 
 ## `baseUrl` Migration

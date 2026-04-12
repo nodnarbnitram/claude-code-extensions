@@ -1,6 +1,6 @@
-# TypeScript 6 Defaults and Migration Reference
+# TypeScript 6 Defaults and Configuration Reference
 
-TypeScript 6 is a migration-heavy release because several assumptions that used to stay implicit often need to become explicit during real upgrades.
+TypeScript 6 changed enough compiler behavior that several assumptions that used to stay implicit often need to become explicit in real projects.
 
 ## Highest-Impact Upgrade Checks
 
@@ -18,9 +18,13 @@ If a project depends on Node.js globals, a test runner, Workers, or Bun globals,
 
 This improves both performance and predictability compared with older "load everything from `@types`" assumptions.
 
+### 1b. Expect side-effect import checking to be stricter
+
+TS 6 applies stricter checking to side-effect-only imports, so previously ignored path mistakes can start surfacing during normal project work.
+
 ### 2. Make `rootDir` explicit
 
-If the source tree lives under `src/`, TypeScript 6 upgrades often need this:
+If the source tree lives under `src/`, TypeScript 6+ projects often need this:
 
 ```json
 {
@@ -97,6 +101,15 @@ Add a `types` array here only if the app or its tooling actually needs Node/test
   "include": ["src/**/*"]
 }
 ```
+
+### 5. Prefer compiler-state inspection before guessing
+
+```bash
+npx tsc --showConfig
+npx tsc --explainFiles
+```
+
+When project behavior looks strange, inspect the effective config and file graph before rewriting source code.
 
 ## Temporary Escape Hatch
 
