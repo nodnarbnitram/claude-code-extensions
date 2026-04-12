@@ -260,7 +260,7 @@ PLUGIN_SPECS: list[PluginSpec] = [
         ],
     ),
     PluginSpec(
-        name="typescript-v6",
+        name="cce-typescript-v6",
         description="TypeScript 6 guidance for tsconfig migrations, deprecations, module resolution, and modern standard-library types",
         keywords=[
             "typescript",

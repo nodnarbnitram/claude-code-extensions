@@ -43,7 +43,7 @@ The repository now provides **21 self-contained plugins** for Claude Code market
 | **cce-python** | Python CLI development | 1 Typer-focused agent |
 | **cce-linear** | Linear workflows | 1 Linear skill, 3 ticket/PR workflow commands |
 | **cce-typescript** | TypeScript tooling | Braintrust and fumadocs agents |
-| **typescript-v6** | TypeScript 6 migration guidance | 1 skill (`typescript-v6`), separate from `cce-typescript` agents |
+| **cce-typescript-v6** | TypeScript 6 migration guidance | 1 skill (`typescript-v6`), separate from `cce-typescript` agents |
 | **cce-anthropic** | Claude Agent SDK development | Python and TypeScript SDK agents |
 
 **Install only what you need** - no need to load 50+ agents if you only work with React!
@@ -75,7 +75,7 @@ Then install the plugins you need:
 /plugin install cce-django@cce-marketplace        # For Django backend development
 /plugin install cce-grafana@cce-marketplace       # For Grafana plugin development & billing
 /plugin install cce-vite@cce-marketplace          # For Vite 8 config/build guidance and Vitest v4 testing
-/plugin install typescript-v6@cce-marketplace     # For TypeScript 6 migration and tsconfig guidance (skill-only, separate from cce-typescript)
+/plugin install cce-typescript-v6@cce-marketplace # For TypeScript 6 migration and tsconfig guidance (skill-only, separate from cce-typescript)
 /plugin install cce-research@cce-marketplace      # For deep research tasks
 ```
 

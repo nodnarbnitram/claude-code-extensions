@@ -1,10 +1,10 @@
-# TypeScript v6 Plugin
+# CCE TypeScript v6 Plugin
 
 TypeScript 6 guidance for tsconfig migrations, deprecations, module resolution, and modern standard-library types.
 
 ## Overview
 
-The **typescript-v6** plugin packages the repository's TypeScript 6 migration guidance into a self-contained Claude Code plugin. It is a **skill-only** package that ships the `typescript-v6` skill without bundling the existing Braintrust or fumadocs agents from `cce-typescript`.
+The **cce-typescript-v6** plugin packages the repository's TypeScript 6 migration guidance into a self-contained Claude Code plugin. It is a **skill-only** package that ships the `typescript-v6` skill without bundling the existing Braintrust or fumadocs agents from `cce-typescript`.
 
 If you want the existing Braintrust or fumadocs agents, install `cce-typescript` separately. This plugin is only for the TypeScript 6 skill.
 
@@ -20,7 +20,7 @@ If you want the existing Braintrust or fumadocs agents, install `cce-typescript`
 
 ```bash
 /plugin marketplace add github:nodnarbnitram/claude-code-extensions
-/plugin install typescript-v6@cce-marketplace
+/plugin install cce-typescript-v6@cce-marketplace
 ```
 
 ### Standalone Mode
@@ -45,7 +45,7 @@ In standalone installs, keep the scope the same as the plugin package: install/s
 
 ## Structure
 
-This plugin is self-contained under `plugins/typescript-v6/` with a local `skills/` directory for marketplace installs.
+This plugin is self-contained under `plugins/cce-typescript-v6/` with a local `skills/` directory for marketplace installs.
 
 ## License
 
