@@ -1,16 +1,17 @@
 # CCE Vite Plugin
 
-Vitest 4 testing guidance for Vite projects, including Browser Mode, coverage, and migration patterns.
+Vite v8 and Vitest v4 guidance for Vite projects, including config, plugins, Browser Mode, coverage, and migration patterns.
 
 ## Overview
 
-The **cce-vite** plugin packages the repository's current Vite ecosystem testing expertise into a self-contained plugin for Claude Code. Right now it includes the `vitest-4` skill so marketplace installs can use the new Vitest guidance without depending on the repo-root `.claude` tree.
+The **cce-vite** plugin packages the repository's current Vite ecosystem expertise into a self-contained plugin for Claude Code. It includes the `vite-v8` and `vitest-v4` skills so marketplace installs can use both build/runtime and test-runner guidance without depending on the repo-root `.claude` tree.
 
 ## Included Components
 
 ### Skill
 
-- `vitest-4`
+- `vite-v8`
+- `vitest-v4`
 
 ## Installation
 
@@ -26,18 +27,20 @@ The **cce-vite** plugin packages the repository's current Vite ecosystem testing
 ```bash
 git clone https://github.com/nodnarbnitram/claude-code-extensions.git
 cd claude-code-extensions
-# Install into your project, then select only the vitest-4 skill for Vite testing workflows
+# Install into your project, then select the vite-v8 and/or vitest-v4 skills for your Vite workflows
 ./install_extensions.py install ~/your-project
 ```
 
-In standalone installs, keep the scope the same as the plugin package: install/select **only `vitest-4`** from this plugin's content rather than unrelated skills.
+In standalone installs, keep the scope the same as the plugin package: install/select **only `vite-v8` and `vitest-v4`** from this plugin's content rather than unrelated skills.
 
 ## Use Cases
 
+- Configuring and migrating `vite.config.ts` for Vite 8
+- Authoring or debugging Vite plugins with environments, hook filters, and modern HMR hooks
 - Creating or fixing `vitest.config.ts` in Vite projects
 - Writing unit, integration, and Browser Mode tests with Vitest 4
 - Configuring coverage, worker settings, and setup files
-- Migrating older Jest or pre-Vitest-4 testing patterns
+- Migrating older Rollup/esbuild or pre-Vitest-4 patterns
 - Troubleshooting browser providers, mock leakage, and watch-mode hangs
 
 ## Structure

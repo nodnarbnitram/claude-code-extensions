@@ -6,7 +6,7 @@
 [![Python](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![Claude Code](https://img.shields.io/badge/claude--code-compatible-purple.svg)](https://claude.ai/code)
 
-Supercharge your Claude Code experience with **60+ specialized agents**, **16 skills**, **8 lifecycle hooks**, **11 slash commands**, and powerful automation tools—all ready to install and customize.
+Supercharge your Claude Code experience with **60+ specialized agents**, **17 skills**, **8 lifecycle hooks**, **11 slash commands**, and powerful automation tools—all ready to install and customize.
 
 ## ✨ Highlights
 
@@ -34,7 +34,7 @@ The repository now provides **20 self-contained plugins** for Claude Code market
 | **cce-grafana** | Grafana observability | 1 plugin expert agent, 2 skills (scaffolding, billing metrics) |
 | **cce-homeassistant** | Home Assistant workflows | 7 HA experts, 8 skills, 3 commands |
 | **cce-tauri** | Tauri v2 desktop apps | 1 agent, 1 skill |
-| **cce-vite** | Vite ecosystem testing | 1 skill (`vitest-4`) |
+| **cce-vite** | Vite ecosystem testing | 2 skills (`vite-v8`, `vitest-v4`) |
 | **cce-web-vue** | Vue and Nuxt development | 3 Vue/Nuxt agents |
 | **cce-temporal** | Temporal workflows | 6 Temporal agents |
 | **cce-devops** | DevOps and platform engineering | GitHub Actions, Helm, ArgoCD, and Crossplane agents |
@@ -73,7 +73,7 @@ Then install the plugins you need:
 /plugin install cce-web-react@cce-marketplace     # For React/Next.js/TanStack
 /plugin install cce-django@cce-marketplace        # For Django backend development
 /plugin install cce-grafana@cce-marketplace       # For Grafana plugin development & billing
-/plugin install cce-vite@cce-marketplace          # For Vitest 4 testing in Vite projects
+/plugin install cce-vite@cce-marketplace          # For Vite 8 config/build guidance and Vitest v4 testing
 /plugin install cce-research@cce-marketplace      # For deep research tasks
 ```
 
@@ -206,7 +206,8 @@ Model-invoked capabilities that Claude automatically discovers and uses based on
 | [`ha-voice`](.claude/skills/ha-voice/) | Configure Home Assistant Assist voice control with pipelines, intents, and wake words |
 | [`ha-energy`](.claude/skills/ha-energy/) | Set up Home Assistant energy monitoring with dashboards, solar, grid, and device tracking |
 | [`tauri-v2`](.claude/skills/tauri-v2/) | Tauri v2 cross-platform desktop/mobile app development with Rust backend, IPC patterns, and security configuration |
-| [`vitest-4`](.claude/skills/vitest-4/) | Vitest 4 testing with Vite-native configuration, mocks, Browser Mode, coverage, and migration guidance |
+| [`vite-v8`](.claude/skills/vite-v8/) | Vite 8 development with Rolldown, Oxc, environment-aware plugins, SSR, and migration guidance |
+| [`vitest-v4`](.claude/skills/vitest-v4/) | Vitest 4 testing with Vite-native configuration, mocks, Browser Mode, coverage, and migration guidance |
 | [`linear`](.claude/skills/linear/) | Manage Linear tickets, projects, milestones, documents, and related PR workflows using wrapper scripts |
 
 **Creating new skills:**

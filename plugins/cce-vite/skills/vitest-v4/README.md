@@ -136,7 +136,7 @@ See the [References Index](references/README.md) for navigation.
 ## File Structure
 
 ```
-vitest-4/
+vitest-v4/
 ├── SKILL.md        # Quick-start patterns, critical rules, and practical guidance
 ├── README.md       # This file - discovery and quick reference
 └── references/
@@ -169,7 +169,7 @@ vitest-4/
 ## Related Skills
 
 - `github-actions` - CI workflow patterns when running Vitest in GitHub Actions
-- `vite` - Vite config guidance when Vitest shares or extends build configuration
+- `vite-v8` - Vite config guidance when Vitest shares or extends build configuration
 - `react-performance` - Useful when Vitest covers React render and interaction regressions
 
 ---

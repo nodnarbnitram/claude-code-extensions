@@ -1,7 +1,9 @@
 ---
-name: vitest-4
+name: vitest-v4
 description: "Vitest 4+ testing with Vite. Use when configuring vitest.config.ts, writing unit/integration/browser tests, implementing mocks with vi.fn/vi.spyOn/vi.mock, setting up V8 or Istanbul coverage, or migrating from Jest or older Vitest workspace setups. Triggers on vitest, vitest.config.ts, vi.mock, browser mode, vitest/browser, projects, setupFiles, and toMatchScreenshot."
 version: 1.0.0
+metadata:
+  author: Brandon Martin
 ---
 
 # Vitest 4 Testing Skill

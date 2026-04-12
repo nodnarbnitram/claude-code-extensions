@@ -1,9 +1,9 @@
 {
   "name": "cce-vite",
   "version": "1.0.0",
-  "description": "Vitest 4 testing for Vite projects, including Browser Mode, coverage, and migration guidance",
+  "description": "Vite v8 and Vitest v4 guidance for config, plugins, builds, Browser Mode, coverage, and migration workflows",
   "author": {
-    "name": "Claude Code Extensions Contributors",
+    "name": "Brandon Martin",
     "url": "https://github.com/nodnarbnitram/claude-code-extensions"
   },
   "homepage": "https://github.com/nodnarbnitram/claude-code-extensions",
@@ -14,6 +14,8 @@
     "vitest",
     "testing",
     "browser-mode",
-    "coverage"
+    "coverage",
+    "rolldown",
+    "vite8"
   ]
 }

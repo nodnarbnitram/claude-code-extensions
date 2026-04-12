@@ -305,6 +305,24 @@
         "ipc",
         "capabilities"
       ]
+    },
+    {
+      "name": "cce-vite",
+      "source": "./plugins/cce-vite",
+      "description": "Vite v8 and Vitest v4 guidance for config, plugins, builds, Browser Mode, coverage, and migration workflows",
+      "version": "1.0.0",
+      "author": {
+        "name": "Brandon Martin"
+      },
+      "keywords": [
+        "vite",
+        "vitest",
+        "testing",
+        "browser-mode",
+        "coverage",
+        "rolldown",
+        "vite8"
+      ]
     }
   ]
 }
