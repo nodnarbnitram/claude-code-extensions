@@ -8,7 +8,7 @@ allowed-tools: AskUserQuestion, Skill, Bash(uv run:*), Bash(git checkout:*), Bas
 
 Create a new PR for an existing Linear ticket when additional related code changes are required.
 
-Activate the `linear` skill first and use its wrapper scripts for all Linear operations. Do **not** call `linearis` directly from this workflow.
+Activate the `linear` skill first and use its wrapper scripts for all Linear operations. Do **not** call another Linear CLI directly from this workflow.
 
 ## Context
 

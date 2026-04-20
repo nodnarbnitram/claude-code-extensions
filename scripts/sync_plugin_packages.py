@@ -235,6 +235,7 @@ PLUGIN_SPECS: list[PluginSpec] = [
         name="cce-linear",
         description="Linear ticket and project workflows with wrapper scripts for issues, milestones, documents, and PR coordination",
         keywords=["linear", "tickets", "project-management", "triage", "workflow"],
+        version="1.0.1",
         assets=[
             (".claude/skills/linear", "skills/linear"),
             (".claude/commands/triage.md", "commands/triage.md"),

@@ -8,7 +8,7 @@ allowed-tools: AskUserQuestion, Skill, Bash(uv run:*), Bash(git checkout:*), Bas
 
 Create a Linear ticket, branch from it, commit changes, and open a pull request.
 
-Activate the `linear` skill first and use its wrapper scripts for all Linear operations. Do **not** call `linearis` directly from this workflow.
+Activate the `linear` skill first and use its wrapper scripts for all Linear operations. Do **not** call another Linear CLI directly from this workflow.
 
 ## Context
 
@@ -51,7 +51,7 @@ Track these steps as TODOs and complete them one by one.
 
 4. **Create branch** - Create and checkout the branch:
    ```bash
-   git checkout -b <branchName from linearis response>
+   git checkout -b <branchName from Linear response>
    ```
 
 5. **Stage and commit** - Stage relevant changes and commit:

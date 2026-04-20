@@ -278,7 +278,7 @@
       "name": "cce-linear",
       "source": "./plugins/cce-linear",
       "description": "Linear ticket and project workflows with wrapper scripts for issues, milestones, documents, and PR coordination",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": {
         "name": "Brandon Martin"
       },
