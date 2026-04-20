@@ -121,7 +121,15 @@ def is_uuid(value: str) -> bool:
         return False
 
     parts = value.split("-")
-    return len(parts) == 5 and [len(part) for part in parts] == [8, 4, 4, 4, 12]
+    if not (len(parts) == 5 and [len(part) for part in parts] == [8, 4, 4, 4, 12]):
+        return False
+
+    try:
+        int(value.replace("-", ""), 16)
+    except ValueError:
+        return False
+
+    return True
 
 
 def parse_issue_identifier(value: str) -> tuple[str, int] | None:
