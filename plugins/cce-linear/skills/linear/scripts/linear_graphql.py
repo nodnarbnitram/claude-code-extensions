@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import os
+import sys
 from pathlib import Path
 from typing import Any
 from urllib import error, request
@@ -259,6 +260,50 @@ def resolve_label_ids(label_names_or_ids: list[str]) -> list[str]:
     return label_ids
 
 
+def resolve_user_id(user_name_or_email_or_id: str) -> str:
+    if is_uuid(user_name_or_email_or_id):
+        return user_name_or_email_or_id
+
+    data = graphql_request(
+        """
+        query ResolveUser($value: String!) {
+          byDisplayName: users(
+            filter: { displayName: { eqIgnoreCase: $value } }
+            first: 10
+          ) {
+            nodes { id name displayName email }
+          }
+          byEmail: users(filter: { email: { eqIgnoreCase: $value } }, first: 2) {
+            nodes { id name displayName email }
+          }
+        }
+        """,
+        {"value": user_name_or_email_or_id},
+    )
+
+    by_name = data.get("byDisplayName", {}).get("nodes", [])
+    if len(by_name) == 1:
+        return by_name[0]["id"]
+    if len(by_name) > 1:
+        matches = ", ".join(
+            sorted(
+                {
+                    f"{node.get('displayName') or node.get('name') or 'Unknown'} <{node.get('email', 'no-email')}>"
+                    for node in by_name
+                }
+            )
+        )
+        raise LinearError(
+            f"User '{user_name_or_email_or_id}' matched multiple users ({matches}). Use email or UUID to disambiguate."
+        )
+
+    by_email = data.get("byEmail", {}).get("nodes", [])
+    if len(by_email) == 1:
+        return by_email[0]["id"]
+
+    raise LinearError(f"User '{user_name_or_email_or_id}' not found")
+
+
 def resolve_workflow_state_ids(
     statuses: list[str], team_id: str | None = None
 ) -> list[str]:
@@ -450,6 +495,7 @@ def list_issues(
 ) -> list[dict[str, Any]]:
     team_id = resolve_team(team)["id"] if team else None
     project_id = resolve_project(project)["id"] if project else None
+    assignee_id = resolve_user_id(assignee) if assignee else None
     state_ids = (
         resolve_workflow_state_ids([part.strip() for part in status.split(",")], team_id)
         if status
@@ -471,7 +517,7 @@ def list_issues(
             "filter": build_issue_filter(
                 team_id=team_id,
                 project_id=project_id,
-                assignee_id=assignee,
+                assignee_id=assignee_id,
                 state_ids=state_ids,
             ),
         },
@@ -491,6 +537,7 @@ def search_issues(
 ) -> list[dict[str, Any]]:
     team_id = resolve_team(team)["id"] if team else None
     project_id = resolve_project(project)["id"] if project else None
+    assignee_id = resolve_user_id(assignee) if assignee else None
     state_ids = (
         resolve_workflow_state_ids([part.strip() for part in status.split(",")], team_id)
         if status
@@ -518,7 +565,7 @@ def search_issues(
             "filter": build_issue_filter(
                 team_id=team_id,
                 project_id=project_id,
-                assignee_id=assignee,
+                assignee_id=assignee_id,
                 state_ids=state_ids,
             ),
         },
@@ -580,7 +627,7 @@ def update_ticket(issue_id_or_identifier: str, updates: dict[str, Any]) -> dict[
         input_data["priority"] = updates["priority"]
 
     if updates.get("assignee") is not None:
-        input_data["assigneeId"] = updates["assignee"]
+        input_data["assigneeId"] = resolve_user_id(updates["assignee"])
 
     if updates.get("project") is not None:
         input_data["projectId"] = resolve_project(updates["project"])["id"]
@@ -669,6 +716,10 @@ def create_project(
 
     if description:
         if len(description) > 255:
+            print(
+                f"Warning: Description truncated to 255 chars (was {len(description)})",
+                file=sys.stderr,
+            )
             description = description[:252] + "..."
         input_data["description"] = description
     if priority is not None:
