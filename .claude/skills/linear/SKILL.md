@@ -2,23 +2,17 @@
 name: linear
 description: Manage Linear tickets, projects, milestones, and documents. Use for coordinating work across skills (orca-security, multi-repo) or tracking remediation progress.
 license: MIT
-compatibility: Requires linearis CLI and LINEAR_API_TOKEN.
+compatibility: Requires LINEAR_API_TOKEN.
 metadata:
   author: security-cleanup
-  version: "2.0"
+  version: "3.0"
 ---
 
 # Linear Project & Ticket Management
 
-Comprehensive skill for Linear operations including tickets, projects, milestones, and documents.
+This skill manages Linear through the GraphQL endpoint only. Do not use `linearis` or any other CLI wrapper. The project scripts in `.claude/skills/linear/scripts/` share a single GraphQL client and hit `https://api.linear.app/graphql` directly.
 
 ## Prerequisites
-
-### Required: linearis CLI
-
-```bash
-npm install -g linearis
-```
 
 ### Required: API Token
 
@@ -26,7 +20,7 @@ npm install -g linearis
 export LINEAR_API_TOKEN='lin_api_xxxxx'
 ```
 
-Get token from: Linear → Settings → Security & Access → Personal API keys
+Get the token from Linear → Settings → Security & Access → Personal API keys.
 
 ### Verify Setup
 
@@ -34,37 +28,37 @@ Get token from: Linear → Settings → Security & Access → Personal API keys
 uv run .claude/skills/linear/scripts/read-ticket.py ICE-2041
 ```
 
-If this returns ticket JSON, you're good to go.
+If this returns ticket JSON, auth and GraphQL access are working.
 
-## IMPORTANT: Use Scripts Only
+## IMPORTANT: Use Scripts First
 
-**NEVER call the `linearis` CLI directly. Always use the wrapper scripts below.**
-
-The scripts are in `.claude/skills/linear/scripts/`. They handle CLI quirks, parse output, and give consistent JSON results. If you need raw CLI details for debugging, see `references/linearis-reference.md`.
+Prefer the scripts in `.claude/skills/linear/scripts/` over ad hoc `curl` calls. They resolve names to IDs, normalize errors, and keep output JSON-shaped for agent workflows. If you need raw queries for debugging or unsupported operations, use `references/graphql-reference.md`.
 
 ## When to Use This Skill
 
-- **Create tickets** for security issues or feature work
-- **Create projects** to group related tickets with goals and timelines
-- **Create milestones** to track project phases with due dates
-- **Create documents** to attach reference material to projects
-- **Track progress** by updating ticket status and adding comments
+- Create or update tickets for feature work, bugs, or remediation
+- Create projects and milestones to organize work
+- Add comments with progress or review notes
+- Create, list, or read project documents
+- Move issues into projects or milestones
 
 ## Scripts Overview
 
 | Script | Purpose |
 |--------|---------|
-| `list-issues.py` | List issues for a team |
-| `search-issues.py` | Search issues by query |
+| `list-issues.py` | List issues with optional team, status, and project filters |
+| `search-issues.py` | Full-text search issues |
 | `create-ticket.py` | Create a ticket |
-| `read-ticket.py` | Read ticket details |
-| `update-ticket.py` | Update ticket status |
-| `add-comment.py` | Add comment to ticket |
+| `read-ticket.py` | Read ticket details by identifier or UUID |
+| `update-ticket.py` | Update ticket fields |
+| `add-comment.py` | Add a comment to a ticket |
 | `create-project.py` | Create a project |
 | `add-issues-to-project.py` | Add tickets to a project |
 | `create-milestone.py` | Create a project milestone |
 | `add-issues-to-milestone.py` | Add tickets to a milestone |
-| `create-document.py` | Create a document attached to project |
+| `create-document.py` | Create a project document |
+| `list-documents.py` | List documents, optionally by project |
+| `read-document.py` | Read a document by UUID |
 
 ---
 
@@ -79,11 +73,11 @@ uv run .claude/skills/linear/scripts/list-issues.py --team ICE-T --status "Todo,
 uv run .claude/skills/linear/scripts/list-issues.py --team ICE-T --project "Orca Security Remediation"
 ```
 
-**Options:**
-- `--team` - Filter by team key or name (e.g., `ICE-T`)
-- `--limit`, `-l` - Max issues to fetch (default: 50)
-- `--status`, `-s` - Filter by status (comma-separated, e.g., `Todo,In Progress`)
-- `--project` - Filter by project name or ID
+Options:
+- `--team` filter by team key or name
+- `--limit`, `-l` max issues to fetch, default `50`
+- `--status`, `-s` comma-separated workflow states
+- `--project` project name or UUID
 
 ### Search Issues
 
@@ -94,13 +88,13 @@ uv run .claude/skills/linear/scripts/search-issues.py "Privileged Role" --status
 uv run .claude/skills/linear/scripts/search-issues.py "Docker" --team ICE-T --limit 20
 ```
 
-**Options:**
-- `query` (required) - Search query string
-- `--team` - Filter by team key or name
-- `--status`, `-s` - Filter by status (comma-separated)
-- `--project` - Filter by project name or ID
-- `--assignee`, `-a` - Filter by assignee user ID
-- `--limit`, `-l` - Max results (default: 25)
+Options:
+- `query` required search text
+- `--team` filter by team key or name
+- `--status`, `-s` comma-separated workflow states
+- `--project` project name or UUID
+- `--assignee`, `-a` assignee user ID
+- `--limit`, `-l` max results, default `25`
 
 ### Create Ticket
 
@@ -113,38 +107,38 @@ uv run .claude/skills/linear/scripts/create-ticket.py "Fix CVE-2024-1234" \
   --json
 ```
 
-**Options:**
-- `title` (required) - Ticket title
-- `--team` (required) - Team key (e.g., `ICE-T`)
-- `--description`, `-d` - Description
-- `--priority`, `-p` - 1=urgent, 2=high, 3=normal, 4=low
-- `--labels` - Comma-separated labels
-- `--json` - Output full JSON
+Options:
+- `title` required ticket title
+- `--team` required team key or name
+- `--description`, `-d` description
+- `--priority`, `-p` `1=urgent`, `2=high`, `3=normal`, `4=low`
+- `--labels` comma-separated label names or UUIDs
+- `--json` print structured JSON instead of just the identifier
 
 ### Read Ticket
 
 ```bash
 uv run .claude/skills/linear/scripts/read-ticket.py ICE-2021
+uv run .claude/skills/linear/scripts/read-ticket.py 9e05263f-ed01-4b85-9c74-569fd1a0ce13
 ```
 
 ### Update Ticket
 
 ```bash
 uv run .claude/skills/linear/scripts/update-ticket.py ICE-2021 --status "In Progress"
-uv run .claude/skills/linear/scripts/update-ticket.py ICE-2021 --status "Done"
 uv run .claude/skills/linear/scripts/update-ticket.py ICE-2021 --status "Done" --priority 2
 uv run .claude/skills/linear/scripts/update-ticket.py ICE-2021 --labels "security,urgent"
 ```
 
-**Options (at least one required):**
-- `--status` - New status (e.g., `Triage`, `Todo`, `In Progress`, `In Review`, `Done`, `Canceled`)
-- `--priority` - 1=urgent, 2=high, 3=normal, 4=low
-- `--assignee` - User ID
-- `--labels` - Comma-separated label names
-- `--project` - Project name or ID
-- `--project-milestone` - Milestone name or ID
-- `--title` - New title
-- `--description` - New description
+Options, at least one required:
+- `--status` new status name or UUID
+- `--priority` `1=urgent`, `2=high`, `3=normal`, `4=low`
+- `--assignee` assignee user ID
+- `--labels` comma-separated label names or UUIDs; labels are added to the existing set
+- `--project` project name or UUID
+- `--project-milestone` milestone name or UUID
+- `--title` new title
+- `--description` new description
 
 ### Add Comment
 
@@ -166,29 +160,20 @@ uv run .claude/skills/linear/scripts/create-project.py "Security Remediation Q1"
   --json
 ```
 
-**Options:**
-- `name` (required) - Project name
-- `--team` (required) - Team key
-- `--description` - Short summary (max 255 chars, shown in list views)
-- `--content` - Full markdown content (shown on project page)
-- `--priority` - 0=none, 1=urgent, 2=high, 3=normal, 4=low
-- `--target-date` - Target date (YYYY-MM-DD)
-- `--json` - Output full JSON
-
-**Important:** Linear has two description fields:
-- `description` - Short summary (255 char limit), shown in project lists
-- `content` - Full markdown document, shown on project detail page
+Options:
+- `name` required project name
+- `--team` required team key or name
+- `--description` short summary, max 255 chars
+- `--content` full markdown content for the project page
+- `--priority` `0=none`, `1=urgent`, `2=high`, `3=normal`, `4=low`
+- `--target-date` `YYYY-MM-DD`
+- `--json` print full project JSON
 
 ### Add Issues to Project
 
 ```bash
-# Single issue
 uv run .claude/skills/linear/scripts/add-issues-to-project.py PROJECT_UUID ICE-2027
-
-# Multiple issues
 uv run .claude/skills/linear/scripts/add-issues-to-project.py PROJECT_UUID ICE-2027 ICE-2028 ICE-2029
-
-# Comma-separated
 uv run .claude/skills/linear/scripts/add-issues-to-project.py PROJECT_UUID --issues ICE-2027,ICE-2028
 ```
 
@@ -206,20 +191,18 @@ uv run .claude/skills/linear/scripts/create-milestone.py "P1: Critical Fixes" \
   --json
 ```
 
-**Options:**
-- `name` (required) - Milestone name
-- `--project` (required) - Project name or UUID
-- `--description` - Milestone description
-- `--target-date` - Due date (YYYY-MM-DD)
-- `--json` - Output full JSON
+Options:
+- `name` required milestone name
+- `--project` required project UUID
+- `--description` milestone description
+- `--target-date` due date in `YYYY-MM-DD`
+- `--json` print full milestone JSON
 
 ### Add Issues to Milestone
 
 ```bash
 uv run .claude/skills/linear/scripts/add-issues-to-milestone.py MILESTONE_UUID ICE-2027 ICE-2028
 ```
-
-**Note:** linearis CLI does not support milestone operations. Use the scripts above or GraphQL API directly.
 
 ---
 
@@ -228,13 +211,6 @@ uv run .claude/skills/linear/scripts/add-issues-to-milestone.py MILESTONE_UUID I
 ### Create Document
 
 ```bash
-# With inline content
-uv run .claude/skills/linear/scripts/create-document.py \
-  --title "Security Findings Report" \
-  --project PROJECT_UUID \
-  --content "# Report\n\nDetails here..."
-
-# From file
 uv run .claude/skills/linear/scripts/create-document.py \
   --title "Security Findings Report" \
   --project PROJECT_UUID \
@@ -242,25 +218,29 @@ uv run .claude/skills/linear/scripts/create-document.py \
   --json
 ```
 
-**Options:**
-- `--title` (required) - Document title
-- `--project` (required) - Project name or UUID
-- `--content` - Markdown content
-- `--content-file` - Read content from file
-### List/Read Documents
+Options:
+- `--title` required document title
+- `--project` required project name or UUID
+- `--content` markdown content
+- `--content-file` read content from file
+- `--json` print structured JSON
 
-No wrapper script yet. Use the `linearis` CLI directly (see `references/linearis-reference.md`):
+### List Documents
 
 ```bash
-linearis documents list --project <project>
-linearis documents read <document-id>
+uv run .claude/skills/linear/scripts/list-documents.py --project PROJECT_UUID
+uv run .claude/skills/linear/scripts/list-documents.py --project "Security Remediation" --limit 100
+```
+
+### Read Document
+
+```bash
+uv run .claude/skills/linear/scripts/read-document.py DOCUMENT_UUID
 ```
 
 ---
 
-## Common Workflows
-
-### Create Project with Milestones and Issues
+## Common Workflow
 
 ```bash
 # 1. Create project
@@ -269,166 +249,69 @@ PROJECT_ID=$(uv run .claude/skills/linear/scripts/create-project.py \
   --team ICE-T \
   --description "Eliminate all security vulnerabilities")
 
-# 2. Create milestones
-P1_ID=$(uv run .claude/skills/linear/scripts/create-milestone.py \
+# 2. Create milestone
+MILESTONE_ID=$(uv run .claude/skills/linear/scripts/create-milestone.py \
   "P1: Critical" \
-  --project $PROJECT_ID \
+  --project "$PROJECT_ID" \
   --target-date 2026-02-09)
 
-# 3. Create tickets
+# 3. Create ticket
 TICKET_ID=$(uv run .claude/skills/linear/scripts/create-ticket.py \
   "Patch CVE-2024-1234" \
   --team ICE-T \
   --priority 1)
 
-# 4. Add tickets to project and milestone
-uv run .claude/skills/linear/scripts/add-issues-to-project.py $PROJECT_ID $TICKET_ID
-uv run .claude/skills/linear/scripts/add-issues-to-milestone.py $P1_ID $TICKET_ID
+# 4. Link ticket into the plan
+uv run .claude/skills/linear/scripts/add-issues-to-project.py "$PROJECT_ID" "$TICKET_ID"
+uv run .claude/skills/linear/scripts/add-issues-to-milestone.py "$MILESTONE_ID" "$TICKET_ID"
 
-# 5. Attach documentation
+# 5. Attach supporting documentation
 uv run .claude/skills/linear/scripts/create-document.py \
   --title "Findings Report" \
-  --project $PROJECT_ID \
+  --project "$PROJECT_ID" \
   --content-file ./report.md
-```
-
-### Batch Add Issues to Project
-
-```bash
-# Get project ID
-PROJECT_ID="9e05263f-ed01-4b85-9c74-569fd1a0ce13"
-
-# Add range of issues
-uv run .claude/skills/linear/scripts/add-issues-to-project.py $PROJECT_ID \
-  --issues ICE-2027,ICE-2028,ICE-2029,ICE-2030
 ```
 
 ---
 
-## GraphQL API Reference
+## Direct GraphQL Usage
 
-For operations not supported by linearis CLI, use the Linear GraphQL API directly.
-
-### Authentication
+If a needed operation does not have a wrapper yet, call the GraphQL endpoint directly rather than introducing a CLI dependency.
 
 ```bash
 curl -X POST https://api.linear.app/graphql \
   -H "Content-Type: application/json" \
   -H "Authorization: $LINEAR_API_TOKEN" \
-  -d '{"query": "{ viewer { id name } }"}'
+  -d '{"query":"{ viewer { id name } }"}'
 ```
 
-**Note:** Do NOT use `Bearer` prefix - Linear uses the raw token.
+Do not use a `Bearer` prefix. Linear expects the raw token.
 
-### Create Project
-
-```graphql
-mutation CreateProject($input: ProjectCreateInput!) {
-  projectCreate(input: $input) {
-    success
-    project { id name url }
-  }
-}
-```
-
-Variables:
-```json
-{
-  "input": {
-    "teamIds": ["team-uuid"],
-    "name": "Project Name",
-    "description": "Short description (max 255 chars)",
-    "priority": 1
-  }
-}
-```
-
-### Update Project Content
-
-```graphql
-mutation UpdateProject($id: String!, $input: ProjectUpdateInput!) {
-  projectUpdate(id: $id, input: $input) {
-    success
-  }
-}
-```
-
-Variables:
-```json
-{
-  "id": "project-uuid",
-  "input": {
-    "content": "# Full markdown content here"
-  }
-}
-```
-
-### Add Issue to Project
-
-```graphql
-mutation UpdateIssue($id: String!, $input: IssueUpdateInput!) {
-  issueUpdate(id: $id, input: $input) {
-    success
-  }
-}
-```
-
-Variables:
-```json
-{
-  "id": "issue-uuid",
-  "input": {
-    "projectId": "project-uuid"
-  }
-}
-```
-
-### Add Issue to Milestone
-
-```json
-{
-  "id": "issue-uuid",
-  "input": {
-    "projectMilestoneId": "milestone-uuid"
-  }
-}
-```
-
-### Get Team ID
-
-```graphql
-{ teams { nodes { id name key } } }
-```
-
-### Get Issue UUID from Identifier
-
-```graphql
-{ issue(id: "ICE-2027") { id } }
-```
+For reusable queries and resolver examples, see `references/graphql-reference.md`.
 
 ---
 
 ## Known Limitations
 
-- **Projects:** Create/update via `create-project.py` script (uses GraphQL under the hood)
-- **Due dates:** Cannot be set on tickets — use Linear UI
-- **Custom labels:** May not exist in workspace; use existing labels or create via UI
-- **Description field:** Max 255 characters (use `content` for full text on projects)
+- Due dates are not handled by the current project wrappers; use the UI if you need fields not exposed here
+- Labels must already exist in the workspace
+- Project `description` is capped at 255 characters; use `content` for long-form project docs
 
 ---
 
 ## Error Handling
 
-All scripts exit with code 1 on errors:
+All scripts exit with code `1` on errors.
 
-- **Missing token:** `Error: LINEAR_API_TOKEN not set and ~/.linear_api_token not found`
-- **Ticket not found:** `Error: Ticket ICE-9999 not found`
-- **Invalid team:** `Error: Team 'INVALID' not found`
-- **linearis not installed:** `Error: linearis CLI not found. Install with: npm install -g linearis`
+Common failures:
+- `Error: LINEAR_API_TOKEN not set and ~/.linear_api_token not found`
+- `Error: Ticket ICE-9999 not found`
+- `Error: Team 'INVALID' not found`
+- `Error: Milestone 'Release 1' matched multiple projects (...)`
 
 ---
 
 ## Version
 
-- **Skill version:** 2.0
-- **linearis version:** latest
+- Skill version: `3.0`
+- Transport: `Linear GraphQL endpoint only`
