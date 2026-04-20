@@ -4,7 +4,7 @@
 # dependencies = []
 # ///
 """
-Update a Linear ticket using linearis CLI.
+Update a Linear ticket using the Linear GraphQL API.
 
 Usage:
     uv run scripts/update-ticket.py ICE-2021 --status "In Progress"
@@ -19,71 +19,9 @@ Returns:
 
 import argparse
 import json
-import subprocess
 import sys
-from pathlib import Path
 
-
-def check_auth() -> bool:
-    if "LINEAR_API_TOKEN" in __import__("os").environ:
-        return True
-    token_file = Path.home() / ".linear_api_token"
-    if token_file.exists():
-        return True
-    return False
-
-
-FLAG_MAP = {
-    "status": "--status",
-    "priority": "--priority",
-    "assignee": "--assignee",
-    "labels": "--labels",
-    "project": "--project",
-    "project_milestone": "--project-milestone",
-    "title": "--title",
-    "description": "--description",
-}
-
-
-def update_ticket(ticket_id: str, updates: dict[str, str]) -> None:
-    if not check_auth():
-        print(
-            "Error: LINEAR_API_TOKEN not set and ~/.linear_api_token not found",
-            file=sys.stderr,
-        )
-        print("Set token: export LINEAR_API_TOKEN='lin_api_xxxxx'", file=sys.stderr)
-        sys.exit(1)
-
-    cmd = ["linearis", "issues", "update", ticket_id]
-    for key, value in updates.items():
-        if value is not None:
-            cmd.extend([FLAG_MAP[key], str(value)])
-
-    try:
-        result = subprocess.run(cmd, capture_output=True, text=True, check=True)
-
-        data = json.loads(result.stdout)
-
-        data["url"] = data.get("url", "")
-        data["updated"] = True
-
-        print(json.dumps(data, separators=(",", ":")))
-
-    except subprocess.CalledProcessError as e:
-        if "not found" in e.stderr.lower() or "404" in e.stderr:
-            print(f"Error: Ticket {ticket_id} not found", file=sys.stderr)
-        else:
-            print(f"Error running linearis: {e.stderr}", file=sys.stderr)
-        sys.exit(1)
-    except json.JSONDecodeError as e:
-        print(f"Error parsing JSON response: {e}", file=sys.stderr)
-        sys.exit(1)
-    except FileNotFoundError:
-        print(
-            "Error: linearis CLI not found. Install with: npm install -g linearis",
-            file=sys.stderr,
-        )
-        sys.exit(1)
+from linear_graphql import LinearError, update_ticket
 
 
 def main():
@@ -116,7 +54,13 @@ def main():
             "At least one update flag is required (e.g., --status, --priority)"
         )
 
-    update_ticket(args.ticket_id, updates)
+    try:
+        issue = update_ticket(args.ticket_id, updates)
+        issue["updated"] = True
+        print(json.dumps(issue, separators=(",", ":")))
+    except LinearError as exc:
+        print(f"Error: {exc}", file=sys.stderr)
+        sys.exit(1)
 
 
 if __name__ == "__main__":

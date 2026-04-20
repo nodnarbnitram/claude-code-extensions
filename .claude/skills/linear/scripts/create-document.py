@@ -4,7 +4,7 @@
 # dependencies = []
 # ///
 """
-Create a Linear document attached to a project.
+Create a Linear document attached to a project using the GraphQL API.
 
 Usage:
     uv run scripts/create-document.py --title "Doc Title" --project PROJECT_ID [options]
@@ -24,57 +24,10 @@ Returns:
 
 import argparse
 import json
-import subprocess
 import sys
 from pathlib import Path
 
-
-def check_auth() -> bool:
-    if "LINEAR_API_TOKEN" in __import__("os").environ:
-        return True
-    token_file = Path.home() / ".linear_api_token"
-    return token_file.exists()
-
-
-def create_document(
-    title: str,
-    project: str,
-    content: str | None = None,
-    output_json: bool = False,
-) -> None:
-    if not check_auth():
-        print("Error: LINEAR_API_TOKEN not set", file=sys.stderr)
-        sys.exit(1)
-
-    cmd = ["linearis", "documents", "create", "--title", title, "--project", project]
-
-    if content:
-        cmd.extend(["--content", content])
-
-    try:
-        result = subprocess.run(cmd, capture_output=True, text=True, check=True)
-        data = json.loads(result.stdout)
-
-        if output_json:
-            output = {
-                "id": data.get("id"),
-                "title": data.get("title"),
-                "url": data.get("url"),
-                "project": data.get("project", {}).get("name"),
-            }
-            print(json.dumps(output, separators=(",", ":")))
-        else:
-            print(data.get("url", data.get("id")))
-
-    except subprocess.CalledProcessError as e:
-        print(f"Error: {e.stderr}", file=sys.stderr)
-        sys.exit(1)
-    except json.JSONDecodeError as e:
-        print(f"Error parsing response: {e}", file=sys.stderr)
-        sys.exit(1)
-    except FileNotFoundError:
-        print("Error: linearis CLI not found", file=sys.stderr)
-        sys.exit(1)
+from linear_graphql import LinearError, create_document
 
 
 def main():
@@ -95,12 +48,26 @@ def main():
             sys.exit(1)
         content = content_path.read_text()
 
-    create_document(
-        title=args.title,
-        project=args.project,
-        content=content,
-        output_json=args.output_json,
-    )
+    try:
+        document = create_document(
+            title=args.title,
+            project=args.project,
+            content=content,
+        )
+
+        if args.output_json:
+            output = {
+                "id": document.get("id"),
+                "title": document.get("title"),
+                "url": document.get("url"),
+                "project": document.get("project"),
+            }
+            print(json.dumps(output, separators=(",", ":")))
+        else:
+            print(document.get("url", document.get("id", "")))
+    except LinearError as exc:
+        print(f"Error: {exc}", file=sys.stderr)
+        sys.exit(1)
 
 
 if __name__ == "__main__":
