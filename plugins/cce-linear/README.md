@@ -4,7 +4,7 @@ Linear ticket, project, milestone, document, and PR coordination workflows for C
 
 ## Overview
 
-The **cce-linear** plugin packages the repository's Linear workflow tooling into a self-contained plugin. It includes the `linear` skill with wrapper scripts for `linearis`, plus commands for triage and Linear-linked PR creation.
+The **cce-linear** plugin packages the repository's Linear workflow tooling into a self-contained plugin. It includes the `linear` skill with GraphQL-backed wrapper scripts, plus commands for triage and Linear-linked PR creation.
 
 ## Included Components
 
@@ -37,7 +37,6 @@ cd claude-code-extensions
 
 ## Requirements
 
-- `linearis` CLI installed
 - `LINEAR_API_TOKEN` configured
 - `gh` CLI authenticated for PR flows
 

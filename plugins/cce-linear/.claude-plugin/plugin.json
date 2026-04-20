@@ -1,6 +1,6 @@
 {
   "name": "cce-linear",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Linear ticket and project workflows with wrapper scripts for issues, milestones, documents, and PR coordination",
   "author": {
     "name": "Claude Code Extensions Contributors",
